@@ -4,10 +4,10 @@ import {
   IAuthUser,
   ILoginResponseData,
   ILoginResult,
-  IRefreshedTokens,
 } from "../types/auth.types";
 import { apiEndpoints } from "@/src/lib/api/api.endpoint";
 import { getSetCookieValue } from "@/src/lib/utils/cookie.utils";
+import { ITokens } from "@/src/types/types";
 
 //-------------Login Request-----------
 export const loginRequest = async (
@@ -39,7 +39,7 @@ export const registerRequest = (payload: TRegisterInput) =>
 //-------------Refresh Token-----------
 export const refreshTokenRequest = async (
   refreshToken: string,
-): Promise<IRefreshedTokens | null> => {
+): Promise<ITokens | null> => {
   const { response, headers } = await serverFetch<{ accessToken: string }>(
     apiEndpoints.auth.refreshToken,
     {

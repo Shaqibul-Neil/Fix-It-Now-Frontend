@@ -1,11 +1,7 @@
 import { cookies } from "next/headers";
 import { config } from "../config/config";
 import { decodeAccessToken, IAccessTokenPayload } from "./auth.token";
-
-interface IAuthSession {
-  accessToken: string;
-  refreshToken?: string;
-}
+import { ITokens } from "@/src/types/types";
 
 const {
   accessTokenKey,
@@ -16,7 +12,7 @@ const {
 } = config.cookies;
 
 //Stores authentication tokens in HTTP-only cookies.
-export const setAuthCookies = async (session: IAuthSession): Promise<void> => {
+export const setAuthCookies = async (session: ITokens): Promise<void> => {
   const cookieStore = await cookies();
   cookieStore.set(accessTokenKey, session.accessToken, {
     ...options,

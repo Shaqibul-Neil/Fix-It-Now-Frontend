@@ -3,3 +3,8 @@ export interface IApiResponse<TData> {
   message?: string;
   data?: TData;
 }
+
+export interface ITokens {
+  accessToken: string;
+  refreshToken?: string;
+}

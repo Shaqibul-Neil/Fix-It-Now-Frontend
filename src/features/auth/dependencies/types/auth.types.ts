@@ -18,11 +18,6 @@ export interface ILoginResponseData {
   user: IAuthUser;
 }
 
-export interface IRefreshedTokens {
-  accessToken: string;
-  refreshToken?: string;
-}
-
 export interface ILoginResult {
   status: number;
   response: {
