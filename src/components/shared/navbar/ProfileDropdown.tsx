@@ -10,6 +10,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
+import { useLogoutMutation } from "@/src/features/auth/dependencies/hooks/useAuth";
 
 export interface IProfileUser {
   name: string;
@@ -21,8 +22,7 @@ export interface IProfileUser {
 const ProfileDropdown = ({ user }: { user: IProfileUser }) => {
   const { name, email, role, avatarUrl } = user;
 
-  // Real sign-out lands with the auth mutations.
-  const handleLogout = () => console.log("logout");
+  const { mutate: logout, isPending } = useLogoutMutation();
 
   return (
     <DropdownMenu>
@@ -82,11 +82,12 @@ const ProfileDropdown = ({ user }: { user: IProfileUser }) => {
 
         <button
           type="button"
-          onClick={handleLogout}
+          onClick={() => logout()}
+          disabled={isPending}
           className="group flex w-full items-center gap-3 border-t border-project-border px-4 py-3 text-sm font-medium text-project-muted-foreground transition-colors duration-300 hover:bg-project-destructive/5 hover:text-project-destructive cursor-pointer"
         >
           <LogOut className="size-4 shrink-0" />
-          Sign out
+          {isPending ? "Signing out..." : "Sign out"}
         </button>
       </DropdownMenuContent>
     </DropdownMenu>

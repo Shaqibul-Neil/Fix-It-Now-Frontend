@@ -2,12 +2,14 @@ import { serverFetch } from "@/src/lib/api/api.server";
 import { TLoginInput, TRegisterInput } from "../schema/auth.schema";
 import {
   IAuthUser,
+  ICurrentUser,
   ILoginResponseData,
   ILoginResult,
 } from "../types/auth.types";
 import { apiEndpoints } from "@/src/lib/api/api.endpoint";
 import { getSetCookieValue } from "@/src/lib/utils/cookie.utils";
 import { ITokens } from "@/src/types/types";
+import { getAccessToken } from "@/src/lib/auth/auth.cookies";
 
 //-------------Login Request-----------
 export const loginRequest = async (
@@ -58,8 +60,14 @@ export const refreshTokenRequest = async (
 };
 
 //---------------Current User------------
-export const getMeRequest = (accessToken: string) =>
-  serverFetch<IAuthUser>(apiEndpoints.auth.me, {
+export const getMeRequest = async () => {
+  const accessToken = await getAccessToken();
+  if (!accessToken) return null;
+
+  const { response } = await serverFetch<ICurrentUser>(apiEndpoints.auth.me, {
     accessToken,
     cache: "no-store",
   });
+
+  return response.success && response.data ? response.data : null;
+};

@@ -1,13 +1,7 @@
-import Link from "next/link";
 import { Text } from "@/src/components";
 import { FOOTER_MENU } from "@/src/lib/menus/menus";
 import FooterBrand from "./FooterBrand";
 import FooterColumn from "./FooterColumn";
-
-const LEGAL_LINKS = [
-  { label: "Terms", href: "/terms" },
-  { label: "Privacy", href: "/privacy" },
-];
 
 const Footer = () => {
   return (
@@ -27,19 +21,7 @@ const Footer = () => {
           ))}
         </div>
 
-        <div className="mt-14 flex flex-col items-center gap-4 border-t border-current/10 pt-8">
-          <div className="flex items-center gap-6">
-            {LEGAL_LINKS.map(({ label, href }) => (
-              <Link
-                key={href}
-                href={href}
-                className="text-xs opacity-50 transition-opacity duration-300 hover:opacity-100"
-              >
-                {label}
-              </Link>
-            ))}
-          </div>
-
+        <div className="mt-14 flex flex-col items-center gap-4 pt-8">
           <Text
             variant="normal-xs"
             as="p"

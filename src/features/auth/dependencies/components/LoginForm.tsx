@@ -11,8 +11,10 @@ import {
   AppPasswordInput,
 } from "@/src/components";
 import { loginSchema, type TLoginInput } from "../schema/auth.schema";
+import { useLoginMutation } from "../hooks/useAuth";
 
 const LoginForm = () => {
+  const { mutate: login, isPending } = useLoginMutation();
   const {
     register,
     handleSubmit,
@@ -22,7 +24,7 @@ const LoginForm = () => {
     defaultValues: { email: "", password: "" },
   });
 
-  const handleLogin = (credentials: TLoginInput) => console.log(credentials);
+  const handleLogin = (credentials: TLoginInput) => login(credentials);
 
   return (
     <form onSubmit={handleSubmit(handleLogin)} className="space-y-5" noValidate>
@@ -45,7 +47,6 @@ const LoginForm = () => {
       />
 
       <div className="flex items-center justify-between gap-4">
-       
         <AppCheckbox id="rememberMe" label="Keep me signed in" />
 
         <Link
@@ -58,8 +59,9 @@ const LoginForm = () => {
 
       <AppButton
         type="submit"
-        text="Sign in"
+        text={isPending ? "Signing in..." : "Sign in"}
         rightIcon={ArrowRight}
+        disabled={isPending}
         className="h-11 w-full"
       />
     </form>

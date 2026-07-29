@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "@/src/components/ui/sonner";
 import { ThemeProvider } from "@/src/lib/providers/ThemeProvider";
 import "./globals.css";
+import { QueryProvider } from "../lib/providers/QueryProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,8 +38,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <ThemeProvider>
-          {children}
-          {/* One Toaster for the app — backend messages land here. */}
+          <QueryProvider>{children}</QueryProvider>
           <Toaster position="top-center" richColors />
         </ThemeProvider>
       </body>

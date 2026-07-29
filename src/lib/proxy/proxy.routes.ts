@@ -9,6 +9,7 @@ export const PROTECTED_ROUTES: { prefix: string; allowedRoles: TUserRole[] }[] =
     { prefix: "/dashboard/admin", allowedRoles: [USER_ROLES.ADMIN] },
     { prefix: "/dashboard/technician", allowedRoles: [USER_ROLES.TECHNICIAN] },
     { prefix: "/dashboard/customer", allowedRoles: [USER_ROLES.CUSTOMER] },
+    { prefix: "/onboarding", allowedRoles: [USER_ROLES.TECHNICIAN] },
   ];
 
 //Checks whether the current pathname is a guest-only route.

@@ -8,6 +8,7 @@ import { AppButton, AppInput, AppPasswordInput, Text } from "@/src/components";
 import { USER_ROLES } from "@/src/lib/auth/auth.roles";
 import type { TRegisterRole } from "../constants/auth.content";
 import { registerSchema, type TRegisterInput } from "../schema/auth.schema";
+import { useRegisterMutation } from "../hooks/useAuth";
 
 const PASSWORD_RULES = [
   "At least 6 characters",
@@ -21,6 +22,8 @@ interface IRegisterFormProps {
 }
 
 const RegisterForm = ({ role, submitLabel }: IRegisterFormProps) => {
+  const { mutate: registerUser, isPending } = useRegisterMutation();
+
   const {
     register,
     handleSubmit,
@@ -36,7 +39,7 @@ const RegisterForm = ({ role, submitLabel }: IRegisterFormProps) => {
     },
   });
 
-  const handleRegister = (payload: TRegisterInput) => console.log(payload);
+  const handleRegister = (payload: TRegisterInput) => registerUser(payload);
 
   return (
     <form
@@ -101,16 +104,18 @@ const RegisterForm = ({ role, submitLabel }: IRegisterFormProps) => {
         <div className="flex gap-3 border border-project-border bg-project-muted-primary/60 p-4">
           <ShieldCheck className="mt-0.5 size-4 shrink-0 text-project-primary" />
           <Text variant="normal-sm" as="p" className="text-project-accent">
-            After this step you will add your skills, service area and ID
-            documents. Jobs unlock once our team verifies your profile.
+            Sign in after this step and you will be taken straight to onboarding
+            — phone, rate and service area. Your listing goes live once that is
+            saved.
           </Text>
         </div>
       )}
 
       <AppButton
         type="submit"
-        text={submitLabel}
+        text={isPending ? "Creating account..." : submitLabel}
         rightIcon={ArrowRight}
+        disabled={isPending}
         className="h-11 w-full"
       />
 

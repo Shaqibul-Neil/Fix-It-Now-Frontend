@@ -1,3 +1,4 @@
+"use client";
 import type { TUserRole } from "@/src/lib/auth/auth.roles";
 import { DASHBOARD_MENU } from "@/src/lib/menus/menus";
 import { Logo } from "@/src/components";

@@ -28,3 +28,7 @@ export interface ILoginResult {
   headers: Headers;
   refreshToken?: string;
 }
+
+export interface ICurrentUser extends IAuthUser {
+  isOnboarded: boolean;
+}

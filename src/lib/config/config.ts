@@ -3,6 +3,7 @@ export const config = {
   app_url: process.env.NEXT_PUBLIC_APP_URL,
   isProduction: process.env.NODE_ENV === "production",
   gateway_base_url: "/api/gateway",
+  auth_base_url: "/api/auth",
 
   cookies: {
     accessTokenKey: "access_token",
