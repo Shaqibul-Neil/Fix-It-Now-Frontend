@@ -1,6 +1,5 @@
-import Link from "next/link";
 import type { ReactNode } from "react";
-import { Text, ThemeToggle } from "@/src/components";
+import { Logo, Text, ThemeToggle } from "@/src/components";
 import type { IAuthAsideContent } from "../constants/auth.content";
 import AuthAside from "./AuthAside";
 import AuthAsideMotion from "./AuthAsideMotion";
@@ -30,18 +29,7 @@ const AuthShell = ({ aside, children }: IAuthShellProps) => {
 
       <div className="flex flex-col">
         <header className="flex items-center justify-between px-6 py-6 sm:px-10 xl:px-16">
-          <Link href="/" className="flex items-center gap-3 lg:hidden">
-            <span className="flex size-8 items-center justify-center bg-project-primary text-project-primary-foreground text-xs font-bold">
-              F
-            </span>
-            <Text
-              variant="semibold-sm-2"
-              as="span"
-              className="text-project-accent"
-            >
-              FixItNow
-            </Text>
-          </Link>
+          <Logo className="lg:hidden" />
 
           <Text
             variant="medium-xs"

@@ -1,0 +1,33 @@
+"use client";
+
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { usePathname } from "next/navigation";
+import { useRef } from "react";
+import { DURATION, EASE } from "./animation.tokens";
+
+gsap.registerPlugin(useGSAP);
+
+// Replays on every pathname change, so moving between sidebar routes always
+// enters the same way. Generic — any routed area can use it, not only the
+// dashboard.
+export const useRouteTransition = <
+  TElement extends HTMLElement = HTMLDivElement,
+>() => {
+  const containerRef = useRef<TElement>(null);
+  const pathname = usePathname();
+
+  useGSAP(
+    () => {
+      gsap.from(containerRef.current, {
+        opacity: 0,
+        y: 16,
+        duration: DURATION.fast,
+        ease: EASE.out,
+      });
+    },
+    { scope: containerRef, dependencies: [pathname] },
+  );
+
+  return containerRef;
+};

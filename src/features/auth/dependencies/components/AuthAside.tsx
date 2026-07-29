@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { Text } from "@/src/components";
+import { Logo, Text } from "@/src/components";
 import type { IAuthAsideContent } from "../constants/auth.content";
 
 const AuthAside = ({
@@ -13,14 +12,8 @@ const AuthAside = ({
   return (
     <div className="relative z-10 flex h-full flex-col justify-between gap-12 p-10 xl:p-14">
       <div className="flex items-center justify-between" data-aside-brand>
-        <Link href="/" className="flex items-center gap-3">
-          <span className="flex size-9 items-center justify-center bg-project-primary text-project-primary-foreground text-sm font-bold">
-            F
-          </span>
-          <Text variant="semibold-base" as="span" className="tracking-tight">
-            FixItNow
-          </Text>
-        </Link>
+        {/* text-current so the wordmark picks up the dark panel's ink. */}
+        <Logo wordmarkClassName="text-current" />
 
         <Text
           variant="medium-xs"

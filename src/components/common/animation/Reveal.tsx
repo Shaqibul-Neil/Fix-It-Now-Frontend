@@ -9,8 +9,6 @@ interface IRevealProps {
   delay?: number;
 }
 
-// children arrive as a prop, so Server Components passed in here stay on the
-// server — only this wrapper ships to the browser.
 const Reveal = ({ children, className, delay }: IRevealProps) => {
   const containerRef = useRevealOnMount<HTMLDivElement>({ delay });
 

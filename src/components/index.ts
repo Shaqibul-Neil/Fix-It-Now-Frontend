@@ -1,14 +1,24 @@
-// For consumers outside this folder only. Files inside components/ import each
-// other by relative path — going through this barrel would create a cycle.
+// Single entry point for our own components — features and other component
+// folders both import from here. Same-folder siblings still use "./File", and
+// shadcn primitives keep their own path (@/src/components/ui/*) since they are
+// generated code, not ours.
 
 // Animation
+export { default as PageTransition } from "./common/animation/PageTransition";
 export { default as Reveal } from "./common/animation/Reveal";
 
 // Buttons
 export { default as AppButton } from "./common/buttons/AppButton";
 export { default as IconButton } from "./common/buttons/IconButton";
+export { default as StatusPill } from "./common/buttons/StatusPill";
+export type {
+  TBookingStatus,
+  TPaymentStatus,
+  TStatus,
+} from "./common/buttons/StatusPill";
 
 // Cards
+export { default as ProviderAvatar } from "./common/cards/ProviderAvatar";
 export { default as StatCard } from "./common/cards/StatCard";
 
 // Inputs
@@ -21,9 +31,30 @@ export { default as AppSearch } from "./common/inputs/AppSearch";
 export { default as AppSelect } from "./common/inputs/AppSelect";
 export { default as AppTextArea } from "./common/inputs/AppTextArea";
 
+// Skeletons
+export { default as NotificationSkeleton } from "./common/skeleton/NotificationSkeleton";
+
 // Text
 export { default as PageHeader } from "./common/texts/PageHeader";
 export { default as Text } from "./common/texts/Text";
 
 // Theme
 export { default as ThemeToggle } from "./common/theme/ThemeToggle";
+
+// Footer
+export { default as Footer } from "./shared/footer/Footer";
+
+// Navbar
+export { default as AppBreadcrumbs } from "./shared/navbar/AppBreadcrumbs";
+export { default as DashboardNavbar } from "./shared/navbar/DashboardNavbar";
+export { default as Logo } from "./shared/navbar/Logo";
+export { default as MobileNav } from "./shared/navbar/MobileNav";
+export { default as ProfileDropdown } from "./shared/navbar/ProfileDropdown";
+export type { IProfileUser } from "./shared/navbar/ProfileDropdown";
+export { default as PublicNavbar } from "./shared/navbar/PublicNavbar";
+
+// Notifications
+export { default as NotificationBell } from "./shared/notifications/NotificationBell";
+
+// Sidebar
+export { default as AppSidebar } from "./shared/sidebar/AppSidebar";

@@ -61,14 +61,10 @@ const textVariants = cva("", {
   },
 });
 
-// First, extract the Variant Type clearly
-// This gets all the variant names like "bold-3xl", "normal-sm", etc.
 type TextVariantNames = NonNullable<
   VariantProps<typeof textVariants>["variant"]
 >;
 
-// Define the Mapping Type structure separately
-// All variants mapped to an optional React Element (h1, p, span)
 type TagMapping = Partial<Record<TextVariantNames, React.ElementType>>;
 
 // Semantic tag defaults
@@ -125,10 +121,8 @@ const Text = ({
   children,
   ...props
 }: TextProps) => {
-  // Pre-determining the semantic tag mapping based on variant
   const defaultTag = (variant && DEFAULT_TAG[variant]) || "p";
 
-  //Selecting the final tag: "as" user input has top priority.
   const Tag = (as || defaultTag) as React.ElementType;
 
   return (
