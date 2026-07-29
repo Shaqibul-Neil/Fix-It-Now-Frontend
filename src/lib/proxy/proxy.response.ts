@@ -10,5 +10,5 @@ export const buildResponse = (
   if (action?.type === "redirect") return NextResponse.redirect(action.url);
   if (action?.type === "rewrite") return NextResponse.rewrite(action.url);
 
-  return NextResponse.next(session?.refreshedTokens ? { request } : undefined);
+  return NextResponse.next(session.refreshedTokens ? { request } : undefined);
 };

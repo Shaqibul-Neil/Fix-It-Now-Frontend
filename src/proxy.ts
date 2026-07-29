@@ -6,7 +6,7 @@ import { buildResponse } from "./lib/proxy/proxy.response";
 
 export const proxy = async (request: NextRequest) => {
   const session = await resolveSession(request);
-  const action = await resolveAction(request, session);
+  const action = resolveAction(request, session);
   const response = buildResponse(request, session, action);
 
   if (session.refreshedTokens) {

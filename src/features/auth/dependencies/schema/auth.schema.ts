@@ -19,5 +19,10 @@ export const registerSchema = z.object({
   role: z.enum([USER_ROLES.CUSTOMER, USER_ROLES.TECHNICIAN]),
 });
 
+export const forgotPasswordSchema = z.object({
+  email: z.email("Invalid email address").trim().toLowerCase(),
+});
+
 export type TLoginInput = z.infer<typeof loginSchema>;
 export type TRegisterInput = z.infer<typeof registerSchema>;
+export type TForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;

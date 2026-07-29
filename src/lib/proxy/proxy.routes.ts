@@ -1,7 +1,7 @@
 import { TUserRole, USER_ROLES } from "../auth/auth.roles";
 
 // Logged-in users should be redirected away from these pages.
-export const GUEST_ONLY_ROUTES = ["/login", "/register"];
+export const GUEST_ONLY_ROUTES = ["/login", "/register", "/forgot-password"];
 
 // Protected dashboard routes with their allowed user roles.
 export const PROTECTED_ROUTES: { prefix: string; allowedRoles: TUserRole[] }[] =

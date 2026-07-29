@@ -2,6 +2,7 @@ export const config = {
   api_url: process.env.API_URL || "http://localhost:5000/api",
   app_url: process.env.NEXT_PUBLIC_APP_URL,
   isProduction: process.env.NODE_ENV === "production",
+  gateway_base_url: "/api/gateway",
 
   cookies: {
     accessTokenKey: "access_token",
