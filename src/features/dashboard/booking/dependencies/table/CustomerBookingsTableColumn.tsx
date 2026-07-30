@@ -3,18 +3,14 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Ban, CreditCard, Eye } from "lucide-react";
-import { ActionColumn, ConfirmModal } from "@/src/components";
+import { ActionColumn, ConfirmModal, ContactColumn } from "@/src/components";
 import { CANCELABLE, PAYABLE } from "../booking.rules";
 import {
   useCancelBookingMutation,
   useCreatePaymentMutation,
 } from "../hooks/useBookingMutation";
 import type { ICustomerBookingRow } from "../types/booking.types";
-import {
-  bookingBaseColumns,
-  contactColumn,
-  type IBookingColumns,
-} from "./BookingColumns";
+import { bookingBaseColumns, type IBookingColumns } from "./BookingColumns";
 
 export const useCustomerBookingsColumns =
   (): IBookingColumns<ICustomerBookingRow> => {
@@ -33,7 +29,7 @@ export const useCustomerBookingsColumns =
       columns: [
         service,
 
-        contactColumn<ICustomerBookingRow>(
+        ContactColumn<ICustomerBookingRow>(
           "technician",
           "Technician",
           (row) => ({

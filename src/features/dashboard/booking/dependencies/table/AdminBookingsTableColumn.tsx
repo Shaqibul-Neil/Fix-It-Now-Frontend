@@ -2,13 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import { Eye } from "lucide-react";
-import { ActionColumn } from "@/src/components";
+import { ActionColumn, ContactColumn } from "@/src/components";
 import type { TAdminBookingRow } from "../types/booking.types";
-import {
-  bookingBaseColumns,
-  contactColumn,
-  type IBookingColumns,
-} from "./BookingColumns";
+import { bookingBaseColumns, type IBookingColumns } from "./BookingColumns";
 
 export const useAdminBookingsColumns =
   (): IBookingColumns<TAdminBookingRow> => {
@@ -21,13 +17,13 @@ export const useAdminBookingsColumns =
       columns: [
         service,
 
-        contactColumn<TAdminBookingRow>("customer", "Customer", (row) => ({
+        ContactColumn<TAdminBookingRow>("customer", "Customer", (row) => ({
           name: row.customerName,
           email: row.customerEmail,
           phone: row.customerPhone,
         })),
 
-        contactColumn<TAdminBookingRow>("technician", "Technician", (row) => ({
+        ContactColumn<TAdminBookingRow>("technician", "Technician", (row) => ({
           name: row.technicianName,
           email: row.technicianEmail,
           phone: row.technicianPhone,

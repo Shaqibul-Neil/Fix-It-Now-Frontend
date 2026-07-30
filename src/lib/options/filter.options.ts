@@ -1,5 +1,5 @@
 import type { IFilterConfig, TPeriod } from "@/src/types/filter.types";
-import type { TBookingStatus } from "@/src/types/types";
+import type { TBookingStatus, TPaymentStatus } from "@/src/types/types";
 
 export const DEFAULT_PERIOD: TPeriod = "30";
 
@@ -26,6 +26,16 @@ export const FILTER_OPTIONS: IFilterConfig = {
       { label: "Completed", value: "COMPLETED" satisfies TBookingStatus },
       { label: "Declined", value: "DECLINED" satisfies TBookingStatus },
       { label: "Cancelled", value: "CANCELLED" satisfies TBookingStatus },
+    ],
+  },
+
+  paymentStatus: {
+    options: [
+      { label: "All statuses", value: ALL_OPTION_VALUE },
+      { label: "Pending", value: "PENDING" satisfies TPaymentStatus },
+      { label: "Paid", value: "SUCCESS" satisfies TPaymentStatus },
+      { label: "Failed", value: "FAILED" satisfies TPaymentStatus },
+      { label: "Refunded", value: "REFUNDED" satisfies TPaymentStatus },
     ],
   },
 };

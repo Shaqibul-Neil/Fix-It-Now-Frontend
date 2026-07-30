@@ -49,7 +49,11 @@ const ADMIN_MENU: IMenuItem[] = [
   { label: "Categories", href: "/dashboard/admin/categories", icon: Folders },
   { label: "Technicians", href: "/dashboard/admin/technicians", icon: Users },
   { label: "Users", href: "/dashboard/admin/users", icon: UserRound },
-  { label: "Payments", href: "/dashboard/admin/payments", icon: CreditCard },
+  {
+    label: "Transactions",
+    href: "/dashboard/admin/transactions",
+    icon: CreditCard,
+  },
   { label: "Reviews", href: "/dashboard/admin/reviews", icon: Star },
   {
     label: "Analytics",
@@ -69,7 +73,11 @@ const CUSTOMER_MENU: IMenuItem[] = [
     icon: ClipboardList,
   },
   { label: "Browse services", href: "/dashboard/customer/services", icon: Wrench },
-  { label: "Payments", href: "/dashboard/customer/payments", icon: CreditCard },
+  {
+    label: "My payments",
+    href: "/dashboard/customer/payments",
+    icon: CreditCard,
+  },
   { label: "My reviews", href: "/dashboard/customer/reviews", icon: Star },
   {
     label: "Spending",

@@ -27,6 +27,10 @@ export const apiEndpoints = {
   booking: {
     details: (id: string) => `/bookings/${id}`,
   },
+  // Shared by admin and customer — same rule, the admin payload carries more.
+  payment: {
+    details: (id: string) => `/payments/${id}`,
+  },
   service: {
     list: "/services",
   },

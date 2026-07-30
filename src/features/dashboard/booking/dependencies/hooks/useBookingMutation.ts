@@ -59,16 +59,16 @@ export const useUpdateBookingStatusMutation = (onDone?: () => void) => {
 };
 
 //-----------------Customer---------------
-export const useCreateBookingMutation = (onDone?: () => void) => {
+export const useCreateBookingMutation = (onDone?: (id?: string) => void) => {
   const invalidateBooking = useInvalidateBooking();
 
   return useMutation({
     mutationFn: createBooking,
 
-    onSuccess: async ({ message }) => {
+    onSuccess: async ({ message, data }) => {
       await invalidateBooking();
       AppToast.success(message ?? "Booking placed");
-      onDone?.();
+      onDone?.(data?.id);
     },
     onError: AppToast.error,
   });

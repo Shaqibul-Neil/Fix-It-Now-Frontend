@@ -11,4 +11,7 @@ export interface IFilterConfig {
   bookingStatus: {
     options: TSelectOption[];
   };
+  paymentStatus: {
+    options: TSelectOption[];
+  };
 }

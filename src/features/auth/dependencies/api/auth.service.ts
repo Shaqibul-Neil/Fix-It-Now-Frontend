@@ -43,21 +43,27 @@ export const registerRequest = (payload: TRegisterInput) =>
 export const refreshTokenRequest = async (
   refreshToken: string,
 ): Promise<ITokens | null> => {
-  const { response, headers } = await serverFetch<{ accessToken: string }>(
-    apiEndpoints.auth.refreshToken,
-    {
-      method: "POST",
-      cookie: `refreshToken=${refreshToken}`,
-      cache: "no-store",
-    },
-  );
+  // The proxy runs this on every request, so an unreachable backend has to read
+  // as "no session" instead of throwing and turning every page into a 500.
+  try {
+    const { response, headers } = await serverFetch<{ accessToken: string }>(
+      apiEndpoints.auth.refreshToken,
+      {
+        method: "POST",
+        cookie: `refreshToken=${refreshToken}`,
+        cache: "no-store",
+      },
+    );
 
-  if (!response.success || !response.data?.accessToken) return null;
+    if (!response.success || !response.data?.accessToken) return null;
 
-  return {
-    accessToken: response.data.accessToken,
-    refreshToken: getSetCookieValue(headers, "refreshToken"),
-  };
+    return {
+      accessToken: response.data.accessToken,
+      refreshToken: getSetCookieValue(headers, "refreshToken"),
+    };
+  } catch {
+    return null;
+  }
 };
 
 //---------------Current User------------

@@ -3,18 +3,18 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Eye, RefreshCw } from "lucide-react";
-import { ActionColumn, StatusUpdateModal } from "@/src/components";
+import {
+  ActionColumn,
+  ContactColumn,
+  StatusUpdateModal,
+} from "@/src/components";
 import { NEXT_STATUS } from "../booking.rules";
 import { useUpdateBookingStatusMutation } from "../hooks/useBookingMutation";
 import type {
   ITechnicianBookingRow,
   TBookingStatusUpdate,
 } from "../types/booking.types";
-import {
-  bookingBaseColumns,
-  contactColumn,
-  type IBookingColumns,
-} from "./BookingColumns";
+import { bookingBaseColumns, type IBookingColumns } from "./BookingColumns";
 
 export const useTechnicianBookingsColumns =
   (): IBookingColumns<ITechnicianBookingRow> => {
@@ -32,7 +32,7 @@ export const useTechnicianBookingsColumns =
       columns: [
         service,
 
-        contactColumn<ITechnicianBookingRow>("customer", "Customer", (row) => ({
+        ContactColumn<ITechnicianBookingRow>("customer", "Customer", (row) => ({
           name: row.customerName,
           email: row.customerEmail,
           phone: row.customerPhone,
