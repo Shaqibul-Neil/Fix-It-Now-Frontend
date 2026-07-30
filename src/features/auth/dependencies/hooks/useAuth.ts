@@ -20,7 +20,6 @@ export const useLoginMutation = () => {
       AppToast.success(message ?? "Signed in successfully");
 
       router.replace(readRedirectTo() ?? ROLE_LANDING_PAGE[data.role]);
-      router.refresh();
     },
 
     onError: AppToast.error,

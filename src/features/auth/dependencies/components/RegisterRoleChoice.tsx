@@ -4,7 +4,8 @@ import RoleCard from "./RoleCard";
 
 const RegisterRoleChoice = () => {
   return (
-    <Reveal className="grid gap-4" delay={0.15}>
+    // Side by side from sm up — this screen has no aside to compete with.
+    <Reveal className="grid gap-4 sm:grid-cols-2" delay={0.15}>
       {REGISTER_ROLE_OPTIONS.map(
         ({ index, role, icon, title, tagline, points }) => (
           <RoleCard

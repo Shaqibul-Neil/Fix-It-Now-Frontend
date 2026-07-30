@@ -27,7 +27,7 @@ const LoginForm = () => {
   const handleLogin = (credentials: TLoginInput) => login(credentials);
 
   return (
-    <form onSubmit={handleSubmit(handleLogin)} className="space-y-5" noValidate>
+    <form onSubmit={handleSubmit(handleLogin)} className="space-y-4" noValidate>
       <AppInput
         label="Email address"
         type="email"

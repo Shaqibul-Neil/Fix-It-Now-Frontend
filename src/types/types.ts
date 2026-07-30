@@ -36,9 +36,17 @@ export const TECHNICIAN_APPROVAL_STATUS = {
 export type TTechnicianApprovalStatus =
   (typeof TECHNICIAN_APPROVAL_STATUS)[keyof typeof TECHNICIAN_APPROVAL_STATUS];
 
-// backend: stats.interface.ts -> IStatData
-// buildMetrics sends changePercentage for rates and changeValue for counts,
-// so exactly one of the two is present on any card.
+export type TBookingStatus =
+  | "REQUESTED"
+  | "ACCEPTED"
+  | "DECLINED"
+  | "PAID"
+  | "IN_PROGRESS"
+  | "COMPLETED"
+  | "CANCELLED";
+
+export type TPaymentStatus = "PENDING" | "SUCCESS" | "FAILED" | "REFUNDED";
+
 export interface IStatData {
   id: string;
   label: string;

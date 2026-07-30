@@ -9,10 +9,7 @@ const PublicNavMenu = ({ className }: { className?: string }) => {
   const pathname = usePathname();
 
   return (
-    <nav
-      aria-label="Main"
-      className={cn("items-center gap-8", className)}
-    >
+    <nav aria-label="Main" className={cn("items-center gap-8", className)}>
       {PUBLIC_MENU.map((item) => {
         const isActive = isActiveMenuItem(pathname, item);
 

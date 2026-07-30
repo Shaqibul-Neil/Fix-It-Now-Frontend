@@ -52,7 +52,10 @@ const FormNavigation = ({
           type="button"
           text="Next"
           rightIcon={ArrowRight}
-          onClick={onNext}
+          onClick={(event) => {
+            event.preventDefault();
+            onNext();
+          }}
           className="sm:min-w-44"
         />
       )}

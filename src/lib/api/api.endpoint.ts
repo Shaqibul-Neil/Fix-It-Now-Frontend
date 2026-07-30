@@ -6,8 +6,12 @@ export const apiEndpoints = {
     me: "/auth/me",
   },
   technician: {
+    dashboard: { stats: "/stats/technician/dashboard" },
     profile: "/technicians/profile",
     myProfile: "/technicians/profile/me",
+  },
+  admin: {
+    dashboard: { stats: "/stats/admin/dashboard" },
   },
 };
 

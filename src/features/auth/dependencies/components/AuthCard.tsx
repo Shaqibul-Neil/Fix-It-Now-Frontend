@@ -40,7 +40,7 @@ const AuthCard = ({
         />
       ))}
 
-      <Reveal className="flex flex-col gap-7 p-6 sm:p-8">
+      <Reveal className="flex flex-col gap-5 p-5 sm:p-7">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <Text
             variant="medium-xs"
@@ -64,8 +64,8 @@ const AuthCard = ({
         <PageHeader
           title={title}
           description={description}
-          textVariant="semibold-2xl"
-          divClassName="mb-0"
+          textVariant="semibold-xl"
+          divClassName="mb-0 gap-2"
         />
 
         <div>{children}</div>

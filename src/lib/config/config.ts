@@ -8,7 +8,7 @@ export const config = {
   cookies: {
     accessTokenKey: "access_token",
     refreshTokenKey: "refresh_token",
-    accessTokenMaxAge: 15 * 60,
+    accessTokenMaxAge: 15,
     refreshTokenMaxAge: 30 * 24 * 60 * 60,
     options: {
       httpOnly: true,

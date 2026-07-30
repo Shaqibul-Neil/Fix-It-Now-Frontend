@@ -1,27 +1,19 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRight, Mail, ShieldCheck } from "lucide-react";
+import { ArrowRight, Mail } from "lucide-react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { AppButton, AppInput, AppPasswordInput, Text } from "@/src/components";
-import { USER_ROLES } from "@/src/lib/auth/auth.roles";
 import type { TRegisterRole } from "../constants/auth.content";
 import { registerSchema, type TRegisterInput } from "../schema/auth.schema";
 import { useRegisterMutation } from "../hooks/useAuth";
 
-const PASSWORD_RULES = [
-  "At least 6 characters",
-  "One uppercase and one lowercase letter",
-  "At least one number",
-];
-
 interface IRegisterFormProps {
   role: TRegisterRole;
-  submitLabel: string;
 }
 
-const RegisterForm = ({ role, submitLabel }: IRegisterFormProps) => {
+const RegisterForm = ({ role }: IRegisterFormProps) => {
   const { mutate: registerUser, isPending } = useRegisterMutation();
 
   const {
@@ -44,10 +36,10 @@ const RegisterForm = ({ role, submitLabel }: IRegisterFormProps) => {
   return (
     <form
       onSubmit={handleSubmit(handleRegister)}
-      className="space-y-5"
+      className="space-y-4"
       noValidate
     >
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2">
         <AppInput
           label="First name"
           autoComplete="given-name"
@@ -65,55 +57,42 @@ const RegisterForm = ({ role, submitLabel }: IRegisterFormProps) => {
         />
       </div>
 
-      <AppInput
-        label="Email address"
-        type="email"
-        autoComplete="email"
-        placeholder="you@example.com"
-        leftElement={<Mail size={16} />}
-        error={errors.email?.message}
-        {...register("email")}
-      />
+      {/* Email and password pair up the same way the names do — four fields in
+          two rows instead of four, which is what keeps this off a scroll. */}
+      <div className="grid gap-4 sm:grid-cols-2">
+        <AppInput
+          label="Email address"
+          type="email"
+          autoComplete="email"
+          placeholder="you@example.com"
+          leftElement={<Mail size={16} />}
+          error={errors.email?.message}
+          {...register("email")}
+        />
 
-      <div className="space-y-3">
         <AppPasswordInput
           label="Password"
           autoComplete="new-password"
-          placeholder="Create a strong password"
+          placeholder="Create a password"
           error={errors.password?.message}
           {...register("password")}
         />
-
-        <ul className="flex flex-wrap gap-x-4 gap-y-1">
-          {PASSWORD_RULES.map((rule) => (
-            <li key={rule} className="flex items-center gap-1.5">
-              <span className="size-1 bg-project-primary" aria-hidden />
-              <Text
-                variant="normal-xs"
-                as="span"
-                className="text-project-muted-foreground"
-              >
-                {rule}
-              </Text>
-            </li>
-          ))}
-        </ul>
       </div>
 
-      {role === USER_ROLES.TECHNICIAN && (
-        <div className="flex gap-3 border border-project-border bg-project-muted-primary/60 p-4">
-          <ShieldCheck className="mt-0.5 size-4 shrink-0 text-project-primary" />
-          <Text variant="normal-sm" as="p" className="text-project-accent">
-            Sign in after this step and you will be taken straight to onboarding
-            — phone, rate and service area. Your listing goes live once that is
-            saved.
-          </Text>
-        </div>
-      )}
+      {/* All three password rules on one line — same requirements as the schema
+          enforces, just written to fit a single row. */}
+      <Text
+        variant="normal-xs"
+        as="p"
+        className="text-project-muted-foreground"
+      >
+        Password should be at least 6 characters · one uppercase, one lowercase ·
+        one number
+      </Text>
 
       <AppButton
         type="submit"
-        text={isPending ? "Creating account..." : submitLabel}
+        text={isPending ? "Creating account..." : "Create Account"}
         rightIcon={ArrowRight}
         disabled={isPending}
         className="h-11 w-full"

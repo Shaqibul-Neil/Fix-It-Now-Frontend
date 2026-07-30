@@ -4,13 +4,11 @@ import type { IAuthAsideContent } from "../constants/auth.content";
 const AuthAside = ({
   eyebrow,
   headlineLines,
-  intro,
-  highlights,
   stats,
   marqueeItems,
 }: IAuthAsideContent) => {
   return (
-    <div className="relative z-10 flex h-full flex-col justify-between gap-12 p-10 xl:p-14">
+    <div className="relative z-10 flex h-full flex-col justify-between gap-10 p-10 xl:p-14">
       <div className="flex items-center justify-between" data-aside-brand>
         {/* text-current so the wordmark picks up the dark panel's ink. */}
         <Logo wordmarkClassName="text-current" />
@@ -24,7 +22,7 @@ const AuthAside = ({
         </Text>
       </div>
 
-      <div className="max-w-xl space-y-7">
+      <div className="space-y-6">
         <h2 className="font-semibold leading-[0.95] tracking-tight text-[clamp(2.5rem,3.6vw,3.5rem)]">
           {headlineLines.map((line, index) => (
             // Mask so the line can slide up from underneath.
@@ -48,36 +46,12 @@ const AuthAside = ({
           className="h-px w-40 bg-project-primary"
           aria-hidden
         />
-
-        <Text variant="normal-base" as="p" className="max-w-md opacity-70">
-          {intro}
-        </Text>
-
-        <ul className="space-y-5 pt-2">
-          {highlights.map(({ icon: HighlightIcon, title, description }) => (
-            <li key={title} data-aside-item className="flex gap-4">
-              <span className="mt-0.5 flex size-9 shrink-0 items-center justify-center border border-current/15 bg-current/5">
-                <HighlightIcon className="size-4 text-project-primary" />
-              </span>
-              <span className="space-y-1">
-                <Text variant="semibold-sm-2" as="span" className="block">
-                  {title}
-                </Text>
-                <Text
-                  variant="normal-sm"
-                  as="span"
-                  className="block opacity-60"
-                >
-                  {description}
-                </Text>
-              </span>
-            </li>
-          ))}
-        </ul>
       </div>
 
       <div className="space-y-8">
-        <dl className="grid grid-cols-3 gap-6 border-t border-current/10 pt-8">
+        {/* No rule above the numbers — the headline's brass line already divides
+            the panel, a second one made this block look boxed in. */}
+        <dl className="grid grid-cols-3 gap-6">
           {stats.map(({ value, label }) => (
             <div key={label} data-aside-stat className="space-y-1">
               <dt className="sr-only">{label}</dt>

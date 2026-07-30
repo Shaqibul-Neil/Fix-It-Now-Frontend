@@ -4,7 +4,11 @@ import { cn } from "@/src/lib/utils/cn";
 
 const CONTACT_LINES = [
   { icon: Phone, value: "+880 1700 000000", href: "tel:+8801700000000" },
-  { icon: Mail, value: "support@fixitnow.com", href: "mailto:support@fixitnow.com" },
+  {
+    icon: Mail,
+    value: "support@fixitnow.com",
+    href: "mailto:support@fixitnow.com",
+  },
   { icon: MapPin, value: "Dhaka, Bangladesh", href: null },
 ];
 

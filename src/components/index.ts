@@ -11,6 +11,13 @@ export { default as IconButton } from "./common/buttons/IconButton";
 export { default as StatusPill } from "./common/buttons/StatusPill";
 export { default as FormNavigation } from "./common/buttons/FormNavigation";
 
+// Charts
+export { default as ChartCard } from "./common/charts/ChartCard";
+export { default as ChartLegend } from "./common/charts/ChartLegend";
+export { default as CustomTooltip } from "./common/charts/CustomTooltip";
+export { default as GenericAreaChart } from "./common/charts/GenericAreaChart";
+export { default as GenericPieChart } from "./common/charts/GenericPieChart";
+
 // Cards
 export { default as ProviderAvatar } from "./common/cards/ProviderAvatar";
 export { default as StatCard } from "./common/cards/StatCard";
@@ -27,7 +34,16 @@ export { default as AppSelect } from "./common/inputs/AppSelect";
 export { default as AppTextArea } from "./common/inputs/AppTextArea";
 
 // Skeletons
+export { default as DashboardSkeleton } from "./common/skeleton/DashboardSkeleton";
 export { default as NotificationSkeleton } from "./common/skeleton/NotificationSkeleton";
+export { default as OverviewSkeleton } from "./common/skeleton/OverviewSkeleton";
+
+// Table
+export { default as ActionColumn } from "./common/table/ActionColumn";
+export { buildColumn } from "./common/table/ColumnBuilder";
+export { default as DataTable } from "./common/table/DataTable";
+export { default as DataTablePagination } from "./common/table/DataTablePagination";
+export { default as TableViewSwitcher } from "./common/table/TableViewSwitcher";
 
 // Text
 export { default as PageHeader } from "./common/texts/PageHeader";
@@ -53,3 +69,6 @@ export { default as NotificationBell } from "./shared/notifications/Notification
 // Sidebar
 export { default as AppSidebar } from "./shared/sidebar/AppSidebar";
 export { default as OnboardingSidebar } from "./shared/sidebar/OnboardingSidebar";
+
+// Errors — one card for the whole app.
+export { default as AppError } from "./common/errors/AppError";

@@ -5,7 +5,6 @@ import AuthSwitchPrompt from "../dependencies/components/AuthSwitchPrompt";
 import RegisterForm from "../dependencies/components/RegisterForm";
 import RegisterRoleChoice from "../dependencies/components/RegisterRoleChoice";
 import {
-  LOGIN_ASIDE,
   REGISTER_ASIDE,
   REGISTER_FORM_CONTENT,
   type TRegisterRole,
@@ -30,13 +29,15 @@ const signInPrompt = (
 const RegisterPage = ({ role }: { role?: string }) => {
   const selectedRole = resolveRegisterRole(role);
 
+  // Role choice runs without the aside: the two cards are the whole screen, so
+  // they take the full width and sit next to each other.
   if (!selectedRole) {
     return (
-      <AuthShell aside={{ ...LOGIN_ASIDE, eyebrow: "Create account" }}>
+      <AuthShell contentClassName="max-w-4xl">
         <AuthCard
           eyebrow="Create account"
           title="How will you use FixItNow?"
-          description="Pick the side you are on. You can always add the other one later from your dashboard."
+          description="Pick the side you are on. You can add the other one later from your dashboard."
           footer={signInPrompt}
         >
           <RegisterRoleChoice />
@@ -45,11 +46,12 @@ const RegisterPage = ({ role }: { role?: string }) => {
     );
   }
 
-  const { eyebrow, title, description, submitLabel } =
-    REGISTER_FORM_CONTENT[selectedRole];
+  const { eyebrow, title, description } = REGISTER_FORM_CONTENT[selectedRole];
 
   return (
-    <AuthShell aside={REGISTER_ASIDE[selectedRole]}>
+    // Wider than the login column: this form runs two fields per row, so the
+    // inputs need the extra width to stop reading as cramped.
+    <AuthShell aside={REGISTER_ASIDE[selectedRole]} contentClassName="max-w-128">
       <AuthCard
         eyebrow={eyebrow}
         title={title}
@@ -58,7 +60,7 @@ const RegisterPage = ({ role }: { role?: string }) => {
         backLabel="Change role"
         footer={signInPrompt}
       >
-        <RegisterForm role={selectedRole} submitLabel={submitLabel} />
+        <RegisterForm role={selectedRole} />
       </AuthCard>
     </AuthShell>
   );

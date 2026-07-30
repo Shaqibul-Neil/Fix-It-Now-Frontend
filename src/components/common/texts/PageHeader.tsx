@@ -1,4 +1,3 @@
-import React from "react";
 import type { ElementType } from "react";
 import { cn } from "@/src/lib/utils/cn";
 import AppButton from "../buttons/AppButton";
@@ -104,4 +103,4 @@ const PageHeader = ({
   );
 };
 
-export default React.memo(PageHeader);
+export default PageHeader;

@@ -6,7 +6,7 @@ import { useRef } from "react";
 import { DURATION, EASE } from "@/src/lib/animation/animation.tokens";
 
 // Auth-only choreography: wordmark drops, headline lines rise out of their
-// masks, the brass rule draws across, then the proof rows settle.
+// masks, the brass rule draws across, then the numbers settle.
 export const useAuthAsideTimeline = () => {
   const asideRef = useRef<HTMLElement>(null);
 
@@ -35,14 +35,9 @@ export const useAuthAsideTimeline = () => {
           "-=0.55",
         )
         .from(
-          "[data-aside-item]",
-          { opacity: 0, x: -18, duration: DURATION.fast, stagger: 0.08 },
-          "-=0.8",
-        )
-        .from(
           "[data-aside-stat]",
           { opacity: 0, y: 18, duration: DURATION.fast, stagger: 0.08 },
-          "-=0.45",
+          "-=0.6",
         );
     },
     { scope: asideRef },

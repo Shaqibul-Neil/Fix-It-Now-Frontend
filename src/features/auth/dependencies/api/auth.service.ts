@@ -10,6 +10,7 @@ import { apiEndpoints } from "@/src/lib/api/api.endpoint";
 import { getSetCookieValue } from "@/src/lib/utils/cookie.utils";
 import { ITokens } from "@/src/types/types";
 import { getAccessToken } from "@/src/lib/auth/auth.cookies";
+import { cache } from "react";
 
 //-------------Login Request-----------
 export const loginRequest = async (
@@ -60,7 +61,7 @@ export const refreshTokenRequest = async (
 };
 
 //---------------Current User------------
-export const getMeRequest = async () => {
+export const getMeRequest = cache(async () => {
   const accessToken = await getAccessToken();
   if (!accessToken) return null;
 
@@ -70,4 +71,4 @@ export const getMeRequest = async () => {
   });
 
   return response.success && response.data ? response.data : null;
-};
+});

@@ -4,6 +4,7 @@ import { AppSidebar, DashboardNavbar, PageTransition } from "@/src/components";
 import { SidebarInset, SidebarProvider } from "@/src/components/ui/sidebar";
 import { getMeRequest } from "@/src/features/auth/dependencies/api/auth.service";
 import type { IProfileUser } from "@/src/types/types";
+import { USER_ROLES } from "@/src/lib/auth/auth.roles";
 
 export default async function DashboardLayout({
   children,
@@ -12,6 +13,10 @@ export default async function DashboardLayout({
 }) {
   const currentUser = await getMeRequest();
   if (!currentUser) redirect("/login");
+
+  if (currentUser.role === USER_ROLES.TECHNICIAN && !currentUser.isOnboarded) {
+    redirect("/onboarding");
+  }
 
   const user: IProfileUser = {
     name: `${currentUser.firstName} ${currentUser.lastName}`,

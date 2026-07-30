@@ -12,7 +12,6 @@ export default async function TechnicianLayout({
 }) {
   const currentUser = await getMeRequest();
   if (!currentUser) redirect("/login");
-  if (!currentUser.isOnboarded) redirect("/onboarding");
 
   const { approvalStatus, rejectionReason } = currentUser;
 
