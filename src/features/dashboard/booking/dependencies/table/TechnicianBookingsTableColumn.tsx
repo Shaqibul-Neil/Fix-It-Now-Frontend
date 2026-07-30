@@ -4,8 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Eye, RefreshCw } from "lucide-react";
 import { ActionColumn, StatusUpdateModal } from "@/src/components";
-import type { TSelectOption } from "@/src/types/filter.types";
-import type { TBookingStatus } from "@/src/types/types";
+import { NEXT_STATUS } from "../booking.rules";
 import { useUpdateBookingStatusMutation } from "../hooks/useBookingMutation";
 import type {
   ITechnicianBookingRow,
@@ -16,29 +15,6 @@ import {
   contactColumn,
   type IBookingColumns,
 } from "./BookingColumns";
-
-// Only these moves are legal; the backend rejects anything else.
-const NEXT_STATUS: Partial<Record<TBookingStatus, TSelectOption[]>> = {
-  REQUESTED: [
-    {
-      label: "Accept the job",
-      value: "ACCEPTED" satisfies TBookingStatusUpdate,
-    },
-    {
-      label: "Decline the job",
-      value: "DECLINED" satisfies TBookingStatusUpdate,
-    },
-  ],
-  PAID: [
-    { label: "Start work", value: "IN_PROGRESS" satisfies TBookingStatusUpdate },
-  ],
-  IN_PROGRESS: [
-    {
-      label: "Mark completed",
-      value: "COMPLETED" satisfies TBookingStatusUpdate,
-    },
-  ],
-};
 
 export const useTechnicianBookingsColumns =
   (): IBookingColumns<ITechnicianBookingRow> => {

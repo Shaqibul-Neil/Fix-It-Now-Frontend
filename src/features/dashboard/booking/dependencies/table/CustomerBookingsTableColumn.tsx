@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Ban, CreditCard, Eye } from "lucide-react";
 import { ActionColumn, ConfirmModal } from "@/src/components";
-import type { TBookingStatus } from "@/src/types/types";
+import { CANCELABLE, PAYABLE } from "../booking.rules";
 import {
   useCancelBookingMutation,
   useCreatePaymentMutation,
@@ -15,9 +15,6 @@ import {
   contactColumn,
   type IBookingColumns,
 } from "./BookingColumns";
-
-const CANCELABLE: TBookingStatus[] = ["REQUESTED", "ACCEPTED", "PAID"];
-const PAYABLE: TBookingStatus[] = ["REQUESTED", "ACCEPTED"];
 
 export const useCustomerBookingsColumns =
   (): IBookingColumns<ICustomerBookingRow> => {
