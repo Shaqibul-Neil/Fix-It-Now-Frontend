@@ -12,6 +12,7 @@ export const apiEndpoints = {
     bookings: "/technician/bookings",
     bookingStatus: (id: string) => `/technician/bookings/${id}`,
     reviews: "/technician/reviews",
+    availability: "/technician/availability",
   },
   admin: {
     dashboard: { stats: "/stats/admin/dashboard" },
@@ -42,6 +43,10 @@ export const apiEndpoints = {
   },
   service: {
     list: "/services",
+  },
+  // Public — what a customer reads before picking a time.
+  technicianPublic: {
+    availability: (id: string) => `/technicians/${id}/availability`,
   },
   category: {
     list: "/categories",

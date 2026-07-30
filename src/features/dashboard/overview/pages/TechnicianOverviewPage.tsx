@@ -11,6 +11,7 @@ import {
   PageHeader,
   StatCard,
 } from "@/src/components";
+import AvailabilityPrompt from "@/src/features/dashboard/availability/dependencies/components/AvailabilityPrompt";
 import { CHART_COLORS } from "@/src/lib/options/color.options";
 import DashboardFilter from "../dependencies/components/DashboardFilter";
 import { useTechnicianStatsQuery } from "../dependencies/hooks/useDashboard";
@@ -22,6 +23,8 @@ const TechnicianOverviewPage = () => {
 
   return (
     <section>
+      <AvailabilityPrompt />
+
       <div className="flex justify-between">
         <PageHeader
           title="Your overview"

@@ -24,9 +24,14 @@ export interface IServiceListQuery {
   limit: number;
 }
 
-// What the booking form needs from the row that opened it.
+// What the booking form needs from the row that opened it. `technicianId`
+// fetches the working hours; `estimatedDuration` is the step the bookable
+// start times are generated on.
 export interface IBookableService {
   id: string;
   title: string;
   price: string;
+  technicianId: string;
+  technicianName: string;
+  estimatedDuration: number | null;
 }

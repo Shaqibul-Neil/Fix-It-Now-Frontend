@@ -40,7 +40,7 @@ const TimeStepper = ({
   canDecrease,
   canIncrease,
 }: ITimeStepperProps) => (
-  <div className="flex h-7 flex-1 items-center justify-between gap-1 rounded-md bg-project-muted/40 px-0.5">
+  <div className="flex h-7 min-w-0 flex-1 items-center justify-between gap-0.5 rounded-md bg-project-muted/40 px-0.5">
     <button
       type="button"
       className={STEP_BUTTON}
@@ -63,7 +63,7 @@ const TimeStepper = ({
         event.preventDefault();
         onStep(up ? 1 : -1);
       }}
-      className="rounded-md px-1 text-center text-sm font-semibold tabular-nums text-project-accent outline-none focus-visible:ring-2 focus-visible:ring-project-primary/30"
+      className="shrink-0 rounded-md px-1 text-center text-sm font-semibold tabular-nums text-project-accent outline-none focus-visible:ring-2 focus-visible:ring-project-primary/30"
     >
       {text}
     </span>
@@ -122,9 +122,11 @@ const AppTimePicker = ({
         </Text>
       )}
 
+      {/* Three steppers, each holding two chevrons and its value. Below the min
+          width the chevrons start eating the number they step. */}
       <div
         aria-invalid={Boolean(error)}
-        className="flex h-9 items-center gap-2 rounded-md border border-project-border bg-project-card px-1 aria-invalid:border-project-destructive"
+        className="flex h-9 min-w-64 items-center gap-1.5 rounded-md border border-project-border bg-project-card px-1 aria-invalid:border-project-destructive"
       >
         <TimeStepper
           text={pad(hour24 % 12 || 12)}

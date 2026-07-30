@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Calendar as CalendarIcon, ChevronDown } from "lucide-react";
-import type { DateRange } from "react-day-picker";
+import type { DateRange, Matcher } from "react-day-picker";
 import { Button } from "@/src/components/ui/button";
 import { Calendar } from "@/src/components/ui/calendar";
 import {
@@ -28,6 +28,8 @@ interface TAppDatePickerProps {
   maxDays?: number;
   disableFuture?: boolean;
   disablePast?: boolean;
+  /** Date.getDay() numbers to block — 0 is Sunday. Empty blocks nothing. */
+  disabledDaysOfWeek?: number[];
   value?: Date;
   initialRange?: DateRange;
   onDateChange?: (date: Date | undefined) => void;
@@ -46,6 +48,7 @@ const AppDatePicker = ({
   maxDays = 365,
   disableFuture = false,
   disablePast = false,
+  disabledDaysOfWeek,
   value,
   initialRange,
   onDateChange,
@@ -114,11 +117,13 @@ const AppDatePicker = ({
     return placeholderText;
   };
 
-  const disabledDays = disableFuture
-    ? { after: new Date() }
-    : disablePast
-      ? { before: startOfToday() }
-      : undefined;
+  // react-day-picker takes a list of matchers, so a bounded range and a set of
+  // blocked weekdays can apply at the same time.
+  const disabledDays: Matcher[] = [
+    ...(disableFuture ? [{ after: new Date() }] : []),
+    ...(disablePast ? [{ before: startOfToday() }] : []),
+    ...(disabledDaysOfWeek?.length ? [{ dayOfWeek: disabledDaysOfWeek }] : []),
+  ];
 
   const defaultMonth = disableFuture ? subMonths(new Date(), 1) : new Date();
 
@@ -188,7 +193,9 @@ const AppDatePicker = ({
         </PopoverContent>
       </Popover>
 
-      {error && <p className="ml-1 text-xs text-project-destructive">{error}</p>}
+      {error && (
+        <p className="ml-1 text-xs text-project-destructive">{error}</p>
+      )}
     </div>
   );
 };

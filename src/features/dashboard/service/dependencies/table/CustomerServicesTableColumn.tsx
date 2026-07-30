@@ -98,7 +98,15 @@ export const useCustomerServicesColumns = (): {
             icon: CalendarPlus,
             label: "Book now",
             variant: "primary",
-            onClick: ({ id, title, price }) => setSelected({ id, title, price }),
+            onClick: (row) =>
+              setSelected({
+                id: row.id,
+                title: row.title,
+                price: row.price,
+                technicianId: row.technicianId,
+                technicianName: row.technicianName,
+                estimatedDuration: row.estimatedDuration,
+              }),
           },
         ],
         { asDropdown: true, size: 90 },

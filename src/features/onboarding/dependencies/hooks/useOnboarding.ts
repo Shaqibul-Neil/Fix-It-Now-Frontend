@@ -24,7 +24,13 @@ export const useSaveTechnicianProfileMutation = ({
     onSuccess: ({ message }) => {
       onSaved();
       AppToast.success(message ?? "Profile submitted for admin review");
-      router.replace("dashboard/technician");
+      // A brand new technician has no working hours, and without them nobody
+      // can book them — so that page comes before the dashboard, once.
+      router.replace(
+        isEditing
+          ? "/dashboard/technician"
+          : "/dashboard/technician/availability",
+      );
       router.refresh();
     },
     onError: AppToast.error,
