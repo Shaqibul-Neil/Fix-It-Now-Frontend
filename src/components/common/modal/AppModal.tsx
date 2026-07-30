@@ -1,100 +1,109 @@
-import React from "react";
-import * as Dialog from "@radix-ui/react-dialog";
-import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { IconButton } from "@/components";
+"use client";
 
-interface AppModalProps {
+import type { ReactNode } from "react";
+import { Dialog, VisuallyHidden } from "radix-ui";
+import { X } from "lucide-react";
+import { IconButton, Text } from "@/src/components";
+import { OVERLAY_MOTION } from "@/src/lib/animation/animation.tokens";
+import { cn } from "@/src/lib/utils/cn";
+
+const SIZE = {
+  sm: "sm:max-w-md",
+  md: "sm:max-w-lg",
+  lg: "sm:max-w-2xl",
+};
+
+interface IAppModalProps {
   isOpen: boolean;
   onClose: () => void;
-  title?: string | React.ReactNode;
-  description?: string | React.ReactNode;
-  children: React.ReactNode;
+  title: string;
+  description?: string;
+  children?: ReactNode;
+  footer?: ReactNode;
+  size?: keyof typeof SIZE;
   className?: string;
-  hasHeaderBorder?: boolean;
 }
 
-const AppModal = React.memo(
-  ({
-    isOpen,
-    onClose,
-    title,
-    children,
-    className,
-    hasHeaderBorder,
-  }: AppModalProps) => {
-    return (
-      <Dialog.Root open={isOpen} onOpenChange={onClose}>
-        <AnimatePresence>
-          {isOpen && (
-            <Dialog.Portal forceMount>
-              {/* Optimized Backdrop Overlay */}
-              <Dialog.Overlay asChild>
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="fixed inset-0 z-200 bg-black/40 backdrop-blur-sm"
-                />
-              </Dialog.Overlay>
-
-              {/*  Modal Wrapper Positioning */}
-              <div className="fixed inset-0 z-210 flex items-center justify-center p-4">
-                <Dialog.Content asChild>
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.9, y: 15 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.9, y: 15 }}
-                    transition={{ type: "spring", duration: 0.4 }}
-                    className={cn(
-                      "relative bg-white shadow-2xl rounded-xl outline-none py-4",
-                      "overflow-hidden",
-
-                      className,
-                    )}
-                  >
-                    <div
-                      className={cn(
-                        "flex justify-between items-center w-full md:px-6 px-0",
-                        hasHeaderBorder &&
-                          "border-b border-project-border pb-2 px-4",
-                      )}
-                    >
-                      {/* Title Part */}
-                      <div className="flex-1 text-left flex items-center h-8 capitalize">
-                        {title &&
-                          (typeof title === "string" ? (
-                            <Dialog.Title className="text-xl font-semibold text-project-foreground">
-                              {title}
-                            </Dialog.Title>
-                          ) : (
-                            <Dialog.Title asChild>
-                              <div>{title}</div>
-                            </Dialog.Title>
-                          ))}
-                      </div>
-                      {/* Close Icon */}
-                      <Dialog.Close asChild>
-                        <IconButton variant="noOutline" className="shrink-0">
-                          <X className="size-6" />
-                        </IconButton>
-                      </Dialog.Close>
-                    </div>
-
-                    {/* Dynamic Content (Buttons, Text, etc.) */}
-                    <div className="flex flex-col items-center justify-center text-center w-full h-full">
-                      {children}
-                    </div>
-                  </motion.div>
-                </Dialog.Content>
-              </div>
-            </Dialog.Portal>
+const AppModal = ({
+  isOpen,
+  onClose,
+  title,
+  description,
+  children,
+  footer,
+  size = "sm",
+  className,
+}: IAppModalProps) => {
+  return (
+    <Dialog.Root open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <Dialog.Portal>
+        <Dialog.Overlay
+          className={cn(
+            "fixed inset-0 z-200 bg-black/50 backdrop-blur-sm",
+            OVERLAY_MOTION.overlay,
           )}
-        </AnimatePresence>
-      </Dialog.Root>
-    );
-  },
-);
+        />
+
+        <Dialog.Content
+          className={cn(
+            "fixed left-1/2 top-1/2 z-210 w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2",
+            "border border-project-border bg-project-card shadow-2xl outline-none",
+            OVERLAY_MOTION.center,
+            SIZE[size],
+            className,
+          )}
+        >
+          <span
+            aria-hidden
+            className="absolute inset-x-0 top-0 h-0.5 bg-project-primary"
+          />
+
+          <div className="flex items-start justify-between gap-4 border-b border-project-border px-5 py-4">
+            <div className="min-w-0">
+              <Dialog.Title asChild>
+                <Text
+                  variant="semibold-lg"
+                  as="h2"
+                  className="text-project-accent"
+                >
+                  {title}
+                </Text>
+              </Dialog.Title>
+
+              {description ? (
+                <Dialog.Description asChild>
+                  <Text
+                    variant="normal-sm"
+                    className="mt-2 text-project-muted-foreground"
+                  >
+                    {description}
+                  </Text>
+                </Dialog.Description>
+              ) : (
+                <VisuallyHidden.Root>
+                  <Dialog.Description>{title}</Dialog.Description>
+                </VisuallyHidden.Root>
+              )}
+            </div>
+
+            <Dialog.Close asChild>
+              <IconButton variant="ghost" className="shrink-0" aria-label="Close">
+                <X className="size-5" />
+              </IconButton>
+            </Dialog.Close>
+          </div>
+
+          {children && <div className="px-5 py-5">{children}</div>}
+
+          {footer && (
+            <div className="flex flex-wrap items-center justify-end gap-3 border-t border-project-border bg-project-muted/40 px-5 py-4">
+              {footer}
+            </div>
+          )}
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
+  );
+};
 
 export default AppModal;

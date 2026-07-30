@@ -3,14 +3,23 @@
 import { format } from "date-fns";
 import { Loader2 } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useMemo } from "react";
 import type { DateRange } from "react-day-picker";
-import { AppDatePicker, AppSelect, Text } from "@/src/components";
+import { AppDatePicker, AppSelect } from "@/src/components";
 import { FILTER_OPTIONS } from "@/src/lib/options/filter.options";
 
-const DashboardFilter = ({ isFetching }: { isFetching?: boolean }) => {
+interface IDashboardFilterProps {
+  timePeriod?: { from: string; to: string };
+  isFetching?: boolean;
+}
+
+const DashboardFilter = ({ timePeriod, isFetching }: IDashboardFilterProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+
+  const period = searchParams.get("period");
+  const hasCustomRange = Boolean(searchParams.get("from"));
 
   const push = (query: string) =>
     router.push(`${pathname}?${query}`, { scroll: false });
@@ -23,22 +32,29 @@ const DashboardFilter = ({ isFetching }: { isFetching?: boolean }) => {
     );
   };
 
+  const from = timePeriod?.from;
+  const to = timePeriod?.to;
+  const resolvedRange = useMemo<DateRange | undefined>(
+    () => (from && to ? { from: new Date(from), to: new Date(to) } : undefined),
+    [from, to],
+  );
+
   return (
     <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end">
       <AppSelect
-        label="Period"
-        placeholder="Last 30 Days"
+        placeholder={hasCustomRange ? "Filter By Period" : "Last 30 days"}
         options={FILTER_OPTIONS.period.options}
-        value={searchParams.get("period") ?? undefined}
+        value={period ?? undefined}
         onChange={(value) => push(`period=${value}`)}
       />
 
       <div className="flex min-w-40 flex-col">
-        <Text variant="label-sm" as="label" className="text-project-foreground">
-          Or pick dates
-        </Text>
-
-        <AppDatePicker mode="range" disableFuture onRangeChange={handleRange} />
+        <AppDatePicker
+          mode="range"
+          disableFuture
+          initialRange={resolvedRange}
+          onRangeChange={handleRange}
+        />
       </div>
 
       {isFetching && (

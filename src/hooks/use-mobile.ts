@@ -1,6 +1,8 @@
 import * as React from "react";
 
-const MOBILE_BREAKPOINT = 768;
+// lg. Below this the sidebar is a drawer that starts closed, so sm and md
+// never lose width to it.
+const MOBILE_BREAKPOINT = 1024;
 
 const getQuery = () =>
   window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);

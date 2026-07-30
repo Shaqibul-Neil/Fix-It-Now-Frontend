@@ -8,4 +8,7 @@ export interface IFilterConfig {
   period: {
     options: TSelectOption[];
   };
+  bookingStatus: {
+    options: TSelectOption[];
+  };
 }

@@ -31,13 +31,17 @@ const AdminOverviewPage = () => {
 
   return (
     <section>
-      <PageHeader
-        title="Platform overview"
-        description="Revenue, bookings and category demand for the selected period."
-        divClassName="mb-6"
-      />
-
-      <DashboardFilter isFetching={isFetching} />
+      <div className="flex justify-between">
+        <PageHeader
+          title="Platform overview"
+          description="Revenue, bookings and category demand for the selected period."
+          divClassName="mb-6"
+        />
+        <DashboardFilter
+          timePeriod={data?.timePeriod}
+          isFetching={isFetching}
+        />
+      </div>
 
       {isPending && <DashboardSkeleton chartCount={3} />}
 

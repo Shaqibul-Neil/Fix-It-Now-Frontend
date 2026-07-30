@@ -8,6 +8,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/src/components/ui/popover";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/src/components/ui/tooltip";
 
 export type TTableAction<T> = {
   label?: string;
@@ -23,6 +29,7 @@ export type TTableAction<T> = {
 interface IActionColumnOptions {
   // Three or more actions read better behind a menu than as a row of icons.
   asDropdown?: boolean;
+  size?: number;
 }
 
 // Not a component — a column factory, called alongside the other columns.
@@ -32,7 +39,7 @@ const ActionColumn = <T,>(
 ): ColumnDef<T> => {
   return {
     id: "actions",
-    size: 120,
+    size: options?.size ?? 120,
     header: () => <div className="text-center">Actions</div>,
 
     cell: ({ row }) => {
@@ -74,20 +81,29 @@ const ActionColumn = <T,>(
       }
 
       return (
-        <div className="flex w-full items-center justify-center gap-2">
-          {visibleActions.map(({ icon: Icon, ...action }, index) => (
-            <IconButton
-              key={action.label ?? index}
-              variant={action.variant ?? "outline"}
-              className={`size-8 ${action.className ?? ""}`}
-              disabled={action.disabled}
-              onClick={() => action.onClick(row.original)}
-              aria-label={action.label}
-            >
-              <Icon size={14} />
-            </IconButton>
-          ))}
-        </div>
+        <TooltipProvider delayDuration={150}>
+          <div className="flex w-full items-center justify-center gap-2">
+            {visibleActions.map(({ icon: Icon, ...action }, index) => (
+              <Tooltip key={action.label ?? index}>
+                <TooltipTrigger asChild>
+                  <IconButton
+                    variant={action.variant ?? "outline"}
+                    className={`size-8 ${action.className ?? ""}`}
+                    disabled={action.disabled}
+                    onClick={() => action.onClick(row.original)}
+                    aria-label={action.label}
+                  >
+                    <Icon size={14} />
+                  </IconButton>
+                </TooltipTrigger>
+
+                {action.label && (
+                  <TooltipContent side="top">{action.label}</TooltipContent>
+                )}
+              </Tooltip>
+            ))}
+          </div>
+        </TooltipProvider>
       );
     },
   };

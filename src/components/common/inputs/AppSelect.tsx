@@ -16,6 +16,7 @@ interface TAppSelectProps {
   label?: string;
   options?: { label: string; value: string }[];
   className?: string;
+  containerClassName?: string;
   onChange: (value: string) => void;
   error?: string;
   disabled?: boolean;
@@ -37,6 +38,7 @@ const AppSelect = ({
   error,
   disabled,
   className,
+  containerClassName,
   size = "default",
   infiniteScroll = false,
   pageSize = 7,
@@ -77,10 +79,12 @@ const AppSelect = ({
     : (value ?? "");
 
   return (
-    <div className="flex flex-col min-w-40">
-      <Text variant="label-sm" as="label" className="text-project-foreground">
-        {label}
-      </Text>
+    <div className={cn("flex w-full min-w-0 flex-col", containerClassName)}>
+      {label && (
+        <Text variant="label-sm" as="label" className="text-project-foreground">
+          {label}
+        </Text>
+      )}
       <Select
         key={selectKey}
         value={value}

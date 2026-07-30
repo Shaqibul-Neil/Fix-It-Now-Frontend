@@ -1,6 +1,3 @@
-// Components only. Types live with the file that owns them, or in src/types
-// when several files share them — the barrel never turns into a type index.
-
 // Animation
 export { default as PageTransition } from "./common/animation/PageTransition";
 export { default as Reveal } from "./common/animation/Reveal";
@@ -23,6 +20,12 @@ export { default as ProviderAvatar } from "./common/cards/ProviderAvatar";
 export { default as StatCard } from "./common/cards/StatCard";
 export { default as SummaryRow } from "./common/cards/SummaryRow";
 
+// Details
+export { default as DetailsHeader } from "./common/details/DetailsHeader";
+export { default as DetailsSection } from "./common/details/DetailsSection";
+export { default as InfoList } from "./common/details/InfoList";
+export { default as StatusTimeline } from "./common/details/StatusTimeline";
+
 // Inputs
 export { default as AppCheckbox } from "./common/inputs/AppCheckbox";
 export { default as AppDatePicker } from "./common/inputs/AppDatePicker";
@@ -33,8 +36,18 @@ export { default as AppSearch } from "./common/inputs/AppSearch";
 export { default as AppSelect } from "./common/inputs/AppSelect";
 export { default as AppTextArea } from "./common/inputs/AppTextArea";
 
+// Modal
+export { default as AppModal } from "./common/modal/AppModal";
+export { default as ConfirmModal } from "./common/modal/ConfirmModal";
+export { default as StatusUpdateModal } from "./common/modal/StatusUpdateModal";
+
+// Panel
+export { default as SidePanel } from "./common/panel/SidePanel";
+
 // Skeletons
 export { default as DashboardSkeleton } from "./common/skeleton/DashboardSkeleton";
+export { default as DetailsSkeleton } from "./common/skeleton/DetailsSkeleton";
+export { default as TableSkeleton } from "./common/skeleton/TableSkeleton";
 export { default as NotificationSkeleton } from "./common/skeleton/NotificationSkeleton";
 export { default as OverviewSkeleton } from "./common/skeleton/OverviewSkeleton";
 
@@ -43,6 +56,7 @@ export { default as ActionColumn } from "./common/table/ActionColumn";
 export { buildColumn } from "./common/table/ColumnBuilder";
 export { default as DataTable } from "./common/table/DataTable";
 export { default as DataTablePagination } from "./common/table/DataTablePagination";
+export { default as PaginatedTable } from "./common/table/PaginatedTable";
 export { default as TableViewSwitcher } from "./common/table/TableViewSwitcher";
 
 // Text

@@ -98,8 +98,7 @@ const DataTablePagination = <TData,>({
     >
       {/* Row count, not selection — this table has no row checkboxes. */}
       <span className="whitespace-nowrap text-sm text-project-muted-foreground">
-        Showing {table.getPaginationRowModel().rows.length} of{" "}
-        {table.getFilteredRowModel().rows.length} rows
+        Showing {table.getRowModel().rows.length} of {table.getRowCount()} rows
       </span>
 
       <div className="flex flex-wrap items-center justify-center gap-5 lg:gap-7">

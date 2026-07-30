@@ -27,9 +27,11 @@ export default async function DashboardLayout({
     <SidebarProvider>
       <AppSidebar role={user.role} />
 
-      <SidebarInset>
+      {/* min-w-0: a flex child defaults to min-width:auto, so a wide table
+          would stretch the whole page instead of scrolling inside itself. */}
+      <SidebarInset className="min-w-0">
         <DashboardNavbar user={user} />
-        <main className="flex-1 p-4 sm:p-6 xl:p-8">
+        <main className="min-w-0 flex-1 overflow-x-hidden p-4 sm:p-6 xl:p-8">
           <PageTransition>{children}</PageTransition>
         </main>
       </SidebarInset>

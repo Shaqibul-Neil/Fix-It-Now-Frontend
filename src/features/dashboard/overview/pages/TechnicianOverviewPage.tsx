@@ -22,13 +22,18 @@ const TechnicianOverviewPage = () => {
 
   return (
     <section>
-      <PageHeader
-        title="Your overview"
-        description="Earnings, job flow and rating for the selected period."
-        divClassName="mb-6"
-      />
+      <div className="flex justify-between">
+        <PageHeader
+          title="Your overview"
+          description="Earnings, job flow and rating for the selected period."
+          divClassName="mb-6"
+        />
 
-      <DashboardFilter isFetching={isFetching} />
+        <DashboardFilter
+          timePeriod={data?.timePeriod}
+          isFetching={isFetching}
+        />
+      </div>
 
       {isPending && <DashboardSkeleton chartCount={2} />}
 

@@ -1,84 +1,100 @@
-import React from "react";
-import * as SheetPrimitive from "@radix-ui/react-dialog";
-import { ChevronLeft, X } from "lucide-react";
-import { IconButton, Text } from "@/components";
-import { cn } from "@/lib/utils";
-import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+"use client";
 
-interface TSidePanelProps {
+import type { ReactNode } from "react";
+import { Dialog, VisuallyHidden } from "radix-ui";
+import { X } from "lucide-react";
+import { IconButton, Text } from "@/src/components";
+import { OVERLAY_MOTION } from "@/src/lib/animation/animation.tokens";
+import { cn } from "@/src/lib/utils/cn";
+
+interface ISidePanelProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
   title: string;
-  children: React.ReactNode;
+  description?: string;
+  children: ReactNode;
+  footer?: ReactNode;
+  className?: string;
 }
 
 const SidePanel = ({
   isOpen,
   onOpenChange,
   title,
+  description,
   children,
-}: TSidePanelProps) => {
+  footer,
+  className,
+}: ISidePanelProps) => {
   return (
-    <SheetPrimitive.Root open={isOpen} onOpenChange={onOpenChange}>
-      <SheetPrimitive.Portal>
-        <SheetPrimitive.Overlay
-          className="fixed inset-0 z-100 bg-black/40 backdrop-blur-sm 
-                     data-[state=open]:animate-in data-[state=open]:fade-in-0 
-                     data-[state=closed]:animate-out data-[state=closed]:fade-out-0 
-                     duration-300 ease-in-out"
+    <Dialog.Root open={isOpen} onOpenChange={onOpenChange}>
+      <Dialog.Portal>
+        <Dialog.Overlay
+          className={cn(
+            "fixed inset-0 z-100 bg-black/50 backdrop-blur-sm",
+            OVERLAY_MOTION.overlay,
+          )}
         />
 
-        <SheetPrimitive.Content
+        <Dialog.Content
           className={cn(
-            "fixed right-4 top-4 bottom-4 z-110 flex flex-col bg-white border border-project-border shadow-2xl transition-transform duration-300 outline-none",
-            "rounded-xl overflow-hidden",
-            "w-[95%] md:w-[75%] lg:w-145",
-            "duration-300 ease-in-out transition-all",
-            "data-[state=open]:animate-in data-[state=open]:slide-in-from-right",
-            "data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right",
+            "fixed inset-y-0 right-0 z-110 flex w-full flex-col sm:max-w-lg",
+            "border-l border-project-border bg-project-card shadow-2xl outline-none",
+            OVERLAY_MOTION.fromRight,
+            className,
           )}
         >
-          {/* Header Section  */}
-          <div className="flex items-center justify-between px-2 md:px-6 py-4 border-b border-project-border shrink-0">
-            <div className="flex items-center md:gap-2 gap-1 justify-between">
-              <SheetPrimitive.Close asChild>
-                <IconButton
-                  variant="noOutline"
-                  className="text-project-foreground"
-                >
-                  <ChevronLeft className="size-5 md:size-6" />
-                </IconButton>
-              </SheetPrimitive.Close>
-              <SheetPrimitive.Title asChild>
+          <span
+            aria-hidden
+            className="absolute inset-y-0 left-0 w-0.5 bg-project-primary"
+          />
+
+          <div className="flex shrink-0 items-start justify-between gap-4 border-b border-project-border px-6 py-4">
+            <div className="min-w-0">
+              <Dialog.Title asChild>
                 <Text
-                  variant="semibold-xl"
+                  variant="semibold-lg"
                   as="h2"
-                  className="text-project-accent leading-none text-base md:text-lg"
+                  className="text-project-accent"
                 >
                   {title}
                 </Text>
-              </SheetPrimitive.Title>
+              </Dialog.Title>
+
+              {description ? (
+                <Dialog.Description asChild>
+                  <Text
+                    variant="normal-sm"
+                    className="mt-2 text-project-muted-foreground"
+                  >
+                    {description}
+                  </Text>
+                </Dialog.Description>
+              ) : (
+                <VisuallyHidden.Root>
+                  <Dialog.Description>{title}</Dialog.Description>
+                </VisuallyHidden.Root>
+              )}
             </div>
-            <SheetPrimitive.Close asChild>
-              <IconButton variant="noOutline">
-                <X className="size-5 md:size-6" />
+
+            <Dialog.Close asChild>
+              <IconButton variant="ghost" className="shrink-0" aria-label="Close">
+                <X className="size-5" />
               </IconButton>
-            </SheetPrimitive.Close>
+            </Dialog.Close>
           </div>
 
-          {/* ACCESSIBILITY: Description (Visually hidden but readable by screen readers) */}
-          <VisuallyHidden.Root>
-            <SheetPrimitive.Description>
-              Side panel containing {title} information.
-            </SheetPrimitive.Description>
-          </VisuallyHidden.Root>
+          <div className="flex-1 overflow-y-auto px-6 py-6">{children}</div>
 
-          {/* Dynamic Content Area */}
-          <div className="flex-1 overflow-y-auto px-6 py-8">{children}</div>
-        </SheetPrimitive.Content>
-      </SheetPrimitive.Portal>
-    </SheetPrimitive.Root>
+          {footer && (
+            <div className="flex shrink-0 flex-wrap items-center justify-end gap-3 border-t border-project-border bg-project-muted/40 px-6 py-4">
+              {footer}
+            </div>
+          )}
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
   );
 };
 
-export default React.memo(SidePanel);
+export default SidePanel;

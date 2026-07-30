@@ -43,10 +43,11 @@ const AppDatePicker = ({
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [range, setRange] = useState<DateRange | undefined>(initialRange);
 
-  // // Sync internal state when external initialRange changes
-  // useEffect(() => {
-  //   setRange(initialRange);
-  // }, [initialRange]);
+  const [lastInitialRange, setLastInitialRange] = useState(initialRange);
+  if (initialRange !== lastInitialRange) {
+    setLastInitialRange(initialRange);
+    setRange(initialRange);
+  }
 
   const handleSingleSelect = (val: Date | undefined) => {
     setDate(val);
@@ -54,14 +55,11 @@ const AppDatePicker = ({
   };
 
   const handleRangeSelect = (val: DateRange | undefined) => {
-    // Partial pick (start only) — reflect selection, wait for the end date
-    // before emitting so the parent isn't refetched with an incomplete range.
     if (!val?.from || !val?.to) {
       setRange(val);
       return;
     }
 
-    // Both ends present — narrow to Date so the date-fns calls are type-safe.
     const from = val.from;
     const to = val.to;
     const daysDiff = Math.abs(differenceInDays(to, from)) + 1;
@@ -83,9 +81,6 @@ const AppDatePicker = ({
   const getDisplayText = () => {
     if (mode === "single") return date ? format(date, "PPP") : placeholderText;
     if (range?.from) {
-      // Compact has room for the full date; default is width-constrained (w-40)
-      // so it uses a short format to avoid overflow. Both now reflect the picked
-      // range instead of staying stuck on the placeholder.
       if (variant === "compact") {
         return range.to
           ? `${format(range.from, "MMMM do, yyyy")} - ${format(range.to, "MMMM do, yyyy")}`
