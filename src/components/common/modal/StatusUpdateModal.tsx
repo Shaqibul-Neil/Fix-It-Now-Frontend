@@ -12,6 +12,8 @@ interface IStatusUpdateModalProps {
   label?: string;
   options: TSelectOption[];
   noteLabel?: string;
+  // Off where the endpoint takes no note, so the field cannot promise one.
+  showNote?: boolean;
   isPending?: boolean;
   onSubmit: (status: string, note?: string) => void;
 }
@@ -24,6 +26,7 @@ const StatusUpdateModal = ({
   label = "New status",
   options,
   noteLabel = "Note",
+  showNote = true,
   isPending,
   onSubmit,
 }: IStatusUpdateModalProps) => {
@@ -38,7 +41,7 @@ const StatusUpdateModal = ({
 
   const submit = () => {
     if (!status) return;
-    onSubmit(status, note.trim() || undefined);
+    onSubmit(status, showNote ? note.trim() || undefined : undefined);
     setStatus("");
     setNote("");
   };
@@ -77,15 +80,17 @@ const StatusUpdateModal = ({
           className="w-full"
         />
 
-        <AppTextArea
-          label={noteLabel}
-          name="note"
-          value={note}
-          onChange={(event) => setNote(event.target.value)}
-          placeholder="Optional — shared with the customer"
-          maxLength={500}
-          disabled={isPending}
-        />
+        {showNote && (
+          <AppTextArea
+            label={noteLabel}
+            name="note"
+            value={note}
+            onChange={(event) => setNote(event.target.value)}
+            placeholder="Optional — shared with the customer"
+            maxLength={500}
+            disabled={isPending}
+          />
+        )}
       </div>
     </AppModal>
   );

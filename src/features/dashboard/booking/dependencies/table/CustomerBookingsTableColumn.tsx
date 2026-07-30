@@ -2,9 +2,16 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Ban, CreditCard, Eye } from "lucide-react";
+import { Ban, CreditCard, Eye, Star } from "lucide-react";
 import { ActionColumn, ConfirmModal, ContactColumn } from "@/src/components";
-import { CANCELABLE, PAYABLE } from "../booking.rules";
+import ReviewFormPanel from "@/src/features/dashboard/review/dependencies/components/ReviewFormPanel";
+import type { IReviewTarget } from "@/src/features/dashboard/review/dependencies/types/review.types";
+import {
+  cancelBlockedReason,
+  payBlockedReason,
+  reviewBlockedReason,
+  type IBlockedAction,
+} from "../booking.rules";
 import {
   useCancelBookingMutation,
   useCreatePaymentMutation,
@@ -18,10 +25,22 @@ export const useCustomerBookingsColumns =
     const [cancelling, setCancelling] = useState<ICustomerBookingRow | null>(
       null,
     );
-    const [waiting, setWaiting] = useState<ICustomerBookingRow | null>(null);
+    const [reviewing, setReviewing] = useState<IReviewTarget | null>(null);
+    const [blocked, setBlocked] = useState<
+      (IBlockedAction & { entityName: string }) | null
+    >(null);
 
     const cancelBooking = useCancelBookingMutation(() => setCancelling(null));
     const createPayment = useCreatePaymentMutation();
+
+    // Returns true when the row's status stops the action, after naming the
+    // booking in the modal — a bare explanation with no service title on it
+    // reads like it is about the whole table.
+    const block = (reason: IBlockedAction | null, row: ICustomerBookingRow) => {
+      if (!reason) return false;
+      setBlocked({ ...reason, entityName: row.serviceTitle });
+      return true;
+    };
 
     const [service, ...rest] = bookingBaseColumns<ICustomerBookingRow>();
 
@@ -44,34 +63,47 @@ export const useCustomerBookingsColumns =
         ActionColumn<ICustomerBookingRow>(
           [
             {
+              icon: CreditCard,
+              label: "Pay now",
+              variant: "primary",
+              disabled: createPayment.isPending,
+              onClick: (row) => {
+                if (block(payBlockedReason(row.status), row)) return;
+                createPayment.mutate(row.id);
+              },
+            },
+            {
+              icon: Star,
+              label: "Write a review",
+              variant: "outline",
+              onClick: (row) => {
+                if (block(reviewBlockedReason(row.status, row.reviewId), row))
+                  return;
+                setReviewing({
+                  bookingId: row.id,
+                  serviceTitle: row.serviceTitle,
+                  technicianName: row.technicianName,
+                });
+              },
+            },
+            {
+              icon: Ban,
+              label: "Cancel booking",
+              variant: "destructive",
+              onClick: (row) => {
+                if (block(cancelBlockedReason(row.status), row)) return;
+                setCancelling(row);
+              },
+            },
+            {
               icon: Eye,
               label: "View details",
               variant: "noOutline",
               onClick: (row) =>
                 router.push(`/dashboard/customer/bookings/${row.id}`),
             },
-            {
-              icon: CreditCard,
-              label: "Pay now",
-              variant: "primary",
-              hidden: (row) => !PAYABLE.includes(row.status),
-              // Only an accepted booking can be paid, so a requested one is
-              // told why instead of hitting a backend error.
-              onClick: (row) =>
-                row.status === "ACCEPTED"
-                  ? createPayment.mutate(row.id)
-                  : setWaiting(row),
-              disabled: createPayment.isPending,
-            },
-            {
-              icon: Ban,
-              label: "Cancel booking",
-              variant: "destructive",
-              hidden: (row) => !CANCELABLE.includes(row.status),
-              onClick: setCancelling,
-            },
           ],
-          { size: 150 },
+          { asDropdown: true, size: 90 },
         ),
       ],
 
@@ -88,13 +120,19 @@ export const useCustomerBookingsColumns =
             onConfirm={() => cancelling && cancelBooking.mutate(cancelling.id)}
           />
 
+          <ReviewFormPanel
+            target={reviewing}
+            onClose={() => setReviewing(null)}
+          />
+
+          {/* One modal for every action this row's status does not allow. */}
           <ConfirmModal
-            isOpen={Boolean(waiting)}
-            onClose={() => setWaiting(null)}
+            isOpen={Boolean(blocked)}
+            onClose={() => setBlocked(null)}
             mode="info"
-            title="Waiting for the technician"
-            description="Payment opens once the technician accepts this booking. You will be notified."
-            entityName={waiting?.serviceTitle}
+            title={blocked?.title ?? ""}
+            description={blocked?.description}
+            entityName={blocked?.entityName}
           />
         </>
       ),

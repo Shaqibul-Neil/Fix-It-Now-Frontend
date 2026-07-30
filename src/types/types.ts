@@ -47,6 +47,8 @@ export type TBookingStatus =
 
 export type TPaymentStatus = "PENDING" | "SUCCESS" | "FAILED" | "REFUNDED";
 
+export type TReviewStatus = "PENDING" | "PUBLISHED" | "HIDDEN" | "REJECTED";
+
 export interface IStatData {
   id: string;
   label: string;

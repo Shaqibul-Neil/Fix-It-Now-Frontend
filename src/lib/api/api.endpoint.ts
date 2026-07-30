@@ -11,17 +11,26 @@ export const apiEndpoints = {
     myProfile: "/technicians/profile/me",
     bookings: "/technician/bookings",
     bookingStatus: (id: string) => `/technician/bookings/${id}`,
+    reviews: "/technician/reviews",
   },
   admin: {
     dashboard: { stats: "/stats/admin/dashboard" },
     bookings: "/admin/bookings",
     payments: "/admin/payments",
+    reviews: "/admin/reviews",
+    reviewStatus: (id: string) => `/admin/reviews/${id}/status`,
   },
   customer: {
     bookings: "/bookings",
     cancelBooking: (id: string) => `/bookings/${id}/cancel`,
     createPayment: "/payments/create",
     myPayments: "/payments/my-payments",
+    reviews: "/reviews",
+    myReviews: "/reviews/my-reviews",
+  },
+  // Shared by customer (own review) and admin (any review).
+  review: {
+    byId: (id: string) => `/reviews/${id}`,
   },
   // Shared by all three roles — the backend picks the shape from the token.
   booking: {

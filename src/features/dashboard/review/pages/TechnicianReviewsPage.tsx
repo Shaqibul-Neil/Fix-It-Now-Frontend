@@ -7,28 +7,26 @@ import {
   TableSkeleton,
 } from "@/src/components";
 import { useServerPagination } from "@/src/hooks/useServerPagination";
-import BookingFilter from "../dependencies/components/BookingFilter";
-import { useAdminBookingsQuery } from "../dependencies/hooks/useBookingQuery";
-import { useAdminBookingsColumns } from "../dependencies/table/AdminBookingsTableColumn";
+import ReviewFilter from "../dependencies/components/ReviewFilter";
+import { useTechnicianReviewsQuery } from "../dependencies/hooks/useReviewQuery";
+import { useTechnicianReviewsColumns } from "../dependencies/table/TechnicianReviewsTableColumn";
 
-const AdminBookingsPage = () => {
-  const { data, isError, error, isFetching } = useAdminBookingsQuery();
+const TechnicianReviewsPage = () => {
+  const { data, isError, error, isFetching } = useTechnicianReviewsQuery();
   const { page, pageSize, setPage, setPageSize } = useServerPagination();
-  const { columns, modals } = useAdminBookingsColumns();
+  const { columns, modals } = useTechnicianReviewsColumns();
 
   return (
     <section>
       <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <PageHeader
-          title="All bookings"
-          description="Every booking on the platform, newest first."
+          title="My reviews"
+          description="What your customers wrote after a completed job. Only published reviews count towards your rating."
         />
 
-        <BookingFilter />
+        <ReviewFilter />
       </div>
 
-      {/* Every fetch shows the skeleton — a filter change reads as a reload,
-          not a spinner beside the input. */}
       {isFetching && <TableSkeleton />}
 
       {isError && !isFetching && <AppError message={error?.message} />}
@@ -42,7 +40,7 @@ const AdminBookingsPage = () => {
           pageSize={pageSize}
           onPageChange={setPage}
           onPageSizeChange={setPageSize}
-          emptyMessage="No bookings match this filter."
+          emptyMessage="No published reviews yet."
         />
       )}
 
@@ -51,4 +49,4 @@ const AdminBookingsPage = () => {
   );
 };
 
-export default AdminBookingsPage;
+export default TechnicianReviewsPage;

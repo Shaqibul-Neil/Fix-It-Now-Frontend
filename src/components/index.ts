@@ -32,6 +32,7 @@ export { default as AppDatePicker } from "./common/inputs/AppDatePicker";
 export { default as AppInput } from "./common/inputs/AppInput";
 export { default as AppMultipleSelect } from "./common/inputs/AppMultipleSelect";
 export { default as AppPasswordInput } from "./common/inputs/AppPasswordInput";
+export { default as AppRating } from "./common/inputs/AppRating";
 export { default as AppSearch } from "./common/inputs/AppSearch";
 export { default as AppSelect } from "./common/inputs/AppSelect";
 export { default as AppTextArea } from "./common/inputs/AppTextArea";

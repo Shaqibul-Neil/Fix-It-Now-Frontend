@@ -41,7 +41,7 @@ export const useAdminBookingsColumns =
                 router.push(`/dashboard/admin/bookings/${row.id}`),
             },
           ],
-          { size: 100 },
+          { asDropdown: true, size: 90 },
         ),
       ],
       modals: null,

@@ -46,23 +46,13 @@ const AdminBookingDetailsPage = ({ id }: { id: string }) => {
               items={[
                 { label: "Service", value: service.title },
                 { label: "Listed price", value: formatMoney(service.price) },
-                {
-                  label: "Estimated duration",
-                  value: service.estimatedDuration
-                    ? `${service.estimatedDuration} min`
-                    : null,
-                },
                 { label: "Charged amount", value: formatMoney(data.amount) },
+                { label: "Category", value: service.category.name },
                 {
                   label: "Service active",
                   value: service.isActive ? "Yes" : "No",
                 },
-                { label: "Category", value: data.categoryName },
-                {
-                  label: "Description",
-                  value: service.description,
-                  className: "sm:col-span-2 lg:col-span-3",
-                },
+                { label: "Service id", value: service.id },
               ]}
             />
           </DetailsSection>
@@ -77,9 +67,7 @@ const AdminBookingDetailsPage = ({ id }: { id: string }) => {
                 },
                 { label: "Email", value: customer.users.email },
                 { label: "Phone", value: customer.phone },
-                { label: "City", value: customer.city },
-                { label: "Area", value: customer.area },
-                { label: "Default address", value: customer.defaultAddress },
+                { label: "Account id", value: customer.users.id },
               ]}
             />
           </DetailsSection>
@@ -94,20 +82,7 @@ const AdminBookingDetailsPage = ({ id }: { id: string }) => {
                 },
                 { label: "Email", value: technician.users.email },
                 { label: "Phone", value: technician.phone },
-                { label: "City", value: technician.city },
-                { label: "Area", value: technician.area },
-                {
-                  label: "Experience",
-                  value: `${technician.experienceYears} yrs`,
-                },
-                {
-                  label: "Hourly rate",
-                  value: formatMoney(technician.hourlyRate),
-                },
-                {
-                  label: "Rating",
-                  value: `${technician.averageRating} (${technician.totalReviews})`,
-                },
+                { label: "Account id", value: technician.users.id },
               ]}
             />
           </DetailsSection>

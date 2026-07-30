@@ -101,7 +101,7 @@ export const useCustomerServicesColumns = (): {
             onClick: ({ id, title, price }) => setSelected({ id, title, price }),
           },
         ],
-        { size: 100 },
+        { asDropdown: true, size: 90 },
       ),
     ],
 

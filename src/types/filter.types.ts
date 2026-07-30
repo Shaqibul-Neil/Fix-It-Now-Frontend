@@ -14,4 +14,10 @@ export interface IFilterConfig {
   paymentStatus: {
     options: TSelectOption[];
   };
+  reviewStatus: {
+    options: TSelectOption[];
+  };
+  rating: {
+    options: TSelectOption[];
+  };
 }

@@ -83,7 +83,7 @@ export const useAdminPaymentsColumns = (): IPaymentColumns<IAdminPaymentRow> => 
               router.push(`/dashboard/admin/bookings/${row.bookingId}`),
           },
         ],
-        { size: 120 },
+        { asDropdown: true, size: 90 },
       ),
     ],
 

@@ -43,6 +43,9 @@ export type TStatus =
   // Technician approval
   | "APPROVED"
   | "REJECTED"
+  // Review moderation
+  | "PUBLISHED"
+  | "HIDDEN"
   // User account
   | "ACTIVE"
   | "BANNED";
@@ -63,9 +66,13 @@ const STATUS_META: Record<TStatus, { label: string; tone: TTone }> = {
   FAILED: { label: "Failed", tone: "danger" },
   REFUNDED: { label: "Refunded", tone: "info" },
 
-  // Technician approval
+  // Technician approval — REJECTED is shared with review moderation.
   APPROVED: { label: "Approved", tone: "success" },
   REJECTED: { label: "Rejected", tone: "danger" },
+
+  // Review moderation — PENDING is shared, same meaning.
+  PUBLISHED: { label: "Published", tone: "success" },
+  HIDDEN: { label: "Hidden", tone: "neutral" },
 
   // User account
   ACTIVE: { label: "Active", tone: "success" },

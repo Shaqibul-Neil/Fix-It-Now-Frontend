@@ -16,7 +16,10 @@ export const NEXT_STATUS: Partial<Record<TBookingStatus, TSelectOption[]>> = {
     },
   ],
   PAID: [
-    { label: "Start work", value: "IN_PROGRESS" satisfies TBookingStatusUpdate },
+    {
+      label: "Start work",
+      value: "IN_PROGRESS" satisfies TBookingStatusUpdate,
+    },
   ],
   IN_PROGRESS: [
     {
@@ -28,6 +31,90 @@ export const NEXT_STATUS: Partial<Record<TBookingStatus, TSelectOption[]>> = {
 
 export const CANCELABLE: TBookingStatus[] = ["REQUESTED", "ACCEPTED", "PAID"];
 
-// REQUESTED is shown too, but only to explain that the technician must accept
-// first — the backend pays out on ACCEPTED alone.
-export const PAYABLE: TBookingStatus[] = ["REQUESTED", "ACCEPTED"];
+// Pay, review and cancel are offered on every customer row rather than hidden
+// on most of them — a menu that changes shape row by row teaches nothing. What
+// changes is the outcome: null runs the action, anything else is the modal
+// explaining why this row cannot.
+export interface IBlockedAction {
+  title: string;
+  description: string;
+}
+
+const CLOSED: IBlockedAction = {
+  title: "This booking is closed",
+  description:
+    "It was declined or cancelled, so there is nothing left to do here. Book another technician to try again.",
+};
+
+export const payBlockedReason = (
+  status: TBookingStatus,
+): IBlockedAction | null => {
+  // The backend pays out on ACCEPTED alone.
+  if (status === "ACCEPTED") return null;
+
+  if (status === "REQUESTED") {
+    return {
+      title: "Waiting for the technician",
+      description:
+        "Payment opens once the technician accepts this booking. You will be notified.",
+    };
+  }
+
+  if (status === "PAID" || status === "IN_PROGRESS" || status === "COMPLETED") {
+    return {
+      title: "You already paid for this",
+      description:
+        "This booking is settled. The receipt is on your payments page.",
+    };
+  }
+
+  return CLOSED;
+};
+
+export const cancelBlockedReason = (
+  status: TBookingStatus,
+): IBlockedAction | null => {
+  if (CANCELABLE.includes(status)) return null;
+
+  if (status === "IN_PROGRESS") {
+    return {
+      title: "Work has already started",
+      description:
+        "The technician is on the job, so this booking can no longer be cancelled. Call them if something is wrong.",
+    };
+  }
+
+  if (status === "COMPLETED") {
+    return {
+      title: "This job is already finished",
+      description:
+        "A completed booking cannot be cancelled. Leave a review instead so others know how it went.",
+    };
+  }
+
+  return CLOSED;
+};
+
+export const reviewBlockedReason = (
+  status: TBookingStatus,
+  reviewId: string | null,
+): IBlockedAction | null => {
+  if (status !== "COMPLETED") {
+    return {
+      title: "Wait for the service to complete",
+      description:
+        "You can rate a technician once they mark this job completed. Nothing to do until then.",
+    };
+  }
+
+  // The row carries no rating or comment, so editing belongs where it does.
+  if (reviewId) {
+    return {
+      title: "You already reviewed this booking",
+      description:
+        "One review per booking. Open My reviews to change what you wrote or to take it down.",
+    };
+  }
+
+  return null;
+};

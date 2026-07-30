@@ -5,6 +5,7 @@ import { MoreVertical, type LucideIcon } from "lucide-react";
 import { IconButton } from "@/src/components";
 import {
   Popover,
+  PopoverClose,
   PopoverContent,
   PopoverTrigger,
 } from "@/src/components/ui/popover";
@@ -63,16 +64,19 @@ const ActionColumn = <T,>(
                 className="flex w-48 flex-col gap-1 border-project-border p-1.5"
               >
                 {visibleActions.map(({ icon: Icon, ...action }, index) => (
-                  <IconButton
-                    key={action.label ?? index}
-                    variant={action.variant ?? "ghost"}
-                    className={`justify-start px-2 text-sm ${action.className ?? ""}`}
-                    disabled={action.disabled}
-                    onClick={() => action.onClick(row.original)}
-                  >
-                    <Icon size={14} />
-                    {action.label}
-                  </IconButton>
+                  // Radix leaves the menu open on a child click, which would
+                  // strand it behind whatever panel or modal the action opens.
+                  <PopoverClose key={action.label ?? index} asChild>
+                    <IconButton
+                      variant={action.variant ?? "ghost"}
+                      className={`justify-start px-2 text-sm ${action.className ?? ""}`}
+                      disabled={action.disabled}
+                      onClick={() => action.onClick(row.original)}
+                    >
+                      <Icon size={14} />
+                      {action.label}
+                    </IconButton>
+                  </PopoverClose>
                 ))}
               </PopoverContent>
             </Popover>

@@ -57,7 +57,7 @@ export const useTechnicianBookingsColumns =
               onClick: setSelected,
             },
           ],
-          { size: 110 },
+          { asDropdown: true, size: 90 },
         ),
       ],
 

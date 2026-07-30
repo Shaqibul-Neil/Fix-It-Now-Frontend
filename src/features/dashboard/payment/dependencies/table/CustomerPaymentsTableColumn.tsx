@@ -31,7 +31,7 @@ export const useCustomerPaymentsColumns =
                 router.push(`/dashboard/customer/bookings/${row.bookingId}`),
             },
           ],
-          { size: 120 },
+          { asDropdown: true, size: 90 },
         ),
       ],
 

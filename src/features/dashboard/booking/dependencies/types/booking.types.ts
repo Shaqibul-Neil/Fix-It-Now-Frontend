@@ -1,4 +1,4 @@
-import type { TBookingStatus } from "@/src/types/types";
+import type { TBookingStatus, TReviewStatus } from "@/src/types/types";
 
 // Decimal and DateTime both arrive as strings over JSON.
 export interface IBookingRowBase {
@@ -17,6 +17,10 @@ export interface ICustomerBookingRow extends IBookingRowBase {
   technicianName: string;
   technicianEmail: string;
   technicianPhone: string;
+  // null until the customer reviews this booking. Only the customer's row
+  // carries it — nobody else can write the review.
+  reviewId: string | null;
+  reviewStatus: TReviewStatus | null;
 }
 
 export interface ITechnicianBookingRow extends IBookingRowBase {
@@ -25,7 +29,12 @@ export interface ITechnicianBookingRow extends IBookingRowBase {
   customerPhone: string | null;
 }
 
-export type TAdminBookingRow = ICustomerBookingRow & ITechnicianBookingRow;
+// Both parties, but no review marker — the admin list mapper does not send one.
+export type TAdminBookingRow = Omit<
+  ICustomerBookingRow,
+  "reviewId" | "reviewStatus"
+> &
+  ITechnicianBookingRow;
 
 export interface IBookingListQuery {
   status?: TBookingStatus;
@@ -82,6 +91,9 @@ export interface ICustomerBookingDetails extends IBookingDetailsBase {
     averageRating: string;
     users: Pick<IPartyUser, "firstName" | "lastName">;
   };
+  // Nested here, flattened on the list row — the details endpoint returns the
+  // query result as-is, with no mapper in between.
+  review: { id: string; status: TReviewStatus } | null;
 }
 
 export interface ITechnicianBookingDetails extends IBookingDetailsBase {
@@ -93,34 +105,31 @@ export interface ITechnicianBookingDetails extends IBookingDetailsBase {
   };
 }
 
-export interface IAdminBookingDetails extends IBookingDetailsBase {
+// Both parties are trimmed to name, contact and the User id an admin jumps to.
+// The wide profile selects were dropped server-side to keep passwordHash off
+// the wire, so nothing here may reach past what the include now lists.
+interface IAdminBookingParty {
+  id: string;
+  phone: string | null;
+  users: IPartyUser & { id: string };
+}
+
+export interface IAdminBookingDetails extends Omit<
+  IBookingDetailsBase,
+  "statusHistory"
+> {
   service: {
     id: string;
     title: string;
-    description: string | null;
     price: string;
-    estimatedDuration: number | null;
     isActive: boolean;
+    category: { id: string; name: string };
   };
-  customer: {
-    id: string;
-    phone: string | null;
-    city: string | null;
-    area: string | null;
-    defaultAddress: string | null;
-    users: IPartyUser;
-  };
-  technician: {
-    id: string;
-    phone: string;
-    city: string;
-    area: string;
-    experienceYears: number;
-    hourlyRate: string;
-    averageRating: string;
-    totalReviews: number;
-    users: IPartyUser;
-  };
+  customer: IAdminBookingParty;
+  technician: IAdminBookingParty;
+  // Only the admin sees who moved the booking — on a dispute that is the
+  // whole question.
+  statusHistory: (IBookingStatusHistoryEntry & { changedById: string })[];
 }
 
 export type TBookingStatusUpdate = Extract<

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Ban, CreditCard } from "lucide-react";
+import { Ban, CreditCard, Star } from "lucide-react";
 import {
   AppButton,
   AppError,
@@ -13,8 +13,15 @@ import {
   StatusPill,
   StatusTimeline,
 } from "@/src/components";
+import ReviewFormPanel from "@/src/features/dashboard/review/dependencies/components/ReviewFormPanel";
+import type { IReviewTarget } from "@/src/features/dashboard/review/dependencies/types/review.types";
 import { formatDateTime, formatMoney } from "@/src/lib/utils/format.utils";
-import { CANCELABLE, PAYABLE } from "../dependencies/booking.rules";
+import {
+  cancelBlockedReason,
+  payBlockedReason,
+  reviewBlockedReason,
+  type IBlockedAction,
+} from "../dependencies/booking.rules";
 import {
   useCancelBookingMutation,
   useCreatePaymentMutation,
@@ -22,9 +29,11 @@ import {
 import { useCustomerBookingDetailsQuery } from "../dependencies/hooks/useBookingQuery";
 
 const CustomerBookingDetailsPage = ({ id }: { id: string }) => {
-  const { data, isPending, isError, error } = useCustomerBookingDetailsQuery(id);
+  const { data, isPending, isError, error } =
+    useCustomerBookingDetailsQuery(id);
   const [isCancelling, setIsCancelling] = useState(false);
-  const [isWaiting, setIsWaiting] = useState(false);
+  const [reviewing, setReviewing] = useState<IReviewTarget | null>(null);
+  const [blocked, setBlocked] = useState<IBlockedAction | null>(null);
 
   const cancelBooking = useCancelBookingMutation(() => setIsCancelling(false));
   const createPayment = useCreatePaymentMutation();
@@ -34,6 +43,8 @@ const CustomerBookingDetailsPage = ({ id }: { id: string }) => {
 
   const { technician, service } = data;
   const technicianName = `${technician.users.firstName} ${technician.users.lastName}`;
+
+  const isFinished = data.status === "COMPLETED";
 
   return (
     <section className="space-y-4">
@@ -48,31 +59,50 @@ const CustomerBookingDetailsPage = ({ id }: { id: string }) => {
           { label: "Scheduled", value: formatDateTime(data.scheduledAt) },
         ]}
         renderActions={
-          <>
-            {PAYABLE.includes(data.status) && (
+          // A finished job has nothing left to pay or call off — what it wants
+          // is the review, so that takes the same spot.
+          isFinished ? (
+            <AppButton
+              text="Rate this technician"
+              rightIcon={Star}
+              onClick={() => {
+                const reason = reviewBlockedReason(
+                  data.status,
+                  data.review?.id ?? null,
+                );
+                if (reason) return setBlocked(reason);
+                setReviewing({
+                  bookingId: data.id,
+                  serviceTitle: service.title,
+                  technicianName,
+                });
+              }}
+            />
+          ) : (
+            <>
               <AppButton
                 text="Pay now"
                 rightIcon={CreditCard}
                 disabled={createPayment.isPending}
-                // Only an accepted booking can be paid, so a requested one is
-                // told why instead of hitting a backend error.
-                onClick={() =>
-                  data.status === "ACCEPTED"
-                    ? createPayment.mutate(data.id)
-                    : setIsWaiting(true)
-                }
+                onClick={() => {
+                  const reason = payBlockedReason(data.status);
+                  if (reason) return setBlocked(reason);
+                  createPayment.mutate(data.id);
+                }}
               />
-            )}
 
-            {CANCELABLE.includes(data.status) && (
               <AppButton
                 variant="destructiveOutline"
                 text="Cancel booking"
                 rightIcon={Ban}
-                onClick={() => setIsCancelling(true)}
+                onClick={() => {
+                  const reason = cancelBlockedReason(data.status);
+                  if (reason) return setBlocked(reason);
+                  setIsCancelling(true);
+                }}
               />
-            )}
-          </>
+            </>
+          )
         }
       />
 
@@ -134,12 +164,15 @@ const CustomerBookingDetailsPage = ({ id }: { id: string }) => {
         onConfirm={() => cancelBooking.mutate(data.id)}
       />
 
+      <ReviewFormPanel target={reviewing} onClose={() => setReviewing(null)} />
+
+      {/* One modal for every action this status does not allow. */}
       <ConfirmModal
-        isOpen={isWaiting}
-        onClose={() => setIsWaiting(false)}
+        isOpen={Boolean(blocked)}
+        onClose={() => setBlocked(null)}
         mode="info"
-        title="Waiting for the technician"
-        description="Payment opens once the technician accepts this booking. You will be notified."
+        title={blocked?.title ?? ""}
+        description={blocked?.description}
         entityName={service.title}
       />
     </section>
