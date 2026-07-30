@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useRouteTransition } from "@/src/lib/animation/useRouteTransition";
+import { useRouteTransition } from "@/src/hooks/animation/useRouteTransition";
 
 interface IPageTransitionProps {
   children: ReactNode;

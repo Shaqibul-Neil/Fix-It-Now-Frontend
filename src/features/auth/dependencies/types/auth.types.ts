@@ -1,6 +1,5 @@
 import { TUserRole } from "@/src/lib/auth/auth.roles";
-
-export type TUserStatus = "ACTIVE" | "BANNED";
+import { TTechnicianApprovalStatus, TUserStatus } from "@/src/types/types";
 
 export interface IAuthUser {
   id: string;
@@ -31,4 +30,6 @@ export interface ILoginResult {
 
 export interface ICurrentUser extends IAuthUser {
   isOnboarded: boolean;
+  approvalStatus?: TTechnicianApprovalStatus;
+  rejectionReason?: string | null;
 }

@@ -1,6 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { AppButton, ThemeToggle } from "@/src/components";
-import ProfileDropdown, { type IProfileUser } from "./ProfileDropdown";
+import type { IProfileUser } from "@/src/types/types";
+import ProfileDropdown from "./ProfileDropdown";
 
 const PublicNavActions = ({ user }: { user?: IProfileUser }) => {
   return (

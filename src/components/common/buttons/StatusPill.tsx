@@ -24,34 +24,52 @@ const DOT_STYLE: Record<TTone, string> = {
   danger: "bg-project-destructive",
 };
 
-export type TBookingStatus =
+// One flat union for every status the app shows. A new domain status just adds
+// a row to STATUS_META — no second type, no union of unions.
+export type TStatus =
+  // Booking
   | "REQUESTED"
   | "ACCEPTED"
   | "DECLINED"
-  | "PAID"
   | "IN_PROGRESS"
   | "COMPLETED"
-  | "CANCELLED";
-
-export type TPaymentStatus = "PENDING" | "SUCCESS" | "FAILED" | "REFUNDED";
-
-export type TStatus = TBookingStatus | TPaymentStatus;
+  | "CANCELLED"
+  // Payment
+  | "PENDING"
+  | "PAID"
+  | "SUCCESS"
+  | "FAILED"
+  | "REFUNDED"
+  // Technician approval
+  | "APPROVED"
+  | "REJECTED"
+  // User account
+  | "ACTIVE"
+  | "BANNED";
 
 const STATUS_META: Record<TStatus, { label: string; tone: TTone }> = {
   // Booking
   REQUESTED: { label: "Requested", tone: "neutral" },
   ACCEPTED: { label: "Accepted", tone: "info" },
   DECLINED: { label: "Declined", tone: "danger" },
-  PAID: { label: "Paid", tone: "brass" },
   IN_PROGRESS: { label: "In progress", tone: "warning" },
   COMPLETED: { label: "Completed", tone: "success" },
   CANCELLED: { label: "Cancelled", tone: "danger" },
 
-  // Payment
+  // Payment — PENDING is shared with technician approval, same meaning.
   PENDING: { label: "Pending", tone: "warning" },
+  PAID: { label: "Paid", tone: "brass" },
   SUCCESS: { label: "Paid", tone: "success" },
   FAILED: { label: "Failed", tone: "danger" },
   REFUNDED: { label: "Refunded", tone: "info" },
+
+  // Technician approval
+  APPROVED: { label: "Approved", tone: "success" },
+  REJECTED: { label: "Rejected", tone: "danger" },
+
+  // User account
+  ACTIVE: { label: "Active", tone: "success" },
+  BANNED: { label: "Banned", tone: "danger" },
 };
 
 interface IStatusPillProps {

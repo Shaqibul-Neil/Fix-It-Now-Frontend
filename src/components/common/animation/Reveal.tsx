@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useRevealOnMount } from "@/src/lib/animation/useRevealOnMount";
+import { useRevealOnMount } from "@/src/hooks/animation/useRevealOnMount";
 
 interface IRevealProps {
   children: ReactNode;

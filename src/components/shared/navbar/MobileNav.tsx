@@ -25,7 +25,7 @@ const MobileNav = () => {
         <button
           type="button"
           aria-label="Open menu"
-          className="flex size-9 items-center justify-center border border-project-border text-project-muted-foreground transition-colors duration-300 hover:border-project-primary/40 hover:text-project-primary cursor-pointer lg:hidden"
+          className="flex size-9 items-center justify-center border border-project-primary bg-project-primary text-white transition-colors duration-300 hover:bg-project-primary/85 cursor-pointer lg:hidden"
         >
           <Menu className="size-4" />
         </button>

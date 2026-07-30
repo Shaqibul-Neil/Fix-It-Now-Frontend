@@ -1,7 +1,8 @@
 import { NotificationBell, ThemeToggle } from "@/src/components";
 import { SidebarTrigger } from "@/src/components/ui/sidebar";
+import type { IProfileUser } from "@/src/types/types";
 import AppBreadcrumbs from "./AppBreadcrumbs";
-import ProfileDropdown, { type IProfileUser } from "./ProfileDropdown";
+import ProfileDropdown from "./ProfileDropdown";
 
 const DashboardNavbar = ({ user }: { user: IProfileUser }) => {
   return (

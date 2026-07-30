@@ -1,12 +1,13 @@
 import Logo from "./Logo";
 import MobileNav from "./MobileNav";
 import PublicNavActions from "./PublicNavActions";
+import PublicNavbarChrome from "./PublicNavbarChrome";
 import PublicNavMenu from "./PublicNavMenu";
-import type { IProfileUser } from "./ProfileDropdown";
+import type { IProfileUser } from "@/src/types/types";
 
 const PublicNavbar = ({ user }: { user?: IProfileUser }) => {
   return (
-    <header className="sticky top-0 z-40 bg-project-background/85 backdrop-blur">
+    <PublicNavbarChrome>
       <div className="mx-auto flex h-18 w-full max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 xl:px-8">
         <Logo />
 
@@ -17,7 +18,7 @@ const PublicNavbar = ({ user }: { user?: IProfileUser }) => {
           <MobileNav />
         </div>
       </div>
-    </header>
+    </PublicNavbarChrome>
   );
 };
 

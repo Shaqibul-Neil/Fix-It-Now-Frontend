@@ -1,13 +1,9 @@
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
-import {
-  AppSidebar,
-  DashboardNavbar,
-  PageTransition,
-  type IProfileUser,
-} from "@/src/components";
+import { AppSidebar, DashboardNavbar, PageTransition } from "@/src/components";
 import { SidebarInset, SidebarProvider } from "@/src/components/ui/sidebar";
 import { getMeRequest } from "@/src/features/auth/dependencies/api/auth.service";
+import type { IProfileUser } from "@/src/types/types";
 
 export default async function DashboardLayout({
   children,

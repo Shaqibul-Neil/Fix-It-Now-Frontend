@@ -13,9 +13,9 @@ const ThemeToggle = ({ className }: { className?: string }) => {
       onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
       aria-label="Toggle theme"
       className={cn(
-        "flex size-9 items-center justify-center rounded-none border border-project-border",
+        "flex size-9 items-center justify-center rounded-none border border-project-primary",
         "bg-project-card text-project-muted-foreground cursor-pointer",
-        "hover:text-project-primary hover:border-project-primary/40 transition-colors duration-300",
+        "hover:text-project-primary hover:bg-project-muted-primary transition-colors duration-300",
         className,
       )}
     >

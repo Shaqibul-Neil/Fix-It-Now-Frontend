@@ -46,6 +46,9 @@
   /* Editorial dark panel — stays dark in both themes on purpose. */
   --aside: oklch(0.19 0.008 60);
   --aside-foreground: oklch(0.96 0.006 85);
+  /* Brass tuned for that panel. It is one value, not two, because the panel
+     never flips — the light-theme brass is too dark to read over a photo. */
+  --aside-primary: oklch(0.79 0.115 64);
 
   /* Charts */
   --chart-1: oklch(0.6 0.128 55);
@@ -189,6 +192,7 @@
 
   --color-project-aside: var(--aside);
   --color-project-aside-foreground: var(--aside-foreground);
+  --color-project-aside-primary: var(--aside-primary);
 
   --animate-marquee: marquee 34s linear infinite;
 }

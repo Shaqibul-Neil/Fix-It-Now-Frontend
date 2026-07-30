@@ -2,8 +2,8 @@
 
 import { LogOut } from "lucide-react";
 import Link from "next/link";
-import type { TUserRole } from "@/src/lib/auth/auth.roles";
 import { PROFILE_MENU } from "@/src/lib/menus/menus";
+import type { IProfileUser } from "@/src/types/types";
 import { ProviderAvatar, Text } from "@/src/components";
 import {
   DropdownMenu,
@@ -11,13 +11,6 @@ import {
   DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
 import { useLogoutMutation } from "@/src/features/auth/dependencies/hooks/useAuth";
-
-export interface IProfileUser {
-  name: string;
-  email: string;
-  role: TUserRole;
-  avatarUrl?: string | null;
-}
 
 const ProfileDropdown = ({ user }: { user: IProfileUser }) => {
   const { name, email, role, avatarUrl } = user;

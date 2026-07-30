@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "@/src/components/ui/sonner";
+import { config } from "@/src/lib/config/config";
 import { ThemeProvider } from "@/src/lib/providers/ThemeProvider";
 import "./globals.css";
 import { QueryProvider } from "../lib/providers/QueryProvider";
@@ -16,6 +17,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  // Canonical and openGraph urls are written relative in the route segments,
+  // and Next resolves them against this base.
+  metadataBase: new URL(config.app_url ?? "http://localhost:3000"),
   title: {
     default: "FixItNow",
     template: "%s | FixItNow",

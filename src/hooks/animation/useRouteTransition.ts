@@ -4,13 +4,10 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { usePathname } from "next/navigation";
 import { useRef } from "react";
-import { DURATION, EASE } from "./animation.tokens";
+import { DURATION, EASE } from "@/src/lib/animation/animation.tokens";
 
 gsap.registerPlugin(useGSAP);
 
-// Replays on every pathname change, so moving between sidebar routes always
-// enters the same way. Generic — any routed area can use it, not only the
-// dashboard.
 export const useRouteTransition = <
   TElement extends HTMLElement = HTMLDivElement,
 >() => {
