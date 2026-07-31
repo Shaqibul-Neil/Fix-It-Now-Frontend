@@ -1,15 +1,22 @@
 "use client";
 
+import { useState, type ReactNode } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Eye, Trash } from "lucide-react";
-import { ActionColumn, StatusPill, Text } from "@/src/components";
+import { ActionColumn, ConfirmModal, StatusPill, Text } from "@/src/components";
+import { useDeleteServiceMutation } from "../hooks/useServiceMutation";
 import type { IAdminService } from "../types/service.types";
 import { serviceBaseColumns } from "./ServiceColumns";
 
 export const useAdminServicesColumns = (): {
   columns: ColumnDef<IAdminService>[];
-  modals: null;
+  modals: ReactNode;
 } => {
+  const [deleteTarget, setDeleteTarget] = useState<IAdminService | null>(
+    null,
+  );
+  const deleteService = useDeleteServiceMutation(() => setDeleteTarget(null));
+
   const [service, ...rest] = serviceBaseColumns<IAdminService>();
 
   return {
@@ -85,9 +92,7 @@ export const useAdminServicesColumns = (): {
             icon: Trash,
             label: "Delete Service",
             variant: "destructive",
-            onClick: (row) => {
-              console.log(row.id);
-            },
+            onClick: (row) => setDeleteTarget(row),
           },
         ],
         {
@@ -97,6 +102,18 @@ export const useAdminServicesColumns = (): {
       ),
     ],
 
-    modals: null,
+    modals: (
+      <ConfirmModal
+        isOpen={Boolean(deleteTarget)}
+        onClose={() => setDeleteTarget(null)}
+        mode="cancel"
+        title="Delete this service?"
+        description="This cannot be undone. Services with existing bookings cannot be deleted."
+        entityName={deleteTarget?.title}
+        confirmText="Yes, delete it"
+        isPending={deleteService.isPending}
+        onConfirm={() => deleteTarget && deleteService.mutate(deleteTarget.id)}
+      />
+    ),
   };
 };

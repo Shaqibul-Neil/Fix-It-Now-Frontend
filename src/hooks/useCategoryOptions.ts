@@ -11,14 +11,18 @@ interface ICategory {
   slug: string;
 }
 
-export const useCategoryOptions = (): TSelectOption[] => {
+// Filters key services by `slug`; forms that create/update a service need
+// the actual `id` to satisfy the backend's categoryId field.
+export const useCategoryOptions = (
+  valueKey: "slug" | "id" = "slug",
+): TSelectOption[] => {
   const { data } = useQuery({
     queryKey: ["categories"],
     queryFn: () => clientFetch<ICategory[]>(apiEndpoints.category.list),
     select: (response) =>
-      (response.data ?? []).map(({ name, slug }) => ({
-        label: name,
-        value: slug,
+      (response.data ?? []).map((category) => ({
+        label: category.name,
+        value: category[valueKey],
       })),
     staleTime: Infinity,
   });

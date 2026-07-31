@@ -1,8 +1,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { Text, buildColumn } from "@/src/components";
-import { formatDateTime, formatMoney } from "@/src/lib/utils/format.utils";
+import { formatDate, formatMoney } from "@/src/lib/utils/format.utils";
 import type { IBaseServiceRow } from "../types/service.types";
-import { formatDate } from "date-fns";
 
 export const serviceBaseColumns = <TRow extends IBaseServiceRow>() =>
   buildColumn<IBaseServiceRow>([
@@ -52,7 +51,7 @@ export const serviceBaseColumns = <TRow extends IBaseServiceRow>() =>
       label: "About",
       size: 320,
       render: (row: IBaseServiceRow) => (
-        <span className="line-clamp-2 text-project-muted-foreground">
+        <span className="line-clamp-2 text-project-muted-foreground truncate">
           {row.description ?? "—"}
         </span>
       ),
@@ -62,9 +61,7 @@ export const serviceBaseColumns = <TRow extends IBaseServiceRow>() =>
       label: "Created At",
       size: 130,
       render: (row: IBaseServiceRow) => (
-        <span className="whitespace-nowrap">
-          {formatDateTime(row.createdAt)}
-        </span>
+        <span className="whitespace-nowrap">{formatDate(row.createdAt)}</span>
       ),
     },
     {
@@ -72,9 +69,7 @@ export const serviceBaseColumns = <TRow extends IBaseServiceRow>() =>
       label: "Updated At",
       size: 130,
       render: (row: IBaseServiceRow) => (
-        <span className="whitespace-nowrap">
-          {formatDateTime(row.updatedAt)}
-        </span>
+        <span className="whitespace-nowrap">{formatDate(row.updatedAt)}</span>
       ),
     },
   ]) as ColumnDef<TRow>[];

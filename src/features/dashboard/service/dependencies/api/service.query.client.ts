@@ -27,7 +27,9 @@ export const getAdminServices = (query: IServiceListQuery) =>
 
 //-----------------Technician---------------
 export const getTechnicianOwnServices = (query: IServiceListQuery) =>
-  clientFetch<IBaseServiceRow[]>(`${apiEndpoints.technician.service}`);
+  clientFetch<IBaseServiceRow[]>(
+    `${apiEndpoints.technician.service}${buildQuery(query)}`,
+  );
 
 //-----------------Customer---------------
 export const getServices = (query: IServiceListQuery) =>

@@ -12,21 +12,19 @@ import { useTechnicianServicesColumns } from "../dependencies/table/TechnicianSe
 
 const TechnicianServicesPage = () => {
   const { data, isError, error, isFetching } = useTechnicianServicesQuery();
-  console.log(data);
   const { page, pageSize, setPage, setPageSize } = useServerPagination();
-  const { columns } = useTechnicianServicesColumns();
+  const { columns, modals, openCreate } = useTechnicianServicesColumns();
 
   return (
-    <section>
-      <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+    <section className="mb-6 flex flex-col gap-4">
+      <div className="lg:flex-row lg:items-center lg:justify-between">
         <PageHeader
-          title="Browse services"
-          description="Pick a service and book the technician who offers it."
+          title="My services"
+          description="Manage the services you offer — create, update, or remove them."
+          action={{ text: "Add service", onClick: openCreate }}
         />
-
-        <ServiceFilter />
       </div>
-
+      <ServiceFilter />
       {isFetching && <TableSkeleton />}
 
       {isError && !isFetching && <AppError message={error?.message} />}
@@ -43,6 +41,8 @@ const TechnicianServicesPage = () => {
           emptyMessage="No services match this filter."
         />
       )}
+
+      {modals}
     </section>
   );
 };

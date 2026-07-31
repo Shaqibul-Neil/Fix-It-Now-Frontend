@@ -33,7 +33,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   // suppressHydrationWarning: next-themes sets class="dark" on <html> before
-  // paint, so the server markup and the first client render differ on purpose.
   return (
     <html
       lang="en"

@@ -51,7 +51,10 @@ const TechnicianAvailabilityPage = () => {
   }
 
   if (isPending) return <DetailsSkeleton sectionCount={1} />;
-  if (isError || !week) return <AppError message={error?.message} />;
+  if (isError) return <AppError message={error?.message} />;
+  // `week` syncs from `data` a render behind on the very first paint —
+  // that is not an error, just not ready yet.
+  if (!week) return <DetailsSkeleton sectionCount={1} />;
 
   const editDay = (day: TDayOfWeek, next: Partial<TWeekSchedule[TDayOfWeek]>) =>
     setWeek((current) =>

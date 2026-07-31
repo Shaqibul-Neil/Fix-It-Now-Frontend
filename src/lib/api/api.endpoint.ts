@@ -43,8 +43,11 @@ export const apiEndpoints = {
   payment: {
     details: (id: string) => `/payments/${id}`,
   },
+  // list/create share a path (GET vs POST); byId is shared by technician
+  // (own service) and admin (any service) for update/delete.
   service: {
     list: "/services",
+    byId: (id: string) => `/services/${id}`,
   },
   // Public — what a customer reads before picking a time.
   technicianPublic: {

@@ -12,16 +12,15 @@ import { useAdminServicesColumns } from "../dependencies/table/AdminServicesColu
 
 const AdminServicesPage = () => {
   const { data, isError, error, isFetching } = useAdminServicesQuery();
-  console.log(data);
   const { page, pageSize, setPage, setPageSize } = useServerPagination();
-  const { columns } = useAdminServicesColumns();
+  const { columns, modals } = useAdminServicesColumns();
 
   return (
     <section>
       <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <PageHeader
-          title="Browse services"
-          description="Pick a service and book the technician who offers it."
+          title="Services"
+          description="Every service listed across technicians on the platform."
         />
 
         <ServiceFilter />
@@ -43,6 +42,8 @@ const AdminServicesPage = () => {
           emptyMessage="No services match this filter."
         />
       )}
+
+      {modals}
     </section>
   );
 };
