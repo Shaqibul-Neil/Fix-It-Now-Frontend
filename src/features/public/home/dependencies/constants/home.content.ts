@@ -27,8 +27,8 @@ export const BANNER_INTRO: IBannerIntro = {
   highlight: "Not someday.",
   description:
     "Book a background-checked technician for plumbing, electrical, cooling or appliance work. Your payment is held until you approve the job.",
-  primaryCta: { label: "Book a technician", href: "/services" },
-  secondaryCta: { label: "Browse categories", href: "/categories" },
+  primaryCta: { label: "Book a technician", href: "/technicians" },
+  secondaryCta: { label: "Browse services", href: "/services" },
 };
 
 export const BANNER_SLIDES: IBannerSlide[] = [

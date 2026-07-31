@@ -1,6 +1,7 @@
 // Animation
 export { default as PageTransition } from "./common/animation/PageTransition";
 export { default as Reveal } from "./common/animation/Reveal";
+export { default as ScrollReveal } from "./common/animation/ScrollReveal";
 
 // Buttons
 export { default as AppButton } from "./common/buttons/AppButton";

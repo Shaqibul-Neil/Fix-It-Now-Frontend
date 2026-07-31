@@ -51,6 +51,8 @@ export const apiEndpoints = {
   },
   // Public — what a customer reads before picking a time.
   technicianPublic: {
+    list: "/technicians",
+    byId: (id: string) => `/technicians/${id}`,
     availability: (id: string) => `/technicians/${id}/availability`,
   },
   category: {
