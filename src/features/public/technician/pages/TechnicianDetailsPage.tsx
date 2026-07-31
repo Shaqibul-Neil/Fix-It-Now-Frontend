@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
 import { AppRating, DetailsHeader, DetailsSection, InfoList } from "@/src/components";
+import { getMeRequest } from "@/src/features/auth/dependencies/api/auth.service";
+import BookNowButton from "@/src/features/public/home/dependencies/components/BookNowButton";
 import { getServices } from "@/src/features/public/service/dependencies/api/service.api";
 import {
   getTechnicianAvailability,
@@ -38,11 +40,12 @@ const TechnicianDetailsPage = async ({ id }: { id: string }) => {
   const technician = await getTechnicianById(id);
   if (!technician) notFound();
 
-  const [{ items: allServices }, availabilitySlots] = await Promise.all([
+  const [{ items: allServices }, availabilitySlots, currentUser] = await Promise.all([
     // No public "by technician" filter on the services list, so this reads a
     // generous page and narrows to this technician's rows below.
     getServices({ page: 1, limit: 100 }),
     getTechnicianAvailability(id),
+    getMeRequest(),
   ]);
 
   const services = allServices.filter((service) => service.technicianId === id);
@@ -59,6 +62,7 @@ const TechnicianDetailsPage = async ({ id }: { id: string }) => {
           { label: "Experience", value: `${technician.experienceYears} yrs` },
           { label: "Rate", value: `${formatMoney(technician.hourlyRate)}/hr` },
         ]}
+        renderActions={<BookNowButton userRole={currentUser?.role} />}
       />
 
       <div className="grid gap-4 lg:grid-cols-4">

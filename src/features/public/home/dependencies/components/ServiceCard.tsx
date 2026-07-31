@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
-import { AppButton, AppRating, Text } from "@/src/components";
+import { AppRating, Text } from "@/src/components";
 import { cn } from "@/src/lib/utils/cn";
 import { formatMoney } from "@/src/lib/utils/format.utils";
 import type { IServiceRow } from "@/src/features/dashboard/service/dependencies/types/service.types";
@@ -10,7 +9,8 @@ import {
   getCategoryPhoto,
   toCategorySlug,
 } from "@/src/features/public/category/dependencies/constants/category.photos";
-import LoginPromptModal from "./LoginPromptModal";
+import type { TUserRole } from "@/src/lib/auth/auth.roles";
+import BookNowButton from "./BookNowButton";
 
 const formatDuration = (minutes: number | null) => {
   if (!minutes) return null;
@@ -25,6 +25,7 @@ interface IServiceCardProps {
   variant?: "hero" | "compact";
   className?: string;
   onMouseEnter?: () => void;
+  userRole?: TUserRole;
 }
 
 const ServiceCard = ({
@@ -32,15 +33,14 @@ const ServiceCard = ({
   variant = "compact",
   className,
   onMouseEnter,
+  userRole,
 }: IServiceCardProps) => {
-  const [isLoginPromptOpen, setIsLoginPromptOpen] = useState(false);
   const isHero = variant === "hero";
   const duration = formatDuration(service.estimatedDuration);
 
   return (
-    <>
-      <article
-        data-flip-id={service.id}
+    <article
+      data-flip-id={service.id}
         onMouseEnter={onMouseEnter}
         className={cn(
           "group relative isolate flex overflow-hidden border border-project-border bg-project-aside",
@@ -124,21 +124,10 @@ const ServiceCard = ({
           </div>
 
           <div className="flex items-center gap-2 pt-2">
-            <AppButton
-              text="Book now"
-              type="button"
-              onClick={() => setIsLoginPromptOpen(true)}
-              className="h-8 px-3 text-xs"
-            />
+            <BookNowButton userRole={userRole} className="h-8 px-3 text-xs" />
           </div>
         </div>
       </article>
-
-      <LoginPromptModal
-        isOpen={isLoginPromptOpen}
-        onClose={() => setIsLoginPromptOpen(false)}
-      />
-    </>
   );
 };
 

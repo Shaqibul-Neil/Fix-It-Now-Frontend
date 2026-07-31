@@ -1,3 +1,4 @@
+import { getMeRequest } from "@/src/features/auth/dependencies/api/auth.service";
 import {
   getHomeCategories,
   getHomeServices,
@@ -10,17 +11,18 @@ import ServiceSection from "../dependencies/components/ServiceSection";
 import TechnicianSection from "../dependencies/components/TechnicianSection";
 
 const HomePage = async () => {
-  const [services, categories, technicians] = await Promise.all([
+  const [services, categories, technicians, currentUser] = await Promise.all([
     getHomeServices(),
     getHomeCategories(),
     getHomeTechnicians(),
+    getMeRequest(),
   ]);
 
   return (
     <>
       <HomeJsonLd />
       <Banner />
-      <ServiceSection services={services} />
+      <ServiceSection services={services} userRole={currentUser?.role} />
       <CategorySection categories={categories} />
       <TechnicianSection technicians={technicians} />
     </>

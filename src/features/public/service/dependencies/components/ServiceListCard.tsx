@@ -1,22 +1,23 @@
-"use client";
-
-import { useState } from "react";
 import Image from "next/image";
-import { AppButton, AppRating, Text } from "@/src/components";
+import { AppRating, Text } from "@/src/components";
 import { formatMoney } from "@/src/lib/utils/format.utils";
 import {
   getCategoryPhoto,
   toCategorySlug,
 } from "@/src/features/public/category/dependencies/constants/category.photos";
-import LoginPromptModal from "@/src/features/public/home/dependencies/components/LoginPromptModal";
+import BookNowButton from "@/src/features/public/home/dependencies/components/BookNowButton";
 import type { IServiceRow } from "@/src/features/dashboard/service/dependencies/types/service.types";
+import type { TUserRole } from "@/src/lib/auth/auth.roles";
 
-const ServiceListCard = ({ service }: { service: IServiceRow }) => {
-  const [isLoginPromptOpen, setIsLoginPromptOpen] = useState(false);
-
+const ServiceListCard = ({
+  service,
+  userRole,
+}: {
+  service: IServiceRow;
+  userRole?: TUserRole;
+}) => {
   return (
-    <>
-      <div className="flex flex-col overflow-hidden border border-project-border bg-project-card">
+    <div className="flex flex-col overflow-hidden border border-project-border bg-project-card">
         <div className="relative aspect-video w-full">
           <Image
             src={getCategoryPhoto(toCategorySlug(service.category), 600)}
@@ -64,20 +65,13 @@ const ServiceListCard = ({ service }: { service: IServiceRow }) => {
         </div>
 
         <div className="px-4 pb-4">
-          <AppButton
+          <BookNowButton
+            userRole={userRole}
             text="Book this service"
-            type="button"
-            onClick={() => setIsLoginPromptOpen(true)}
             className="h-8 w-full px-3 text-xs"
           />
         </div>
       </div>
-
-      <LoginPromptModal
-        isOpen={isLoginPromptOpen}
-        onClose={() => setIsLoginPromptOpen(false)}
-      />
-    </>
   );
 };
 

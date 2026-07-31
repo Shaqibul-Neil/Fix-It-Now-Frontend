@@ -1,4 +1,5 @@
 import { AppButton, DetailsSection, PageHeader, Text } from "@/src/components";
+import { getMeRequest } from "@/src/features/auth/dependencies/api/auth.service";
 import { getCategories } from "@/src/features/public/category/dependencies/api/category.api";
 import { getServices } from "@/src/features/public/service/dependencies/api/service.api";
 import ServiceListCard from "@/src/features/public/service/dependencies/components/ServiceListCard";
@@ -20,7 +21,7 @@ const ServicesPage = async ({
   city,
   minRating,
 }: IServicesPageProps) => {
-  const [categories, { items: services, total }] = await Promise.all([
+  const [categories, { items: services, total }, currentUser] = await Promise.all([
     getCategories(),
     getServices({
       page,
@@ -30,6 +31,7 @@ const ServicesPage = async ({
       city,
       minRating,
     }),
+    getMeRequest(),
   ]);
 
   const totalPages = Math.max(1, Math.ceil(total / DEFAULT_PAGE_SIZE));
@@ -73,7 +75,11 @@ const ServicesPage = async ({
           ) : (
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {services.map((service) => (
-                <ServiceListCard key={service.id} service={service} />
+                <ServiceListCard
+                  key={service.id}
+                  service={service}
+                  userRole={currentUser?.role}
+                />
               ))}
             </div>
           )}

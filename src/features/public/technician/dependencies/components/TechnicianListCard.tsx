@@ -3,15 +3,19 @@ import Link from "next/link";
 import { ArrowRight, MapPin } from "lucide-react";
 import { AppButton, AppRating, Text } from "@/src/components";
 import { formatMoney } from "@/src/lib/utils/format.utils";
+import BookNowButton from "@/src/features/public/home/dependencies/components/BookNowButton";
+import type { TUserRole } from "@/src/lib/auth/auth.roles";
 import { getTechnicianPhoto } from "../constants/technician.photos";
 import type { ITechnician } from "../types/technician.types";
 
 const TechnicianListCard = ({
   technician,
   photoIndex,
+  userRole,
 }: {
   technician: ITechnician;
   photoIndex: number;
+  userRole?: TUserRole;
 }) => {
   const fullName = `${technician.firstName} ${technician.lastName}`;
 
@@ -60,14 +64,15 @@ const TechnicianListCard = ({
         </div>
       </Link>
 
-      <div className="px-4 pb-4">
+      <div className="flex flex-nowrap items-center gap-2 px-4 pb-4">
         <AppButton
           text="View details"
           href={`/technicians/${technician.id}`}
           rightIcon={ArrowRight}
           variant="outline"
-          className="h-8 w-full px-3 text-xs"
+          className="h-8 flex-1 px-3 text-xs"
         />
+        <BookNowButton userRole={userRole} className="h-8 flex-1 px-3 text-xs" />
       </div>
     </div>
   );

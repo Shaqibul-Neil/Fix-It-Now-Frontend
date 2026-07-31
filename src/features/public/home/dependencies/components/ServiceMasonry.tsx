@@ -7,6 +7,7 @@ import { Flip } from "gsap/Flip";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { DURATION, EASE, STAGGER } from "@/src/lib/animation/animation.tokens";
 import type { IServiceRow } from "@/src/features/dashboard/service/dependencies/types/service.types";
+import type { TUserRole } from "@/src/lib/auth/auth.roles";
 import ServiceCard from "./ServiceCard";
 
 gsap.registerPlugin(useGSAP, Flip, ScrollTrigger);
@@ -15,7 +16,13 @@ gsap.registerPlugin(useGSAP, Flip, ScrollTrigger);
 // the hero + 2x2 grid — below `lg` every card renders in one plain column.
 const SWAP_BREAKPOINT = "(min-width: 1024px)";
 
-const ServiceMasonry = ({ services }: { services: IServiceRow[] }) => {
+const ServiceMasonry = ({
+  services,
+  userRole,
+}: {
+  services: IServiceRow[];
+  userRole?: TUserRole;
+}) => {
   const [order, setOrder] = useState(() => services.map((service) => service.id));
   const containerRef = useRef<HTMLDivElement>(null);
   const flipState = useRef<Flip.FlipState | null>(null);
@@ -108,6 +115,7 @@ const ServiceMasonry = ({ services }: { services: IServiceRow[] }) => {
             index === 0 ? "sm:col-span-2 lg:col-span-2 lg:row-span-2" : undefined
           }
           onMouseEnter={() => handleHover(service.id)}
+          userRole={userRole}
         />
       ))}
     </div>

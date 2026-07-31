@@ -1,4 +1,5 @@
 import { AppButton, DetailsSection, PageHeader, Text } from "@/src/components";
+import { getMeRequest } from "@/src/features/auth/dependencies/api/auth.service";
 import { getTechnicians } from "@/src/features/public/technician/dependencies/api/technician.api";
 import TechnicianListCard from "@/src/features/public/technician/dependencies/components/TechnicianListCard";
 import TechnicianListFilter from "@/src/features/public/technician/dependencies/components/TechnicianListFilter";
@@ -17,13 +18,10 @@ const TechniciansPage = async ({
   city,
   minRating,
 }: ITechniciansPageProps) => {
-  const { items: technicians, total } = await getTechnicians({
-    page,
-    limit: DEFAULT_PAGE_SIZE,
-    search,
-    city,
-    minRating,
-  });
+  const [{ items: technicians, total }, currentUser] = await Promise.all([
+    getTechnicians({ page, limit: DEFAULT_PAGE_SIZE, search, city, minRating }),
+    getMeRequest(),
+  ]);
 
   const totalPages = Math.max(1, Math.ceil(total / DEFAULT_PAGE_SIZE));
 
@@ -65,6 +63,7 @@ const TechniciansPage = async ({
                   key={technician.id}
                   technician={technician}
                   photoIndex={index}
+                  userRole={currentUser?.role}
                 />
               ))}
             </div>

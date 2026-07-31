@@ -1,9 +1,16 @@
 import { ArrowRight } from "lucide-react";
 import { AppButton, ScrollReveal, Text } from "@/src/components";
 import type { IServiceRow } from "@/src/features/dashboard/service/dependencies/types/service.types";
+import type { TUserRole } from "@/src/lib/auth/auth.roles";
 import ServiceMasonry from "./ServiceMasonry";
 
-const ServiceSection = ({ services }: { services: IServiceRow[] }) => {
+const ServiceSection = ({
+  services,
+  userRole,
+}: {
+  services: IServiceRow[];
+  userRole?: TUserRole;
+}) => {
   if (!services.length) return null;
 
   return (
@@ -35,7 +42,7 @@ const ServiceSection = ({ services }: { services: IServiceRow[] }) => {
         />
       </ScrollReveal>
 
-      <ServiceMasonry services={services} />
+      <ServiceMasonry services={services} userRole={userRole} />
     </section>
   );
 };
