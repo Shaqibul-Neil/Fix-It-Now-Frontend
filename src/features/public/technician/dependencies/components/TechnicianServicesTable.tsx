@@ -1,24 +1,12 @@
 "use client";
 
-import Link from "next/link";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { buildColumn, DataTable } from "@/src/components";
 import { formatMoney } from "@/src/lib/utils/format.utils";
 import type { IServiceRow } from "@/src/features/dashboard/service/dependencies/types/service.types";
 
 const columns = buildColumn<IServiceRow>([
-  {
-    id: "title",
-    label: "Service",
-    render: (row: IServiceRow) => (
-      <Link
-        href={`/services/${row.id}`}
-        className="font-medium text-project-accent hover:text-project-primary"
-      >
-        {row.title}
-      </Link>
-    ),
-  },
+  { key: "title", label: "Service" },
   { key: "category", label: "Category" },
   {
     id: "price",

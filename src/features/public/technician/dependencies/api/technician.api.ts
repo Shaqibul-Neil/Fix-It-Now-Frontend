@@ -8,7 +8,10 @@ import type {
 } from "../types/technician.types";
 
 const buildQuery = ({ search, page, limit }: IPublicTechnicianQuery) => {
-  const params = new URLSearchParams({ page: String(page), limit: String(limit) });
+  const params = new URLSearchParams({
+    page: String(page),
+    limit: String(limit),
+  });
   if (search) params.set("search", search);
   return params.toString();
 };
@@ -21,6 +24,7 @@ export const getTechnicians = async (
     `${apiEndpoints.technicianPublic.list}?${buildQuery(query)}`,
     { next: { revalidate: 60 } },
   );
+  console.log(response);
   return { items: response.data ?? [], total: response.meta?.total ?? 0 };
 };
 

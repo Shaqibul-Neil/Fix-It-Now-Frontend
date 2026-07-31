@@ -2,8 +2,8 @@ const UNSPLASH = "https://images.unsplash.com";
 
 // Services carry only a category name (flattened on the backend), not the
 // slug — derive the same kebab-case key the seed used to name a category.
-export const toCategorySlug = (name: string) =>
-  name.trim().toLowerCase().replace(/\s+/g, "-");
+export const toCategorySlug = (name?: string) =>
+  name?.trim().toLowerCase().replace(/\s+/g, "-") ?? "";
 
 const CATEGORY_PHOTO_IDS: Record<string, string> = {
   plumbing: "photo-1607472586893-edb57bdc0e39",

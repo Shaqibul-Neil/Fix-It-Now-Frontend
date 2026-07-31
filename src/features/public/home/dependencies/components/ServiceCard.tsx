@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
 import { AppButton, AppRating, Text } from "@/src/components";
 import { cn } from "@/src/lib/utils/cn";
 import { formatMoney } from "@/src/lib/utils/format.utils";
@@ -45,15 +44,24 @@ const ServiceCard = ({
         onMouseEnter={onMouseEnter}
         className={cn(
           "group relative isolate flex overflow-hidden border border-project-border bg-project-aside",
-          isHero ? "aspect-4/5 sm:aspect-16/11 lg:aspect-auto" : "aspect-4/5 sm:aspect-16/10",
+          isHero
+            ? "aspect-4/5 sm:aspect-16/11 lg:aspect-auto"
+            : "aspect-4/5 sm:aspect-16/10",
           className,
         )}
       >
         <Image
-          src={getCategoryPhoto(toCategorySlug(service.category), isHero ? 1600 : 900)}
+          src={getCategoryPhoto(
+            toCategorySlug(service.category),
+            isHero ? 1600 : 900,
+          )}
           alt={service.title}
           fill
-          sizes={isHero ? "(min-width: 1024px) 50vw, 100vw" : "(min-width: 1024px) 25vw, 50vw"}
+          sizes={
+            isHero
+              ? "(min-width: 1024px) 50vw, 100vw"
+              : "(min-width: 1024px) 25vw, 50vw"
+          }
           quality={90}
           className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         />
@@ -90,7 +98,10 @@ const ServiceCard = ({
             <Text variant="normal-xs" as="span" truncate>
               {service.technicianName}
             </Text>
-            <span aria-hidden className="h-1 w-1 shrink-0 rounded-full bg-current" />
+            <span
+              aria-hidden
+              className="h-1 w-1 shrink-0 rounded-full bg-current"
+            />
             <AppRating
               value={Math.round(Number(service.technicianRating))}
               readOnly
@@ -112,14 +123,7 @@ const ServiceCard = ({
             )}
           </div>
 
-          <div className="flex flex-wrap items-center gap-2 pt-2">
-            <AppButton
-              text="View details"
-              href={`/services/${service.id}`}
-              rightIcon={ArrowRight}
-              variant="ghost"
-              className="h-8 border border-white/30 bg-white/10 px-3 text-xs text-white backdrop-blur-sm hover:bg-white/20 hover:text-white"
-            />
+          <div className="flex items-center gap-2 pt-2">
             <AppButton
               text="Book now"
               type="button"

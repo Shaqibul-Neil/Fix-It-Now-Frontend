@@ -22,11 +22,3 @@ export const getServices = async (
   );
   return { items: response.data ?? [], total: response.meta?.total ?? 0 };
 };
-
-export const getServiceById = async (id: string): Promise<IServiceRow | null> => {
-  const { response } = await serverFetch<IServiceRow>(
-    apiEndpoints.service.byId(id),
-    { next: { revalidate: 60 } },
-  );
-  return response.data ?? null;
-};
