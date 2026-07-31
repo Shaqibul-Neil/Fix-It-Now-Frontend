@@ -15,6 +15,8 @@ interface IAppRatingProps {
   size?: number;
   readOnly?: boolean;
   className?: string;
+  // "inverted" reads white-on-dark, for ratings placed over a photo overlay.
+  tone?: "default" | "inverted";
 }
 
 const AppRating = ({
@@ -27,6 +29,7 @@ const AppRating = ({
   size = 22,
   readOnly = false,
   className,
+  tone = "default",
 }: IAppRatingProps) => {
   const [hovered, setHovered] = useState(0);
   const stars = Array.from({ length: max }, (_, index) => index + 1);
@@ -35,6 +38,8 @@ const AppRating = ({
   const shown = hovered || value;
 
   if (readOnly) {
+    const isInverted = tone === "inverted";
+
     return (
       <span
         className={cn("inline-flex items-center gap-1", className)}
@@ -48,8 +53,12 @@ const AppRating = ({
             className={cn(
               "shrink-0",
               star <= value
-                ? "fill-project-primary text-project-primary"
-                : "text-project-border",
+                ? isInverted
+                  ? "fill-white text-white"
+                  : "fill-project-primary text-project-primary"
+                : isInverted
+                  ? "text-white/35"
+                  : "text-project-border",
             )}
           />
         ))}
@@ -58,7 +67,10 @@ const AppRating = ({
           <Text
             variant="normal-xs"
             as="span"
-            className="ml-1 text-project-muted-foreground"
+            className={cn(
+              "ml-1",
+              isInverted ? "text-white/80" : "text-project-muted-foreground",
+            )}
           >
             {caption}
           </Text>

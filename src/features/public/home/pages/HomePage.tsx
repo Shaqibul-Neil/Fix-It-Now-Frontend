@@ -16,8 +16,6 @@ const HomePage = async () => {
     getHomeTechnicians(),
   ]);
 
-  console.log(categories);
-
   return (
     <>
       <HomeJsonLd />

@@ -43,6 +43,13 @@ export const useRevealOnScroll = <
           toggleActions: "play none none none",
         },
       });
+
+      // Several sibling sections each register their own ScrollTrigger on
+      // mount; one created before a later section settles its layout can end
+      // up with a stale start position and never fire. A refresh once
+      // everything has painted recalculates every trigger against final
+      // layout, so nothing is left stuck at opacity 0.
+      requestAnimationFrame(() => requestAnimationFrame(() => ScrollTrigger.refresh()));
     },
     { scope: containerRef },
   );

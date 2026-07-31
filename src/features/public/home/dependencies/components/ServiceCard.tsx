@@ -96,6 +96,7 @@ const ServiceCard = ({
               readOnly
               size={12}
               caption={service.technicianRating}
+              tone="inverted"
               className="shrink-0"
             />
           </div>

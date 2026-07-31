@@ -1,8 +1,8 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { AppButton, ScrollReveal, Text } from "@/src/components";
-import { getCategoryIcon } from "@/src/features/public/category/dependencies/constants/category.icons";
+import { AppButton, Text } from "@/src/components";
 import type { ICategory } from "@/src/features/public/category/dependencies/types/category.types";
+import { getCategoryIcon } from "../constants/category.icons";
 
 const CategorySection = ({ categories }: { categories: ICategory[] }) => {
   if (!categories.length) return null;
@@ -10,7 +10,7 @@ const CategorySection = ({ categories }: { categories: ICategory[] }) => {
   return (
     <section className="border-y border-project-border bg-project-muted/40">
       <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 xl:px-8">
-        <ScrollReveal className="mb-10 flex flex-col gap-4 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
+        <div className="mb-10 flex flex-col gap-4 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-xl space-y-3">
             <Text
               variant="medium-xs"
@@ -35,9 +35,9 @@ const CategorySection = ({ categories }: { categories: ICategory[] }) => {
             variant="outline"
             className="w-fit"
           />
-        </ScrollReveal>
+        </div>
 
-        <ScrollReveal className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
           {categories.map((category) => {
             const Icon = getCategoryIcon(category.slug);
             return (
@@ -60,7 +60,7 @@ const CategorySection = ({ categories }: { categories: ICategory[] }) => {
               </Link>
             );
           })}
-        </ScrollReveal>
+        </div>
       </div>
     </section>
   );

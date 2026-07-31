@@ -35,7 +35,7 @@ const TechnicianSection = ({ technicians }: { technicians: ITechnician[] }) => {
         />
       </ScrollReveal>
 
-      <ScrollReveal className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+      <ScrollReveal className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
         {technicians.map((technician, index) => (
           <TechnicianCard
             key={technician.id}

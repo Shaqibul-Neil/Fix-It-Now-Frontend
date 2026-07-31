@@ -35,8 +35,8 @@ const TechnicianCard = ({
             aria-hidden
             className="absolute inset-0 bg-linear-to-t from-black/85 via-black/10 to-transparent"
           />
-          <div className="absolute inset-x-0 bottom-0 p-5">
-            <Text variant="semibold-lg" as="p" className="text-white">
+          <div className="absolute inset-x-0 bottom-0 p-3">
+            <Text variant="semibold-base" as="p" className="text-white">
               {fullName}
             </Text>
             <Text variant="normal-xs" as="span" className="text-white/70">
@@ -46,40 +46,40 @@ const TechnicianCard = ({
         </div>
 
         {/* Back — the rest of the info */}
-        <div className="absolute inset-0 flex flex-col justify-center gap-4 border border-project-border bg-project-card p-6 [backface-visibility:hidden] [transform:rotateY(180deg)]">
-          <Text variant="semibold-lg" as="p" className="text-project-accent">
+        <div className="absolute inset-0 flex flex-col justify-center gap-2 border border-project-border bg-project-card p-4 [backface-visibility:hidden] [transform:rotateY(180deg)]">
+          <Text variant="semibold-base" as="p" className="text-project-accent">
             {fullName}
           </Text>
 
           <AppRating
             value={Math.round(Number(technician.averageRating))}
             readOnly
-            size={16}
+            size={13}
             caption={`${technician.averageRating} (${technician.totalReviews})`}
           />
 
-          <div className="space-y-2">
+          <div className="space-y-1">
             <Text
-              variant="normal-sm"
+              variant="normal-xs"
               as="p"
-              className="flex items-center gap-2 text-project-muted-foreground"
+              className="flex items-center gap-1.5 text-project-muted-foreground"
             >
-              <MapPin className="size-4 shrink-0" />
+              <MapPin className="size-3.5 shrink-0" />
               {technician.city}, {technician.area}
             </Text>
 
-            <Text variant="normal-sm" as="p" className="text-project-muted-foreground">
+            <Text variant="normal-xs" as="p" className="text-project-muted-foreground">
               {technician.experienceYears} yrs experience
             </Text>
 
-            <Text variant="semibold-base" as="p" className="text-project-primary">
+            <Text variant="semibold-sm-2" as="p" className="text-project-primary">
               {formatMoney(technician.hourlyRate)}/hr
             </Text>
           </div>
 
-          <span className="mt-2 flex items-center gap-2 text-sm font-medium text-project-primary">
+          <span className="mt-1 flex items-center gap-1.5 text-xs font-medium text-project-primary">
             View profile
-            <ArrowRight className="size-4" />
+            <ArrowRight className="size-3.5" />
           </span>
         </div>
       </div>

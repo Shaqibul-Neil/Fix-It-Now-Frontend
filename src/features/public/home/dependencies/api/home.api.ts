@@ -5,7 +5,7 @@ import type { ICategory } from "@/src/features/public/category/dependencies/type
 import type { ITechnician } from "@/src/features/public/technician/dependencies/types/technician.types";
 
 const HOME_SERVICE_COUNT = 5;
-const HOME_TECHNICIAN_COUNT = 3;
+const HOME_TECHNICIAN_COUNT = 4;
 const HOME_CATEGORY_COUNT = 5;
 
 // Public, unauthenticated reads — hit the Express API directly instead of the

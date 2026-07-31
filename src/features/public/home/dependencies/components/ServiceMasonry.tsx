@@ -19,6 +19,11 @@ const ServiceMasonry = ({ services }: { services: IServiceRow[] }) => {
   const [order, setOrder] = useState(() => services.map((service) => service.id));
   const containerRef = useRef<HTMLDivElement>(null);
   const flipState = useRef<Flip.FlipState | null>(null);
+  // Flip.absolute pulls the swapping cards out of grid flow mid-tween, which
+  // would otherwise let the grid's row tracks collapse and the page reflow
+  // under the cursor. Locking also blocks a fresh hover from firing while a
+  // swap is still animating, which is what caused the repeated back-and-forth.
+  const isAnimating = useRef(false);
 
   const byId = new Map(services.map((service) => [service.id, service]));
   const ordered = order
@@ -56,6 +61,10 @@ const ServiceMasonry = ({ services }: { services: IServiceRow[] }) => {
         ease: "power3.inOut",
         absolute: true,
         scale: true,
+        onComplete: () => {
+          containerRef.current?.style.removeProperty("min-height");
+          isAnimating.current = false;
+        },
       });
       flipState.current = null;
     },
@@ -63,16 +72,20 @@ const ServiceMasonry = ({ services }: { services: IServiceRow[] }) => {
   );
 
   const handleHover = (id: string) => {
+    if (isAnimating.current) return;
     if (!window.matchMedia(SWAP_BREAKPOINT).matches) return;
 
     const index = order.indexOf(id);
     if (index <= 0 || !containerRef.current) return;
 
-    const cards = gsap.utils.toArray<HTMLElement>(
-      "[data-flip-id]",
-      containerRef.current,
-    );
+    const container = containerRef.current;
+    const cards = gsap.utils.toArray<HTMLElement>("[data-flip-id]", container);
     flipState.current = Flip.getState(cards);
+
+    // Pin the current height before cards leave the grid flow, so the
+    // container can't shrink (and drag the sections below it up) mid-tween.
+    container.style.minHeight = `${container.offsetHeight}px`;
+    isAnimating.current = true;
 
     setOrder((prev) => {
       const next = [...prev];
