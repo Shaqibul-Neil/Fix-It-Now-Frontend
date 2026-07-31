@@ -44,8 +44,6 @@ const TechnicianAvailabilityPage = () => {
     setIsConfirming(false),
   );
 
-  // The server rows are the starting point; every edit after that lives here
-  // until Save, because the endpoint replaces the whole schedule at once.
   const [lastData, setLastData] = useState(data);
   if (data !== lastData) {
     setLastData(data);
@@ -101,8 +99,6 @@ const TechnicianAvailabilityPage = () => {
   const hasError = dayErrors.some(Boolean);
   const isEmpty = countRanges(week) === 0;
 
-  // Compared against what the server last returned, so backing out restores the
-  // saved hours rather than an empty grid.
   const savedWeek = toWeekSchedule(data);
   const isDirty =
     JSON.stringify(toSlotPayload(week)) !==
@@ -115,7 +111,7 @@ const TechnicianAvailabilityPage = () => {
       <PageHeader
         title="My availability"
         description="The weekly hours customers can book you in. Anything outside them is refused automatically."
-        divClassName="mb-2"
+        divClassName="mb-4"
       />
 
       {isEmpty ? (

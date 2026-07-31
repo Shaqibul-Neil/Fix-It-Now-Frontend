@@ -41,11 +41,10 @@ export const reviewBaseColumns = <TRow extends IReviewRowBase>() =>
     {
       id: "comment",
       label: "Review",
-      size: 320,
-      // Cut short on purpose — the full text lives in the details modal.
+      size: 200,
       render: (row: IReviewRowBase) =>
         row.comment?.trim() ? (
-          <span className="line-clamp-2 text-project-muted-foreground">
+          <span className="text-project-muted-foreground line-clamp-1 truncate">
             {row.comment}
           </span>
         ) : (

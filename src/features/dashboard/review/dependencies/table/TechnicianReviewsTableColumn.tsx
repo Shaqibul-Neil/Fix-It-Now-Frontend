@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Eye } from "lucide-react";
 import { ActionColumn, buildColumn } from "@/src/components";
-import { formatDate } from "@/src/lib/utils/format.utils";
 import ReviewDetailsModal from "../components/ReviewDetailsModal";
 import type { ITechnicianReviewRow } from "../types/review.types";
 import { reviewBaseColumns, type IReviewColumns } from "./ReviewColumns";
@@ -55,14 +54,7 @@ export const useTechnicianReviewsColumns =
           onClose={() => setViewing(null)}
           rating={viewing?.rating ?? 0}
           comment={viewing?.comment ?? null}
-          meta={[
-            { label: "Service", value: viewing?.service.title },
-            { label: "Customer", value: viewing?.customer.name },
-            {
-              label: "Written",
-              value: viewing ? formatDate(viewing.createdAt) : null,
-            },
-          ]}
+          meta={[{ label: "Service", value: viewing?.service.title }]}
         />
       ),
     };

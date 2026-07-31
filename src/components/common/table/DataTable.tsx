@@ -24,7 +24,10 @@ const DataTable = <TData,>({
   return (
     // The inner table-container scrolls; the page itself never does.
     <div className="w-full border border-project-border bg-project-card">
-      <ShadTable style={{ minWidth: table.getTotalSize() }}>
+      <ShadTable
+        className="table-fixed"
+        style={{ minWidth: table.getTotalSize() }}
+      >
         <TableHeader className="bg-project-muted">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow

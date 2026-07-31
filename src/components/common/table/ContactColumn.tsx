@@ -29,7 +29,7 @@ const ContactColumn = <TRow,>(
           as="span"
           className="block truncate text-project-muted-foreground"
         >
-          {phone ?? "—"}
+          {phone ?? ""}
         </Text>
       </div>
     );

@@ -11,7 +11,6 @@ import {
   buildColumn,
 } from "@/src/components";
 import { REVIEW_MODERATION_OPTIONS } from "@/src/lib/options/filter.options";
-import { formatDate } from "@/src/lib/utils/format.utils";
 import type { TReviewStatus } from "@/src/types/types";
 import ReviewDetailsModal from "../components/ReviewDetailsModal";
 import {
@@ -96,26 +95,6 @@ export const useAdminReviewsColumns = (): IReviewColumns<IAdminReviewRow> => {
             {
               label: "Status",
               value: viewing ? <StatusPill status={viewing.status} /> : null,
-            },
-            {
-              label: "Reviewer",
-              value: viewing
-                ? `${viewing.customer.name} · ${viewing.customer.email}`
-                : null,
-            },
-            {
-              label: "Technician",
-              value: viewing
-                ? `${viewing.technician.name} · ${viewing.technician.email}`
-                : null,
-            },
-            {
-              label: "Written",
-              value: viewing ? formatDate(viewing.createdAt) : null,
-            },
-            {
-              label: "Last edited",
-              value: viewing ? formatDate(viewing.updatedAt) : null,
             },
           ]}
         />

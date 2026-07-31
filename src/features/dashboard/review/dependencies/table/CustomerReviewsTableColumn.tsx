@@ -8,7 +8,6 @@ import {
   StatusPill,
   buildColumn,
 } from "@/src/components";
-import { formatDate } from "@/src/lib/utils/format.utils";
 import ReviewDetailsModal from "../components/ReviewDetailsModal";
 import ReviewFormPanel from "../components/ReviewFormPanel";
 import { useDeleteReviewMutation } from "../hooks/useReviewMutation";
@@ -98,14 +97,9 @@ export const useCustomerReviewsColumns =
             comment={viewing?.comment ?? null}
             meta={[
               { label: "Service", value: viewing?.service.title },
-              { label: "Technician", value: viewing?.technician.name },
               {
                 label: "Status",
                 value: viewing ? <StatusPill status={viewing.status} /> : null,
-              },
-              {
-                label: "Written",
-                value: viewing ? formatDate(viewing.createdAt) : null,
               },
             ]}
           />

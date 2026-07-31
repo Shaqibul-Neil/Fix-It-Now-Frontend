@@ -19,12 +19,9 @@ const DetailsSection = ({
 }: IDetailsSectionProps) => {
   return (
     <section
-      className={cn(
-        "border border-project-border bg-project-card",
-        className,
-      )}
+      className={cn("border border-project-border bg-project-card", className)}
     >
-      <div className="flex items-start justify-between gap-4 border-b border-project-border px-5 py-4">
+      <div className="flex lg:flex-row flex-col items-start justify-between gap-4 border-b border-project-border px-5 py-4">
         <div className="min-w-0">
           <Text
             variant="semibold-base"
