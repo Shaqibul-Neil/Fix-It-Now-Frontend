@@ -20,4 +20,10 @@ export interface IFilterConfig {
   rating: {
     options: TSelectOption[];
   };
+  minRating: {
+    options: TSelectOption[];
+  };
+  city: {
+    options: TSelectOption[];
+  };
 }

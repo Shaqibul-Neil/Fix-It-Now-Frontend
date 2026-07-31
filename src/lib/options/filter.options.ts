@@ -63,6 +63,37 @@ export const FILTER_OPTIONS: IFilterConfig = {
       { label: "1 star", value: "1" },
     ],
   },
+
+  minRating: {
+    options: [
+      { label: "Any rating", value: ALL_OPTION_VALUE },
+      { label: "5 stars", value: "5" },
+      { label: "4+ stars", value: "4" },
+      { label: "3+ stars", value: "3" },
+      { label: "2+ stars", value: "2" },
+      { label: "1+ stars", value: "1" },
+    ],
+  },
+
+  // Major Bangladeshi cities — technicians register with a free-text city,
+  // this is just the filter's shortlist, not an exhaustive list.
+  city: {
+    options: [
+      { label: "All cities", value: ALL_OPTION_VALUE },
+      { label: "Dhaka", value: "Dhaka" },
+      { label: "Chattogram", value: "Chattogram" },
+      { label: "Sylhet", value: "Sylhet" },
+      { label: "Khulna", value: "Khulna" },
+      { label: "Rajshahi", value: "Rajshahi" },
+      { label: "Barishal", value: "Barishal" },
+      { label: "Rangpur", value: "Rangpur" },
+      { label: "Mymensingh", value: "Mymensingh" },
+      { label: "Comilla", value: "Comilla" },
+      { label: "Gazipur", value: "Gazipur" },
+      { label: "Narayanganj", value: "Narayanganj" },
+      { label: "Cox's Bazar", value: "Cox's Bazar" },
+    ],
+  },
 };
 
 // The statuses an admin can move a review to, minus whichever it already is.

@@ -22,6 +22,8 @@ export interface ITechnicianDetails extends ITechnician {
 
 export interface IPublicTechnicianQuery {
   search?: string;
+  city?: string;
+  minRating?: string;
   page: number;
   limit: number;
 }

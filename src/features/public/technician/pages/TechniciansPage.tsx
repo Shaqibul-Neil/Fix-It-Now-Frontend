@@ -7,13 +7,22 @@ import { DEFAULT_PAGE_SIZE } from "@/src/lib/constant/constant";
 interface ITechniciansPageProps {
   page: number;
   search?: string;
+  city?: string;
+  minRating?: string;
 }
 
-const TechniciansPage = async ({ page, search }: ITechniciansPageProps) => {
+const TechniciansPage = async ({
+  page,
+  search,
+  city,
+  minRating,
+}: ITechniciansPageProps) => {
   const { items: technicians, total } = await getTechnicians({
     page,
     limit: DEFAULT_PAGE_SIZE,
     search,
+    city,
+    minRating,
   });
 
   const totalPages = Math.max(1, Math.ceil(total / DEFAULT_PAGE_SIZE));
@@ -21,6 +30,8 @@ const TechniciansPage = async ({ page, search }: ITechniciansPageProps) => {
   const buildPageHref = (targetPage: number) => {
     const next = new URLSearchParams();
     if (search) next.set("search", search);
+    if (city) next.set("city", city);
+    if (minRating) next.set("minRating", minRating);
     next.set("page", String(targetPage));
     return `/technicians?${next.toString()}`;
   };
@@ -40,7 +51,11 @@ const TechniciansPage = async ({ page, search }: ITechniciansPageProps) => {
 
         <div className="space-y-6 lg:col-span-3">
           {technicians.length === 0 ? (
-            <Text variant="normal-sm" as="p" className="text-project-muted-foreground">
+            <Text
+              variant="normal-sm"
+              as="p"
+              className="text-project-muted-foreground"
+            >
               No technicians match this filter.
             </Text>
           ) : (
@@ -57,7 +72,11 @@ const TechniciansPage = async ({ page, search }: ITechniciansPageProps) => {
 
           {totalPages > 1 && (
             <div className="flex items-center justify-between">
-              <Text variant="normal-sm" as="span" className="text-project-muted-foreground">
+              <Text
+                variant="normal-sm"
+                as="span"
+                className="text-project-muted-foreground"
+              >
                 Page {page} of {totalPages}
               </Text>
 

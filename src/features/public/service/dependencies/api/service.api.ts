@@ -5,10 +5,22 @@ import type {
   IServiceRow,
 } from "@/src/features/dashboard/service/dependencies/types/service.types";
 
-const buildQuery = ({ category, search, page, limit }: IServiceListQuery) => {
-  const params = new URLSearchParams({ page: String(page), limit: String(limit) });
-  if (category) params.set("category", category);
+const buildQuery = ({
+  search,
+  category,
+  page,
+  limit,
+  city,
+  minRating,
+}: IServiceListQuery) => {
+  const params = new URLSearchParams({
+    page: String(page),
+    limit: String(limit),
+  });
   if (search) params.set("search", search);
+  if (category) params.set("category", category);
+  if (city) params.set("city", city);
+  if (minRating) params.set("minRating", minRating);
   return params.toString();
 };
 

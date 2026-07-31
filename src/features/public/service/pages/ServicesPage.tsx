@@ -9,12 +9,27 @@ interface IServicesPageProps {
   page: number;
   search?: string;
   category?: string;
+  city?: string;
+  minRating?: string;
 }
 
-const ServicesPage = async ({ page, search, category }: IServicesPageProps) => {
+const ServicesPage = async ({
+  page,
+  search,
+  category,
+  city,
+  minRating,
+}: IServicesPageProps) => {
   const [categories, { items: services, total }] = await Promise.all([
     getCategories(),
-    getServices({ page, limit: DEFAULT_PAGE_SIZE, search, category }),
+    getServices({
+      page,
+      limit: DEFAULT_PAGE_SIZE,
+      search,
+      category,
+      city,
+      minRating,
+    }),
   ]);
 
   const totalPages = Math.max(1, Math.ceil(total / DEFAULT_PAGE_SIZE));
@@ -27,6 +42,8 @@ const ServicesPage = async ({ page, search, category }: IServicesPageProps) => {
     const next = new URLSearchParams();
     if (search) next.set("search", search);
     if (category) next.set("category", category);
+    if (city) next.set("city", city);
+    if (minRating) next.set("minRating", minRating);
     next.set("page", String(targetPage));
     return `/services?${next.toString()}`;
   };
@@ -46,7 +63,11 @@ const ServicesPage = async ({ page, search, category }: IServicesPageProps) => {
 
         <div className="space-y-6 lg:col-span-3">
           {services.length === 0 ? (
-            <Text variant="normal-sm" as="p" className="text-project-muted-foreground">
+            <Text
+              variant="normal-sm"
+              as="p"
+              className="text-project-muted-foreground"
+            >
               No services match this filter.
             </Text>
           ) : (
@@ -59,7 +80,11 @@ const ServicesPage = async ({ page, search, category }: IServicesPageProps) => {
 
           {totalPages > 1 && (
             <div className="flex items-center justify-between">
-              <Text variant="normal-sm" as="span" className="text-project-muted-foreground">
+              <Text
+                variant="normal-sm"
+                as="span"
+                className="text-project-muted-foreground"
+              >
                 Page {page} of {totalPages}
               </Text>
 

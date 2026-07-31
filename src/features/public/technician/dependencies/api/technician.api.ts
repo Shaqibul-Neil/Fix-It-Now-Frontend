@@ -7,12 +7,14 @@ import type {
   ITechnicianDetails,
 } from "../types/technician.types";
 
-const buildQuery = ({ search, page, limit }: IPublicTechnicianQuery) => {
+const buildQuery = ({ search, city, minRating, page, limit }: IPublicTechnicianQuery) => {
   const params = new URLSearchParams({
     page: String(page),
     limit: String(limit),
   });
   if (search) params.set("search", search);
+  if (city) params.set("city", city);
+  if (minRating) params.set("minRating", minRating);
   return params.toString();
 };
 
@@ -24,7 +26,6 @@ export const getTechnicians = async (
     `${apiEndpoints.technicianPublic.list}?${buildQuery(query)}`,
     { next: { revalidate: 60 } },
   );
-  console.log(response);
   return { items: response.data ?? [], total: response.meta?.total ?? 0 };
 };
 

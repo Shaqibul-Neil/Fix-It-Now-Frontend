@@ -27,6 +27,8 @@ export interface IAdminService extends IServiceRow {
 export interface IServiceListQuery {
   category?: string;
   search?: string;
+  city?: string;
+  minRating?: string;
   page: number;
   limit: number;
 }
