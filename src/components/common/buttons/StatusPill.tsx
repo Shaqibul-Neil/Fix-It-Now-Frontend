@@ -48,7 +48,8 @@ export type TStatus =
   | "HIDDEN"
   // User account
   | "ACTIVE"
-  | "BANNED";
+  | "BANNED"
+  | "INACTIVE";
 
 const STATUS_META: Record<TStatus, { label: string; tone: TTone }> = {
   // Booking
@@ -77,6 +78,7 @@ const STATUS_META: Record<TStatus, { label: string; tone: TTone }> = {
   // User account
   ACTIVE: { label: "Active", tone: "success" },
   BANNED: { label: "Banned", tone: "danger" },
+  INACTIVE: { label: "Inactive", tone: "danger" },
 };
 
 interface IStatusPillProps {

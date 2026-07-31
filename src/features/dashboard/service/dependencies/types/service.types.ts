@@ -1,6 +1,4 @@
-// GET /services — every Service scalar plus the flattened category and
-// technician the public list mapper adds.
-export interface IServiceRow {
+export interface IBaseServiceRow {
   id: string;
   technicianId: string;
   categoryId: string;
@@ -12,9 +10,18 @@ export interface IServiceRow {
   createdAt: string;
   updatedAt: string;
   category: string;
+}
+
+export interface ITechnicianInfo {
   technicianName: string;
   technicianEmail: string;
   technicianRating: string;
+}
+
+export interface IServiceRow extends IBaseServiceRow, ITechnicianInfo {}
+
+export interface IAdminService extends IServiceRow {
+  totalBookings: number;
 }
 
 export interface IServiceListQuery {

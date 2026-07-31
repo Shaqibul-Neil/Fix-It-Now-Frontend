@@ -1,12 +1,11 @@
 "use client";
-
 import { useState, type ReactNode } from "react";
 import { CalendarPlus } from "lucide-react";
 import type { ColumnDef } from "@tanstack/react-table";
-import { ActionColumn, Text, buildColumn } from "@/src/components";
-import { formatMoney } from "@/src/lib/utils/format.utils";
+import { ActionColumn, Text } from "@/src/components";
 import BookingFormPanel from "@/src/features/dashboard/booking/dependencies/components/BookingFormPanel";
 import type { IBookableService, IServiceRow } from "../types/service.types";
+import { serviceBaseColumns } from "./ServiceColumns";
 
 export const useCustomerServicesColumns = (): {
   columns: ColumnDef<IServiceRow>[];
@@ -14,83 +13,47 @@ export const useCustomerServicesColumns = (): {
 } => {
   const [selected, setSelected] = useState<IBookableService | null>(null);
 
+  const [service, ...rest] = serviceBaseColumns<IServiceRow>();
+
   return {
     columns: [
-      ...buildColumn<IServiceRow>([
-        {
-          id: "service",
-          label: "Service",
-          size: 280,
-          render: (row: IServiceRow) => (
-            <div className="min-w-0 leading-tight">
-              <span className="block truncate font-medium">{row.title}</span>
-              <Text
-                variant="normal-xs"
-                as="span"
-                className="block truncate text-project-muted-foreground"
-              >
-                {row.category}
-              </Text>
-            </div>
-          ),
-        },
-        {
-          id: "technician",
-          label: "Technician",
-          size: 230,
-          render: (row: IServiceRow) => (
+      service,
+
+      {
+        id: "technician",
+        header: "Technician",
+        size: 230,
+
+        cell: ({ row }) => {
+          const data = row.original;
+
+          return (
             <div className="min-w-0 leading-tight">
               <span className="block truncate font-medium">
-                {row.technicianName}
+                {data.technicianName}
               </span>
+
               <Text
                 variant="normal-xs"
                 as="span"
                 className="block truncate text-project-muted-foreground"
               >
-                {row.technicianEmail}
+                {data.technicianEmail}
               </Text>
+
               <Text
                 variant="normal-xs"
                 as="span"
                 className="block truncate text-project-muted-foreground"
               >
-                ★ {row.technicianRating}
+                ★ {data.technicianRating}
               </Text>
             </div>
-          ),
+          );
         },
-        {
-          id: "price",
-          label: "Price",
-          size: 110,
-          render: (row: IServiceRow) => (
-            <span className="font-semibold tabular-nums">
-              {formatMoney(row.price)}
-            </span>
-          ),
-        },
-        {
-          id: "estimatedDuration",
-          label: "Duration",
-          size: 110,
-          render: (row: IServiceRow) => (
-            <span className="whitespace-nowrap">
-              {row.estimatedDuration ? `${row.estimatedDuration} min` : "—"}
-            </span>
-          ),
-        },
-        {
-          id: "description",
-          label: "About",
-          size: 320,
-          render: (row: IServiceRow) => (
-            <span className="line-clamp-2 text-project-muted-foreground">
-              {row.description ?? "—"}
-            </span>
-          ),
-        },
-      ]),
+      },
+
+      ...rest,
 
       ActionColumn<IServiceRow>(
         [
@@ -98,6 +61,7 @@ export const useCustomerServicesColumns = (): {
             icon: CalendarPlus,
             label: "Book now",
             variant: "primary",
+
             onClick: (row) =>
               setSelected({
                 id: row.id,
@@ -109,7 +73,10 @@ export const useCustomerServicesColumns = (): {
               }),
           },
         ],
-        { asDropdown: true, size: 90 },
+        {
+          asDropdown: true,
+          size: 90,
+        },
       ),
     ],
 

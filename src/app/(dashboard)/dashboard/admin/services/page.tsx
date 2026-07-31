@@ -1,7 +1,5 @@
-export default function AdminServicesPage() {
-  return (
-    <section className="space-y-4">
-      <h1 className="text-2xl font-semibold tracking-tight">Services</h1>
-    </section>
-  );
+import AdminServicesPage from "@/src/features/dashboard/service/pages/AdminServicesPage";
+
+export default function AdminServicesRoute() {
+  return <AdminServicesPage />;
 }

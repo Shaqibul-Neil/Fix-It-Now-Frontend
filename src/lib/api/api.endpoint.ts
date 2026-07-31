@@ -13,11 +13,13 @@ export const apiEndpoints = {
     bookingStatus: (id: string) => `/technician/bookings/${id}`,
     reviews: "/technician/reviews",
     availability: "/technician/availability",
+    service: "/technician/services/my-services",
   },
   admin: {
     dashboard: { stats: "/stats/admin/dashboard" },
     bookings: "/admin/bookings",
     payments: "/admin/payments",
+    service: "/services/admin/list",
     reviews: "/admin/reviews",
     reviewStatus: (id: string) => `/admin/reviews/${id}/status`,
   },
