@@ -11,3 +11,17 @@ export interface ITechnician {
   averageRating: string;
   totalReviews: number;
 }
+
+// GET /technicians/:id — same row plus the profile fields only a single-item
+// read carries.
+export interface ITechnicianDetails extends ITechnician {
+  bio: string | null;
+  address: string;
+  serviceRadius: number | null;
+}
+
+export interface IPublicTechnicianQuery {
+  search?: string;
+  page: number;
+  limit: number;
+}

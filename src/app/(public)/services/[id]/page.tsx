@@ -1,12 +1,9 @@
-type PageProps = { params: Promise<{ id: string }> };
+import ServiceDetailsPage from "@/src/features/public/service/pages/ServiceDetailsPage";
 
-export default async function ServiceDetailsPage({ params }: PageProps) {
+type TRouteProps = { params: Promise<{ id: string }> };
+
+export default async function ServiceDetailsRoute({ params }: TRouteProps) {
   const { id } = await params;
 
-  return (
-    <section className="space-y-4">
-      <h1 className="text-2xl font-semibold tracking-tight">Service Details</h1>
-      <p className="text-sm text-muted-foreground">id: {id}</p>
-    </section>
-  );
+  return <ServiceDetailsPage id={id} />;
 }

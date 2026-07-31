@@ -1,7 +1,11 @@
-export default function TechniciansPage() {
-  return (
-    <section className="space-y-4">
-      <h1 className="text-2xl font-semibold tracking-tight">Technicians</h1>
-    </section>
-  );
+import TechniciansPage from "@/src/features/public/technician/pages/TechniciansPage";
+
+type TRouteProps = {
+  searchParams: Promise<{ page?: string; search?: string }>;
+};
+
+export default async function TechniciansRoute({ searchParams }: TRouteProps) {
+  const { page, search } = await searchParams;
+
+  return <TechniciansPage page={Number(page) || 1} search={search} />;
 }
