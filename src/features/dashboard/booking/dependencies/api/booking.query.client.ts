@@ -32,26 +32,32 @@ const buildQuery = ({
 //-----------------Admin---------------
 export const getAdminBookings = (query: IBookingListQuery) =>
   clientFetch<TAdminBookingRow[]>(
-    `${apiEndpoints.admin.bookings}${buildQuery(query)}`,
+    `${apiEndpoints.dashboard.admin.bookings.list}${buildQuery(query)}`,
   );
 
 export const getAdminBookingDetails = (id: string) =>
-  clientFetch<IAdminBookingDetails>(apiEndpoints.booking.details(id));
+  clientFetch<IAdminBookingDetails>(
+    apiEndpoints.dashboard.admin.bookings.details(id),
+  );
 
 //-----------------Technician---------------
 export const getTechnicianBookings = (query: IBookingListQuery) =>
   clientFetch<ITechnicianBookingRow[]>(
-    `${apiEndpoints.technician.bookings}${buildQuery(query)}`,
+    `${apiEndpoints.dashboard.technician.bookings.list}${buildQuery(query)}`,
   );
 
 export const getTechnicianBookingDetails = (id: string) =>
-  clientFetch<ITechnicianBookingDetails>(apiEndpoints.booking.details(id));
+  clientFetch<ITechnicianBookingDetails>(
+    apiEndpoints.dashboard.technician.bookings.details(id),
+  );
 
 //-----------------Customer---------------
 export const getCustomerBookings = (query: IBookingListQuery) =>
   clientFetch<ICustomerBookingRow[]>(
-    `${apiEndpoints.customer.bookings}${buildQuery(query)}`,
+    `${apiEndpoints.dashboard.customer.bookings.list}${buildQuery(query)}`,
   );
 
 export const getCustomerBookingDetails = (id: string) =>
-  clientFetch<ICustomerBookingDetails>(apiEndpoints.booking.details(id));
+  clientFetch<ICustomerBookingDetails>(
+    apiEndpoints.dashboard.customer.bookings.details(id),
+  );

@@ -8,7 +8,7 @@ import type { IServiceRow } from "@/src/features/dashboard/service/dependencies/
 import {
   getCategoryPhoto,
   toCategorySlug,
-} from "@/src/features/public/category/dependencies/constants/category.photos";
+} from "@/src/features/dashboard/category/dependencies/constants/category.photos";
 import type { TUserRole } from "@/src/lib/auth/auth.roles";
 import BookNowButton from "./BookNowButton";
 

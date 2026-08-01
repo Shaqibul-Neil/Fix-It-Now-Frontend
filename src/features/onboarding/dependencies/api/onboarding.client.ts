@@ -5,13 +5,19 @@ import { ITechnicianProfile } from "../types/onboarding.types";
 
 //---------Create Profile---------
 export const createTechnicianProfile = (payload: TTechnicianProfileInput) =>
-  clientFetch<ITechnicianProfile>(apiEndpoints.technician.profile, {
-    method: "POST",
-    body: payload,
-  });
+  clientFetch<ITechnicianProfile>(
+    apiEndpoints.dashboard.technician.profile.create,
+    {
+      method: "POST",
+      body: payload,
+    },
+  );
 //-----------Rejected Technician reapply----
 export const updateTechnicianProfile = (payload: TTechnicianProfileInput) =>
-  clientFetch<ITechnicianProfile>(apiEndpoints.technician.profile, {
-    method: "PATCH",
-    body: payload,
-  });
+  clientFetch<ITechnicianProfile>(
+    apiEndpoints.dashboard.technician.profile.update,
+    {
+      method: "PATCH",
+      body: payload,
+    },
+  );

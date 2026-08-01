@@ -1,7 +1,5 @@
-export default function AdminTechniciansPage() {
-  return (
-    <section className="space-y-4">
-      <h1 className="text-2xl font-semibold tracking-tight">Technicians</h1>
-    </section>
-  );
+import AdminTechniciansPage from "@/src/features/dashboard/technician/pages/AdminTechniciansPage";
+
+export default function AdminTechniciansRoute() {
+  return <AdminTechniciansPage />;
 }

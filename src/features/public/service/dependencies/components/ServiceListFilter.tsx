@@ -34,6 +34,7 @@ const ServiceListFilter = ({
         onChange={(value) =>
           setFilter("category", value === ALL_OPTION_VALUE ? undefined : value)
         }
+        infiniteScroll
         containerClassName="w-full"
       />
 

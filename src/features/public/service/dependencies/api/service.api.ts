@@ -29,7 +29,7 @@ export const getServices = async (
   query: IServiceListQuery,
 ): Promise<{ items: IServiceRow[]; total: number }> => {
   const { response } = await serverFetch<IServiceRow[]>(
-    `${apiEndpoints.service.list}?${buildQuery(query)}`,
+    `${apiEndpoints.public.service.list}?${buildQuery(query)}`,
     { next: { revalidate: 60 } },
   );
   return { items: response.data ?? [], total: response.meta?.total ?? 0 };

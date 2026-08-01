@@ -1,7 +1,5 @@
-export default function AdminCategoriesPage() {
-  return (
-    <section className="space-y-4">
-      <h1 className="text-2xl font-semibold tracking-tight">Categories</h1>
-    </section>
-  );
+import AdminCategoriesPage from "@/src/features/dashboard/category/pages/AdminCategoriesPage";
+
+export default function AdminCategoriesRoute() {
+  return <AdminCategoriesPage />;
 }

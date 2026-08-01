@@ -7,19 +7,28 @@ import type {
 
 //-----------------Technician---------------
 export const createService = (payload: ICreateServicePayload) =>
-  clientFetch<{ id: string }>(apiEndpoints.service.list, {
-    method: "POST",
-    body: payload,
-  });
+  clientFetch<{ id: string }>(
+    apiEndpoints.dashboard.technician.services.create,
+    {
+      method: "POST",
+      body: payload,
+    },
+  );
 
 export const updateService = (id: string, payload: IUpdateServicePayload) =>
-  clientFetch<{ id: string }>(apiEndpoints.service.byId(id), {
-    method: "PATCH",
-    body: payload,
-  });
+  clientFetch<{ id: string }>(
+    apiEndpoints.dashboard.technician.services.update(id),
+    {
+      method: "PATCH",
+      body: payload,
+    },
+  );
 
 //-----------------Technician (own) + Admin (any)---------------
 export const deleteService = (id: string) =>
-  clientFetch<{ id: string }>(apiEndpoints.service.byId(id), {
-    method: "DELETE",
-  });
+  clientFetch<{ id: string }>(
+    apiEndpoints.dashboard.technician.services.remove(id),
+    {
+      method: "DELETE",
+    },
+  );

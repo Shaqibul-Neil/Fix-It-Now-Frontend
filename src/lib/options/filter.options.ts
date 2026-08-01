@@ -3,6 +3,7 @@ import type {
   TBookingStatus,
   TPaymentStatus,
   TReviewStatus,
+  TTechnicianApprovalStatus,
 } from "@/src/types/types";
 
 export const DEFAULT_PERIOD: TPeriod = "30";
@@ -53,6 +54,24 @@ export const FILTER_OPTIONS: IFilterConfig = {
     ],
   },
 
+  approvalStatus: {
+    options: [
+      { label: "All applications", value: ALL_OPTION_VALUE },
+      {
+        label: "Pending",
+        value: "PENDING" satisfies TTechnicianApprovalStatus,
+      },
+      {
+        label: "Approved",
+        value: "APPROVED" satisfies TTechnicianApprovalStatus,
+      },
+      {
+        label: "Rejected",
+        value: "REJECTED" satisfies TTechnicianApprovalStatus,
+      },
+    ],
+  },
+
   rating: {
     options: [
       { label: "All ratings", value: ALL_OPTION_VALUE },
@@ -95,6 +114,13 @@ export const FILTER_OPTIONS: IFilterConfig = {
     ],
   },
 };
+
+// An application is either taken or turned down — PENDING is where it starts,
+// not a decision the admin can send.
+export const TECHNICIAN_DECISION_OPTIONS = [
+  { label: "Approve", value: "APPROVED" satisfies TTechnicianApprovalStatus },
+  { label: "Reject", value: "REJECTED" satisfies TTechnicianApprovalStatus },
+];
 
 // The statuses an admin can move a review to, minus whichever it already is.
 export const REVIEW_MODERATION_OPTIONS = [

@@ -8,26 +8,32 @@ import type {
 
 //-----------------Customer---------------
 export const createReview = (payload: ICreateReviewPayload) =>
-  clientFetch<{ id: string }>(apiEndpoints.customer.reviews, {
+  clientFetch<{ id: string }>(apiEndpoints.dashboard.customer.reviews.create, {
     method: "POST",
     body: payload,
   });
 
 export const updateReview = (id: string, payload: IUpdateReviewPayload) =>
-  clientFetch<{ id: string }>(apiEndpoints.review.byId(id), {
-    method: "PATCH",
-    body: payload,
-  });
+  clientFetch<{ id: string }>(
+    apiEndpoints.dashboard.customer.reviews.update(id),
+    {
+      method: "PATCH",
+      body: payload,
+    },
+  );
 
 //-----------------Customer (own) + Admin (any)---------------
 export const deleteReview = (id: string) =>
-  clientFetch<{ id: string }>(apiEndpoints.review.byId(id), {
-    method: "DELETE",
-  });
+  clientFetch<{ id: string }>(
+    apiEndpoints.dashboard.customer.reviews.remove(id),
+    {
+      method: "DELETE",
+    },
+  );
 
 //-----------------Admin---------------
 export const moderateReview = (id: string, status: TReviewStatus) =>
-  clientFetch<{ id: string }>(apiEndpoints.admin.reviewStatus(id), {
+  clientFetch<{ id: string }>(apiEndpoints.dashboard.admin.reviews.status(id), {
     method: "PATCH",
     body: { status },
   });

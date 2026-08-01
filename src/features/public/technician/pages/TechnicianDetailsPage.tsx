@@ -9,32 +9,8 @@ import {
 } from "@/src/features/public/technician/dependencies/api/technician.api";
 import TechnicianServicesTable from "@/src/features/public/technician/dependencies/components/TechnicianServicesTable";
 import AvailabilitySummary from "@/src/features/dashboard/availability/dependencies/components/AvailabilitySummary";
-import {
-  DAY_ORDER,
-  emptyWeek,
-} from "@/src/features/dashboard/availability/dependencies/utils/availability.utils";
-import type {
-  IPublicAvailabilitySlot,
-  TWeekSchedule,
-} from "@/src/features/dashboard/availability/dependencies/types/availability.types";
+import { toPublicWeekSchedule } from "@/src/features/dashboard/availability/dependencies/utils/availability.utils";
 import { formatMoney } from "@/src/lib/utils/format.utils";
-
-// Public slots carry no `isActive` (off days are already dropped server-side),
-// so every row here turns its day on — unlike the technician's own editor.
-const toPublicWeekSchedule = (slots: IPublicAvailabilitySlot[]): TWeekSchedule => {
-  const week = emptyWeek();
-
-  slots.forEach(({ dayOfWeek, startTime, endTime }) => {
-    week[dayOfWeek].isActive = true;
-    week[dayOfWeek].ranges.push({ startTime, endTime });
-  });
-
-  DAY_ORDER.forEach((day) => {
-    week[day].ranges.sort((a, b) => a.startTime.localeCompare(b.startTime));
-  });
-
-  return week;
-};
 
 const TechnicianDetailsPage = async ({ id }: { id: string }) => {
   const technician = await getTechnicianById(id);

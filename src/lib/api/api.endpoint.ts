@@ -5,62 +5,107 @@ export const apiEndpoints = {
     refreshToken: "/auth/refresh-token",
     me: "/auth/me",
   },
-  technician: {
-    dashboard: { stats: "/stats/technician/dashboard" },
-    profile: "/technicians/profile",
-    myProfile: "/technicians/profile/me",
-    bookings: "/technician/bookings",
-    bookingStatus: (id: string) => `/technician/bookings/${id}`,
-    reviews: "/technician/reviews",
-    availability: "/technician/availability",
-    service: "/technician/services/my-services",
+
+  dashboard: {
+    admin: {
+      stats: {
+        dashboard: "/stats/admin/dashboard",
+      },
+      bookings: {
+        list: "/admin/bookings",
+        details: (id: string) => `/bookings/${id}`,
+      },
+      payments: {
+        list: "/admin/payments",
+        details: (id: string) => `/payments/${id}`,
+      },
+      services: {
+        list: "/services/admin/list",
+      },
+      reviews: {
+        list: "/admin/reviews",
+        status: (id: string) => `/admin/reviews/${id}/status`,
+      },
+      categories: {
+        list: "/categories",
+        create: "/admin/categories",
+        update: (id: string) => `/admin/categories/${id}`,
+        remove: (id: string) => `/admin/categories/${id}`,
+      },
+      technicians: {
+        list: "/technicians/admin/list",
+        details: (id: string) => `/technicians/admin/${id}`,
+        approval: (id: string) => `/technicians/admin/${id}/approval`,
+      },
+    },
+
+    technician: {
+      stats: {
+        dashboard: "/stats/technician/dashboard",
+      },
+      profile: {
+        create: "/technicians/profile",
+        update: "/technicians/profile",
+        myProfile: "/technicians/profile/me",
+      },
+      bookings: {
+        list: "/technician/bookings",
+        details: (id: string) => `/bookings/${id}`,
+        status: (id: string) => `/technician/bookings/${id}`,
+      },
+      services: {
+        myServices: "/technician/services/my-services",
+        create: "/services",
+        update: (id: string) => `/services/${id}`,
+        remove: (id: string) => `/services/${id}`,
+      },
+      reviews: {
+        myReviews: "/technician/reviews",
+      },
+      availability: {
+        myAvailability: "/technician/availability",
+        update: "/technician/availability",
+      },
+    },
+
+    customer: {
+      bookings: {
+        list: "/bookings",
+        create: "/bookings",
+        details: (id: string) => `/bookings/${id}`,
+        cancel: (id: string) => `/bookings/${id}/cancel`,
+      },
+      payments: {
+        myPayments: "/payments/my-payments",
+        details: (id: string) => `/payments/${id}`,
+        create: "/payments/create",
+      },
+      reviews: {
+        myReviews: "/reviews/my-reviews",
+        create: "/reviews",
+        update: (id: string) => `/reviews/${id}`,
+        remove: (id: string) => `/reviews/${id}`,
+      },
+      services: {
+        list: "/services",
+      },
+    },
   },
-  admin: {
-    dashboard: { stats: "/stats/admin/dashboard" },
-    bookings: "/admin/bookings",
-    payments: "/admin/payments",
-    service: "/services/admin/list",
-    reviews: "/admin/reviews",
-    reviewStatus: (id: string) => `/admin/reviews/${id}/status`,
-  },
-  customer: {
-    bookings: "/bookings",
-    cancelBooking: (id: string) => `/bookings/${id}/cancel`,
-    createPayment: "/payments/create",
-    myPayments: "/payments/my-payments",
-    reviews: "/reviews",
-    myReviews: "/reviews/my-reviews",
-  },
-  // Shared by customer (own review) and admin (any review).
-  review: {
-    byId: (id: string) => `/reviews/${id}`,
-  },
-  // Shared by all three roles — the backend picks the shape from the token.
-  booking: {
-    details: (id: string) => `/bookings/${id}`,
-  },
-  // Shared by admin and customer — same rule, the admin payload carries more.
-  payment: {
-    details: (id: string) => `/payments/${id}`,
-  },
-  // list/create share a path (GET vs POST); byId is shared by technician
-  // (own service) and admin (any service) for update/delete.
-  service: {
-    list: "/services",
-    byId: (id: string) => `/services/${id}`,
-  },
-  // Public — what a customer reads before picking a time.
-  technicianPublic: {
-    list: "/technicians",
-    byId: (id: string) => `/technicians/${id}`,
-    availability: (id: string) => `/technicians/${id}/availability`,
-  },
-  category: {
-    list: "/categories",
+
+  public: {
+    service: {
+      list: "/services",
+    },
+    technician: {
+      list: "/technicians",
+      details: (id: string) => `/technicians/${id}`,
+      availability: (id: string) => `/technicians/${id}/availability`,
+    },
+    category: {
+      list: "/categories",
+    },
   },
 };
-
-// Next.js BFF(Gateway) paths — what the browser calls.
 
 export const bffEndpoints = {
   auth: {

@@ -12,7 +12,7 @@ export const getOnboardingRequest = async (): Promise<
   if (!accessToken) return undefined;
 
   const { response } = await serverFetch<ITechnicianProfile>(
-    apiEndpoints.technician.myProfile,
+    apiEndpoints.dashboard.technician.profile.myProfile,
     { accessToken, cache: "no-store" },
   );
 

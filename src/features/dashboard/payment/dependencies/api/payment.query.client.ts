@@ -24,17 +24,21 @@ const buildQuery = ({ status, period, search, page, limit }: IPaymentListQuery) 
 //-----------------Admin---------------
 export const getAdminPayments = (query: IPaymentListQuery) =>
   clientFetch<IAdminPaymentRow[]>(
-    `${apiEndpoints.admin.payments}${buildQuery(query)}`,
+    `${apiEndpoints.dashboard.admin.payments.list}${buildQuery(query)}`,
   );
 
 export const getAdminPaymentDetails = (id: string) =>
-  clientFetch<IAdminPaymentDetails>(apiEndpoints.payment.details(id));
+  clientFetch<IAdminPaymentDetails>(
+    apiEndpoints.dashboard.admin.payments.details(id),
+  );
 
 //-----------------Customer---------------
 export const getCustomerPayments = (query: IPaymentListQuery) =>
   clientFetch<ICustomerPaymentRow[]>(
-    `${apiEndpoints.customer.myPayments}${buildQuery(query)}`,
+    `${apiEndpoints.dashboard.customer.payments.myPayments}${buildQuery(query)}`,
   );
 
 export const getCustomerPaymentDetails = (id: string) =>
-  clientFetch<ICustomerPaymentDetails>(apiEndpoints.payment.details(id));
+  clientFetch<ICustomerPaymentDetails>(
+    apiEndpoints.dashboard.customer.payments.details(id),
+  );

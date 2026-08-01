@@ -1,7 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { AppButton, Text } from "@/src/components";
-import type { ICategory } from "@/src/features/public/category/dependencies/types/category.types";
+import type { ICategory } from "@/src/features/dashboard/category/dependencies/types/category.types";
 import { getCategoryIcon } from "../constants/category.icons";
 
 const CategorySection = ({ categories }: { categories: ICategory[] }) => {

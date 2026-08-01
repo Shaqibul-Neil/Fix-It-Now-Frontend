@@ -22,17 +22,17 @@ const buildQuery = ({ category, search, page, limit }: IServiceListQuery) => {
 //-----------------Admin---------------
 export const getAdminServices = (query: IServiceListQuery) =>
   clientFetch<IAdminService[]>(
-    `${apiEndpoints.admin.service}${buildQuery(query)}`,
+    `${apiEndpoints.dashboard.admin.services.list}${buildQuery(query)}`,
   );
 
 //-----------------Technician---------------
 export const getTechnicianOwnServices = (query: IServiceListQuery) =>
   clientFetch<IBaseServiceRow[]>(
-    `${apiEndpoints.technician.service}${buildQuery(query)}`,
+    `${apiEndpoints.dashboard.technician.services.myServices}${buildQuery(query)}`,
   );
 
 //-----------------Customer---------------
 export const getServices = (query: IServiceListQuery) =>
   clientFetch<IServiceRow[]>(
-    `${apiEndpoints.service.list}${buildQuery(query)}`,
+    `${apiEndpoints.dashboard.customer.services.list}${buildQuery(query)}`,
   );

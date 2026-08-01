@@ -13,11 +13,11 @@ const buildQuery = ({ period, from, to }: IStatsQuery) =>
 //-----------------Admin Dashboard---------------
 export const getAdminStats = (query: IStatsQuery) =>
   clientFetch<IAdminStats>(
-    `${apiEndpoints.admin.dashboard.stats}${buildQuery(query)}`,
+    `${apiEndpoints.dashboard.admin.stats.dashboard}${buildQuery(query)}`,
   );
 
 //-----------------Technician Dashboard---------------
 export const getTechnicianStats = (query: IStatsQuery) =>
   clientFetch<ITechnicianStats>(
-    `${apiEndpoints.technician.dashboard.stats}${buildQuery(query)}`,
+    `${apiEndpoints.dashboard.technician.stats.dashboard}${buildQuery(query)}`,
   );

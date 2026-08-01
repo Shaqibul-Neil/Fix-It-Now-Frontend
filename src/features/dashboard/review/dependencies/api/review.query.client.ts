@@ -29,17 +29,17 @@ const buildQuery = ({
 //-----------------Admin---------------
 export const getAdminReviews = (query: IReviewListQuery) =>
   clientFetch<IAdminReviewRow[]>(
-    `${apiEndpoints.admin.reviews}${buildQuery(query)}`,
+    `${apiEndpoints.dashboard.admin.reviews.list}${buildQuery(query)}`,
   );
 
 //-----------------Technician---------------
 export const getTechnicianReviews = (query: IReviewListQuery) =>
   clientFetch<ITechnicianReviewRow[]>(
-    `${apiEndpoints.technician.reviews}${buildQuery(query)}`,
+    `${apiEndpoints.dashboard.technician.reviews.myReviews}${buildQuery(query)}`,
   );
 
 //-----------------Customer---------------
 export const getCustomerReviews = (query: IReviewListQuery) =>
   clientFetch<ICustomerReviewRow[]>(
-    `${apiEndpoints.customer.myReviews}${buildQuery(query)}`,
+    `${apiEndpoints.dashboard.customer.reviews.myReviews}${buildQuery(query)}`,
   );

@@ -6,7 +6,7 @@ import type { ICategory } from "../types/category.types";
 // truncated to a homepage-sized preview.
 export const getCategories = async (): Promise<ICategory[]> => {
   const { response } = await serverFetch<ICategory[]>(
-    apiEndpoints.category.list,
+    apiEndpoints.dashboard.admin.categories.list,
     { next: { revalidate: 3600 } },
   );
   return response.data ?? [];

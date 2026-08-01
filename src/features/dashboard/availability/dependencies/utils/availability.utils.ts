@@ -129,6 +129,25 @@ export const toWeekSchedule = (slots: IAvailabilitySlot[]): TWeekSchedule => {
   return week;
 };
 
+// Public slots carry no `isActive` (off days are already dropped server-side),
+// so every row here turns its day on — unlike the technician's own editor.
+export const toPublicWeekSchedule = (
+  slots: IPublicAvailabilitySlot[],
+): TWeekSchedule => {
+  const week = emptyWeek();
+
+  slots.forEach(({ dayOfWeek, startTime, endTime }) => {
+    week[dayOfWeek].isActive = true;
+    week[dayOfWeek].ranges.push({ startTime, endTime });
+  });
+
+  DAY_ORDER.forEach((day) => {
+    week[day].ranges.sort((a, b) => a.startTime.localeCompare(b.startTime));
+  });
+
+  return week;
+};
+
 // PUT replaces the whole schedule, so every range the editor holds is sent —
 // off days included, carrying isActive false.
 export const toSlotPayload = (

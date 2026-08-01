@@ -23,7 +23,7 @@ export const getTechnicians = async (
   query: IPublicTechnicianQuery,
 ): Promise<{ items: ITechnician[]; total: number }> => {
   const { response } = await serverFetch<ITechnician[]>(
-    `${apiEndpoints.technicianPublic.list}?${buildQuery(query)}`,
+    `${apiEndpoints.public.technician.list}?${buildQuery(query)}`,
     { next: { revalidate: 60 } },
   );
   return { items: response.data ?? [], total: response.meta?.total ?? 0 };
@@ -33,7 +33,7 @@ export const getTechnicianById = async (
   id: string,
 ): Promise<ITechnicianDetails | null> => {
   const { response } = await serverFetch<ITechnicianDetails>(
-    apiEndpoints.technicianPublic.byId(id),
+    apiEndpoints.public.technician.details(id),
     { next: { revalidate: 60 } },
   );
   return response.data ?? null;
@@ -43,7 +43,7 @@ export const getTechnicianAvailability = async (
   id: string,
 ): Promise<IPublicAvailabilitySlot[]> => {
   const { response } = await serverFetch<IPublicAvailabilitySlot[]>(
-    apiEndpoints.technicianPublic.availability(id),
+    apiEndpoints.public.technician.availability(id),
     { next: { revalidate: 300 } },
   );
   return response.data ?? [];

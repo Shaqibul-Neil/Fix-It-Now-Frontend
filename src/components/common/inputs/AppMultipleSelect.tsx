@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
+import Image from "next/image";
 import { Check, ChevronDown } from "lucide-react";
 import { Popover } from "radix-ui";
 import { cn } from "@/src/lib/utils/cn";
@@ -144,13 +145,15 @@ const AppMultipleSelect = ({
                           />
                         )}
                       </div>
-                      {/* IMAGE SUPPORT for Business/Enterprise */}
+                      {/* IMAGE SUPPORT */}
                       {opt.image && (
-                        <img
+                        <Image
                           src={opt.image}
                           alt={opt.name}
-                          className="size-6
-                           rounded-full object-cover border border-project-border shadow-sm"
+                          width={24}
+                          height={24}
+                          unoptimized
+                          className="size-6 rounded-full object-cover border border-project-border shadow-sm"
                         />
                       )}
                       <span className="text-sm">{opt.name}</span>
@@ -159,7 +162,7 @@ const AppMultipleSelect = ({
                 })
               ) : (
                 <div className="py-8 text-center text-xs text-project-muted-foreground font-medium px-4">
-                  No results found for "{searchTerm}"
+                  No results found for {searchTerm}
                 </div>
               )}
             </div>

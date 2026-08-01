@@ -4,7 +4,7 @@ import { formatMoney } from "@/src/lib/utils/format.utils";
 import {
   getCategoryPhoto,
   toCategorySlug,
-} from "@/src/features/public/category/dependencies/constants/category.photos";
+} from "@/src/features/dashboard/category/dependencies/constants/category.photos";
 import BookNowButton from "@/src/features/public/home/dependencies/components/BookNowButton";
 import type { IServiceRow } from "@/src/features/dashboard/service/dependencies/types/service.types";
 import type { TUserRole } from "@/src/lib/auth/auth.roles";

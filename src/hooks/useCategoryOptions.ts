@@ -18,7 +18,7 @@ export const useCategoryOptions = (
 ): TSelectOption[] => {
   const { data } = useQuery({
     queryKey: ["categories"],
-    queryFn: () => clientFetch<ICategory[]>(apiEndpoints.category.list),
+    queryFn: () => clientFetch<ICategory[]>(apiEndpoints.public.category.list),
     select: (response) =>
       (response.data ?? []).map((category) => ({
         label: category.name,

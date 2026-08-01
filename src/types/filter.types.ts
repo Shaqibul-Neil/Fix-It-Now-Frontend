@@ -17,6 +17,9 @@ export interface IFilterConfig {
   reviewStatus: {
     options: TSelectOption[];
   };
+  approvalStatus: {
+    options: TSelectOption[];
+  };
   rating: {
     options: TSelectOption[];
   };
