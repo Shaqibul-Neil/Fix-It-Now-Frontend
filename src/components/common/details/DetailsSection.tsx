@@ -21,7 +21,7 @@ const DetailsSection = ({
     <section
       className={cn("border border-project-border bg-project-card", className)}
     >
-      <div className="flex lg:flex-row flex-col items-start justify-between gap-4 border-b border-project-border px-5 py-4">
+      <div className="flex flex-col items-start justify-between gap-4 border-b border-project-border px-5 py-4 lg:flex-row lg:items-center">
         <div className="min-w-0">
           <Text
             variant="semibold-base"

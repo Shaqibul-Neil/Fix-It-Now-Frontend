@@ -6,7 +6,7 @@ import gsap from "gsap";
 import { Flip } from "gsap/Flip";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { DURATION, EASE, STAGGER } from "@/src/lib/animation/animation.tokens";
-import type { IServiceRow } from "@/src/features/dashboard/service/dependencies/types/service.types";
+import type { IPublicServiceRow } from "@/src/features/public/service/dependencies/types/service.types";
 import type { TUserRole } from "@/src/lib/auth/auth.roles";
 import ServiceCard from "./ServiceCard";
 
@@ -20,10 +20,12 @@ const ServiceMasonry = ({
   services,
   userRole,
 }: {
-  services: IServiceRow[];
+  services: IPublicServiceRow[];
   userRole?: TUserRole;
 }) => {
-  const [order, setOrder] = useState(() => services.map((service) => service.id));
+  const [order, setOrder] = useState(() =>
+    services.map((service) => service.id),
+  );
   const containerRef = useRef<HTMLDivElement>(null);
   const flipState = useRef<Flip.FlipState | null>(null);
   // Flip.absolute pulls the swapping cards out of grid flow mid-tween, which
@@ -35,7 +37,7 @@ const ServiceMasonry = ({
   const byId = new Map(services.map((service) => [service.id, service]));
   const ordered = order
     .map((id) => byId.get(id))
-    .filter((service): service is IServiceRow => Boolean(service));
+    .filter((service): service is IPublicServiceRow => Boolean(service));
 
   // Entrance, once — the swap tween below reuses these same cards later.
   useGSAP(
@@ -112,7 +114,9 @@ const ServiceMasonry = ({
           service={service}
           variant={index === 0 ? "hero" : "compact"}
           className={
-            index === 0 ? "sm:col-span-2 lg:col-span-2 lg:row-span-2" : undefined
+            index === 0
+              ? "sm:col-span-2 lg:col-span-2 lg:row-span-2"
+              : undefined
           }
           onMouseEnter={() => handleHover(service.id)}
           userRole={userRole}

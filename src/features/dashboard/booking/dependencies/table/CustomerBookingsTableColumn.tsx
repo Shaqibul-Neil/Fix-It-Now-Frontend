@@ -46,17 +46,17 @@ export const useCustomerBookingsColumns =
 
     return {
       columns: [
-        service,
-
         ContactColumn<ICustomerBookingRow>(
           "technician",
           "Technician",
           (row) => ({
             name: row.technicianName,
             email: row.technicianEmail,
-            phone: row.technicianPhone,
+            avatar: row.technicianAvatar,
           }),
         ),
+
+        service,
 
         ...rest,
 

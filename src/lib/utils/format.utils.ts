@@ -20,6 +20,12 @@ export const formatDateTime = (value?: string | null) => {
     : "—";
 };
 
+// The clock half of a timestamp, for cells that print the date above it.
+export const formatClock = (value?: string | null) => {
+  const date = value ? new Date(value) : null;
+  return date && !Number.isNaN(date.getTime()) ? format(date, "h:mm a") : "—";
+};
+
 // "09:00" -> "9:00 AM". Availability slots are stored as a bare wall clock,
 // with no date attached to hand to date-fns.
 export const formatTime = (value: string) => {

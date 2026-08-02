@@ -3,8 +3,10 @@
 import { useState } from "react";
 import { Ban, CreditCard, Star } from "lucide-react";
 import {
+  AppAvatar,
   AppButton,
   AppError,
+  AppRating,
   ConfirmModal,
   DetailsHeader,
   DetailsSection,
@@ -108,11 +110,32 @@ const CustomerBookingDetailsPage = ({ id }: { id: string }) => {
 
       <div className="grid gap-4 lg:grid-cols-3">
         <div className="space-y-4 lg:col-span-2">
-          <DetailsSection title="Your technician">
+          <DetailsSection
+            title="Technician information"
+            action={
+              // Negative margin keeps the header the same height it was before
+              // an avatar sat in it.
+              <AppAvatar
+                src={technician.avatar}
+                name={technicianName}
+                className="size-10 lg:-my-2"
+              />
+            }
+          >
             <InfoList
               items={[
                 { label: "Name", value: technicianName },
-                { label: "Rating", value: technician.averageRating },
+                {
+                  label: "Rating",
+                  value: (
+                    <AppRating
+                      value={Number(technician.averageRating)}
+                      readOnly
+                      size={14}
+                      caption={technician.averageRating}
+                    />
+                  ),
+                },
                 { label: "Service", value: service.title },
                 { label: "Listed price", value: formatMoney(service.price) },
               ]}

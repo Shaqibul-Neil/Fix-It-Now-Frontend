@@ -17,32 +17,33 @@ const CustomerServicesPage = () => {
   const { columns, modals } = useCustomerServicesColumns();
 
   return (
-    <section>
-      <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-        <PageHeader
-          title="Browse services"
-          description="Pick a service and book the technician who offers it."
-        />
+    <section className="flex flex-col gap-6">
+      <PageHeader
+        title="Browse services"
+        description="Pick a service and book the technician who offers it."
+        divClassName="mb-0"
+      />
 
-        <ServiceFilter />
+      <div className="flex flex-col gap-4">
+        <ServiceFilter showTechnicianScope />
+
+        {isFetching && <TableSkeleton />}
+
+        {isError && !isFetching && <AppError message={error?.message} />}
+
+        {data && !isError && !isFetching && (
+          <PaginatedTable
+            data={data.items}
+            columns={columns}
+            total={data.total}
+            page={page}
+            pageSize={pageSize}
+            onPageChange={setPage}
+            onPageSizeChange={setPageSize}
+            emptyMessage="No services match this filter."
+          />
+        )}
       </div>
-
-      {isFetching && <TableSkeleton />}
-
-      {isError && !isFetching && <AppError message={error?.message} />}
-
-      {data && !isError && !isFetching && (
-        <PaginatedTable
-          data={data.items}
-          columns={columns}
-          total={data.total}
-          page={page}
-          pageSize={pageSize}
-          onPageChange={setPage}
-          onPageSizeChange={setPageSize}
-          emptyMessage="No services match this filter."
-        />
-      )}
 
       {modals}
     </section>

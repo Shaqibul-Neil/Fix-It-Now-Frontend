@@ -1,9 +1,9 @@
 import { serverFetch } from "@/src/lib/api/api.server";
 import { apiEndpoints } from "@/src/lib/api/api.endpoint";
 import type {
-  IServiceListQuery,
-  IServiceRow,
-} from "@/src/features/dashboard/service/dependencies/types/service.types";
+  IPublicServiceListQuery,
+  IPublicServiceRow,
+} from "../types/service.types";
 
 const buildQuery = ({
   search,
@@ -12,7 +12,7 @@ const buildQuery = ({
   limit,
   city,
   minRating,
-}: IServiceListQuery) => {
+}: IPublicServiceListQuery) => {
   const params = new URLSearchParams({
     page: String(page),
     limit: String(limit),
@@ -26,9 +26,9 @@ const buildQuery = ({
 
 // Public, unauthenticated reads — same convention as home.api.ts.
 export const getServices = async (
-  query: IServiceListQuery,
-): Promise<{ items: IServiceRow[]; total: number }> => {
-  const { response } = await serverFetch<IServiceRow[]>(
+  query: IPublicServiceListQuery,
+): Promise<{ items: IPublicServiceRow[]; total: number }> => {
+  const { response } = await serverFetch<IPublicServiceRow[]>(
     `${apiEndpoints.public.service.list}?${buildQuery(query)}`,
     { next: { revalidate: 60 } },
   );

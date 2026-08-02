@@ -1,14 +1,23 @@
-import { CalendarCheck, ShieldCheck, Star, Wallet } from "lucide-react";
-import type { ElementType } from "react";
+import {
+  CalendarCheck,
+  ShieldCheck,
+  Star,
+  Wallet,
+  Wrench,
+  type LucideIcon,
+} from "lucide-react";
 import { cn } from "@/src/lib/utils/cn";
-import type { TNotificationType } from "./notification.placeholder";
+import type { TNotificationType } from "@/src/features/dashboard/notification/dependencies/types/notification.types";
 
-const TYPE_ICON: Record<TNotificationType, ElementType> = {
-  booking: CalendarCheck,
-  payment: Wallet,
-  review: Star,
-  system: ShieldCheck,
-};
+// Twenty-odd notification types, five icons — the prefix is the family a reader
+// recognises, so the icon follows that rather than the exact event.
+const PREFIX_ICON: [string, LucideIcon][] = [
+  ["BOOKING_", CalendarCheck],
+  ["PAYMENT_", Wallet],
+  ["REVIEW_", Star],
+  ["SERVICE_", Wrench],
+  ["CATEGORY_", Wrench],
+];
 
 const NotificationTypeIcon = ({
   type,
@@ -17,7 +26,10 @@ const NotificationTypeIcon = ({
   type: TNotificationType;
   isRead: boolean;
 }) => {
-  const Icon = TYPE_ICON[type];
+  // Everything left — account, technician and registration events — is the
+  // platform talking about the account itself.
+  const Icon =
+    PREFIX_ICON.find(([prefix]) => type.startsWith(prefix))?.[1] ?? ShieldCheck;
 
   return (
     <span

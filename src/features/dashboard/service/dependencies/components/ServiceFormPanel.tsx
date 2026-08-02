@@ -18,10 +18,7 @@ import {
   useCreateServiceMutation,
   useUpdateServiceMutation,
 } from "../hooks/useServiceMutation";
-import {
-  serviceFormSchema,
-  type TServiceForm,
-} from "../schema/service.schema";
+import { serviceFormSchema, type TServiceForm } from "../schema/service.schema";
 import type { IServiceFormTarget } from "../types/service.types";
 
 interface IServiceFormPanelProps {
@@ -95,11 +92,7 @@ const ServiceFormPanel = ({ target, onClose }: IServiceFormPanelProps) => {
       isOpen={Boolean(target)}
       onOpenChange={(open) => !open && onClose()}
       title={
-        isDone
-          ? "All set"
-          : isEditing
-            ? "Update service"
-            : "Add a new service"
+        isDone ? "All set" : isEditing ? "Update service" : "Add a new service"
       }
       description={isEditing ? target?.title : "List a service you offer"}
       footer={

@@ -2,34 +2,30 @@
 
 import { useState } from "react";
 import { Eye } from "lucide-react";
-import { ActionColumn, buildColumn } from "@/src/components";
+import { ActionColumn, ContactColumn } from "@/src/components";
 import ReviewDetailsModal from "../components/ReviewDetailsModal";
 import type { ITechnicianReviewRow } from "../types/review.types";
-import { reviewBaseColumns, type IReviewColumns } from "./ReviewColumns";
+import {
+  reviewBaseColumns,
+  toCommentText,
+  type IReviewColumns,
+} from "./ReviewColumns";
 
 export const useTechnicianReviewsColumns =
   (): IReviewColumns<ITechnicianReviewRow> => {
     const [viewing, setViewing] = useState<ITechnicianReviewRow | null>(null);
 
-    // Service leads, then who wrote it, then the rest of the shared columns.
+    // Who wrote it leads, then the job it was about, then the rest.
     const [service, ...rest] = reviewBaseColumns<ITechnicianReviewRow>();
 
     return {
       columns: [
-        service,
+        ContactColumn<ITechnicianReviewRow>("customer", "Customer", (row) => ({
+          name: row.customer.name,
+          avatar: row.customer.avatar,
+        })),
 
-        ...buildColumn<ITechnicianReviewRow>([
-          {
-            id: "customer",
-            label: "Customer",
-            size: 180,
-            render: (row: ITechnicianReviewRow) => (
-              <span className="block truncate font-medium">
-                {row.customer.name}
-              </span>
-            ),
-          },
-        ]),
+        service,
 
         ...rest,
 
@@ -53,7 +49,7 @@ export const useTechnicianReviewsColumns =
           isOpen={Boolean(viewing)}
           onClose={() => setViewing(null)}
           rating={viewing?.rating ?? 0}
-          comment={viewing?.comment ?? null}
+          comment={viewing ? toCommentText(viewing.comment) : null}
           meta={[{ label: "Service", value: viewing?.service.title }]}
         />
       ),

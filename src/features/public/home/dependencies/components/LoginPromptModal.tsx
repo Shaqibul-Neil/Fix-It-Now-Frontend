@@ -27,7 +27,11 @@ const LoginPromptModal = ({ isOpen, onClose }: ILoginPromptModalProps) => {
           <LogIn className="size-5" />
         </span>
 
-        <Text variant="normal-sm" as="p" className="text-project-muted-foreground">
+        <Text
+          variant="normal-sm"
+          as="p"
+          className="text-project-muted-foreground"
+        >
           Sign in and your booking picks up right where you left off — pick a
           time, confirm, done.
         </Text>

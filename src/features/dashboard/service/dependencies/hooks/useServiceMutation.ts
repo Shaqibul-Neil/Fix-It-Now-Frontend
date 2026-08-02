@@ -6,6 +6,7 @@ import { serviceKeys } from "../api/service.key";
 import {
   createService,
   deleteService,
+  restoreService,
   updateService,
 } from "../api/service.mutation.client";
 import type {
@@ -74,7 +75,22 @@ export const useDeleteServiceMutation = (onDone?: () => void) => {
 
     onSuccess: async ({ message }) => {
       await invalidateService();
-      AppToast.success(message ?? "Service deleted");
+      AppToast.success(message ?? "Service removed");
+      onDone?.();
+    },
+    onError: AppToast.error,
+  });
+};
+
+export const useRestoreServiceMutation = (onDone?: () => void) => {
+  const invalidateService = useInvalidateService();
+
+  return useMutation({
+    mutationFn: restoreService,
+
+    onSuccess: async ({ message }) => {
+      await invalidateService();
+      AppToast.success(message ?? "Service restored");
       onDone?.();
     },
     onError: AppToast.error,

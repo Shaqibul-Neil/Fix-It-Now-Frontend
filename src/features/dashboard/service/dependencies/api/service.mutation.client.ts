@@ -25,10 +25,19 @@ export const updateService = (id: string, payload: IUpdateServicePayload) =>
   );
 
 //-----------------Technician (own) + Admin (any)---------------
+// One path for both roles — the backend reads the caller's role off the token.
 export const deleteService = (id: string) =>
-  clientFetch<{ id: string }>(
+  clientFetch<{ id: string; activeBookingCount: number }>(
     apiEndpoints.dashboard.technician.services.remove(id),
     {
       method: "DELETE",
+    },
+  );
+
+export const restoreService = (id: string) =>
+  clientFetch<{ id: string }>(
+    apiEndpoints.dashboard.technician.services.restore(id),
+    {
+      method: "PATCH",
     },
   );

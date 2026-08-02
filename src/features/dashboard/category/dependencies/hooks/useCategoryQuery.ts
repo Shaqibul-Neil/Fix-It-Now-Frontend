@@ -5,7 +5,10 @@ import { useServerPagination } from "@/src/hooks/useServerPagination";
 import { DEFAULT_RECORD_STATUS } from "@/src/lib/options/filter.options";
 import type { TRecordStatus } from "@/src/types/types";
 import { categoryKeys } from "../api/category.key";
-import { getAdminCategories } from "../api/category.query.client";
+import {
+  getAdminCategories,
+  getAdminCategoryDetails,
+} from "../api/category.query.client";
 import type { ICategoryListQuery } from "../types/category.types";
 
 // The URL is the filter, so the hook reads it itself.
@@ -34,3 +37,10 @@ export const useAdminCategoriesQuery = () => {
     placeholderData: keepPreviousData,
   });
 };
+
+export const useAdminCategoryDetailsQuery = (id: string) =>
+  useQuery({
+    queryKey: categoryKeys.admin.detail(id),
+    queryFn: () => getAdminCategoryDetails(id),
+    select: (response) => response.data,
+  });

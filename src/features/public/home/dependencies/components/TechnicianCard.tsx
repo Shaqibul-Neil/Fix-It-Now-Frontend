@@ -52,7 +52,7 @@ const TechnicianCard = ({
           </Text>
 
           <AppRating
-            value={Math.round(Number(technician.averageRating))}
+            value={Number(technician.averageRating)}
             readOnly
             size={13}
             caption={`${technician.averageRating} (${technician.totalReviews})`}
@@ -68,11 +68,19 @@ const TechnicianCard = ({
               {technician.city}, {technician.area}
             </Text>
 
-            <Text variant="normal-xs" as="p" className="text-project-muted-foreground">
+            <Text
+              variant="normal-xs"
+              as="p"
+              className="text-project-muted-foreground"
+            >
               {technician.experienceYears} yrs experience
             </Text>
 
-            <Text variant="semibold-sm-2" as="p" className="text-project-primary">
+            <Text
+              variant="semibold-sm-2"
+              as="p"
+              className="text-project-primary"
+            >
               {formatMoney(technician.hourlyRate)}/hr
             </Text>
           </div>

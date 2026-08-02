@@ -7,5 +7,7 @@ export const categoryKeys = {
   admin: {
     lists: ["admin-categories"] as const,
     list: (query: ICategoryListQuery) => ["admin-categories", query] as const,
+    details: ["admin-category"] as const,
+    detail: (id: string) => ["admin-category", id] as const,
   },
 };

@@ -1,5 +1,7 @@
+import type { TUserRole } from "@/src/lib/auth/auth.roles";
 import type { IFilterConfig, TPeriod } from "@/src/types/filter.types";
 import type {
+  TAccountStatus,
   TBookingStatus,
   TPaymentStatus,
   TRecordStatus,
@@ -9,14 +11,12 @@ import type {
 
 export const DEFAULT_PERIOD: TPeriod = "30";
 
-// Radix Select cannot hold an empty value, so "all" is a real option the
-// filter turns back into "no status param".
 export const ALL_OPTION_VALUE = "ALL";
 
-// The record status tabs send a real backend literal, so "all" is a value the
-// API understands and ALL_OPTION_VALUE does not apply. Matches the backend's
-// own default when the param is left out.
 export const DEFAULT_RECORD_STATUS: TRecordStatus = "active";
+
+// Removed accounts stay out of the way until the "All" tab asks for them.
+export const DEFAULT_ACCOUNT_STATUS: TAccountStatus = "ACTIVE";
 
 export const FILTER_OPTIONS: IFilterConfig = {
   period: {
@@ -62,18 +62,25 @@ export const FILTER_OPTIONS: IFilterConfig = {
 
   approvalStatus: {
     options: [
-      { label: "All applications", value: ALL_OPTION_VALUE },
+      {
+        label: "All",
+        value: ALL_OPTION_VALUE,
+        dotClassName: "bg-project-muted-foreground",
+      },
       {
         label: "Pending",
         value: "PENDING" satisfies TTechnicianApprovalStatus,
+        dotClassName: "bg-project-yellow",
       },
       {
         label: "Approved",
         value: "APPROVED" satisfies TTechnicianApprovalStatus,
+        dotClassName: "bg-project-primary",
       },
       {
         label: "Rejected",
         value: "REJECTED" satisfies TTechnicianApprovalStatus,
+        dotClassName: "bg-project-destructive",
       },
     ],
   },
@@ -91,8 +98,8 @@ export const FILTER_OPTIONS: IFilterConfig = {
         dotClassName: "bg-project-success",
       },
       {
-        label: "Inactive",
-        value: "inactive" satisfies TRecordStatus,
+        label: "Paused",
+        value: "paused" satisfies TRecordStatus,
         dotClassName: "bg-project-yellow",
       },
       {
@@ -100,6 +107,35 @@ export const FILTER_OPTIONS: IFilterConfig = {
         value: "deleted" satisfies TRecordStatus,
         dotClassName: "bg-project-destructive",
       },
+    ],
+  },
+
+  accountStatus: {
+    options: [
+      {
+        label: "All",
+        value: "all" satisfies TAccountStatus,
+        dotClassName: "bg-project-muted-foreground",
+      },
+      {
+        label: "Active",
+        value: "ACTIVE" satisfies TAccountStatus,
+        dotClassName: "bg-project-success",
+      },
+      {
+        label: "Banned",
+        value: "BANNED" satisfies TAccountStatus,
+        dotClassName: "bg-project-destructive",
+      },
+    ],
+  },
+
+  role: {
+    options: [
+      { label: "All roles", value: ALL_OPTION_VALUE },
+      { label: "Customer", value: "CUSTOMER" satisfies TUserRole },
+      { label: "Technician", value: "TECHNICIAN" satisfies TUserRole },
+      { label: "Admin", value: "ADMIN" satisfies TUserRole },
     ],
   },
 

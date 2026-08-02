@@ -21,7 +21,10 @@ const TechnicianListCard = ({
 
   return (
     <div className="flex flex-col overflow-hidden border border-project-border bg-project-card">
-      <Link href={`/technicians/${technician.id}`} className="flex flex-1 flex-col">
+      <Link
+        href={`/technicians/${technician.id}`}
+        className="flex flex-1 flex-col"
+      >
         <div className="relative aspect-square w-full">
           <Image
             src={getTechnicianPhoto(photoIndex)}
@@ -47,17 +50,25 @@ const TechnicianListCard = ({
           </Text>
 
           <AppRating
-            value={Math.round(Number(technician.averageRating))}
+            value={Number(technician.averageRating)}
             readOnly
             size={13}
             caption={`${technician.averageRating} (${technician.totalReviews})`}
           />
 
           <div className="mt-auto flex items-center justify-between pt-2">
-            <Text variant="semibold-sm-2" as="span" className="text-project-accent">
+            <Text
+              variant="semibold-sm-2"
+              as="span"
+              className="text-project-accent"
+            >
               {formatMoney(technician.hourlyRate)}/hr
             </Text>
-            <Text variant="normal-xs" as="span" className="text-project-muted-foreground">
+            <Text
+              variant="normal-xs"
+              as="span"
+              className="text-project-muted-foreground"
+            >
               {technician.experienceYears} yrs
             </Text>
           </div>
@@ -72,7 +83,10 @@ const TechnicianListCard = ({
           variant="outline"
           className="h-8 flex-1 px-3 text-xs"
         />
-        <BookNowButton userRole={userRole} className="h-8 flex-1 px-3 text-xs" />
+        <BookNowButton
+          userRole={userRole}
+          className="h-8 flex-1 px-3 text-xs"
+        />
       </div>
     </div>
   );

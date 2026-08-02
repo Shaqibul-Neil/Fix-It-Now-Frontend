@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  AppAvatar,
   AppError,
   DetailsHeader,
   DetailsSection,
@@ -23,6 +24,8 @@ const AdminBookingDetailsPage = ({ id }: { id: string }) => {
   if (isError || !data) return <AppError message={error?.message} />;
 
   const { customer, technician, service } = data;
+  const customerName = `${customer.users.firstName} ${customer.users.lastName}`;
+  const technicianName = `${technician.users.firstName} ${technician.users.lastName}`;
 
   return (
     <section className="space-y-4">
@@ -49,22 +52,40 @@ const AdminBookingDetailsPage = ({ id }: { id: string }) => {
                 { label: "Charged amount", value: formatMoney(data.amount) },
                 { label: "Category", value: service.category.name },
                 {
-                  label: "Service active",
-                  value: service.isActive ? "Yes" : "No",
+                  label: "Listing",
+                  value: (
+                    <StatusPill
+                      status={
+                        service.deletedAt
+                          ? "DELETED"
+                          : service.isActive
+                            ? "ACTIVE"
+                            : "PAUSED"
+                      }
+                    />
+                  ),
                 },
                 { label: "Service id", value: service.id },
               ]}
             />
           </DetailsSection>
 
-          <DetailsSection title="Customer">
+          <DetailsSection
+            title="Customer information"
+            action={
+              // Negative margin keeps the header the same height it was before
+              // an avatar sat in it.
+              <AppAvatar
+                src={customer.avatar}
+                name={customerName}
+                className="size-10 lg:-my-2"
+              />
+            }
+          >
             <InfoList
-              columns={3}
+              columns={2}
               items={[
-                {
-                  label: "Name",
-                  value: `${customer.users.firstName} ${customer.users.lastName}`,
-                },
+                { label: "Name", value: customerName },
                 { label: "Email", value: customer.users.email },
                 { label: "Phone", value: customer.phone },
                 { label: "Account id", value: customer.users.id },
@@ -72,14 +93,20 @@ const AdminBookingDetailsPage = ({ id }: { id: string }) => {
             />
           </DetailsSection>
 
-          <DetailsSection title="Technician">
+          <DetailsSection
+            title="Technician information"
+            action={
+              <AppAvatar
+                src={technician.avatar}
+                name={technicianName}
+                className="size-10 lg:-my-2"
+              />
+            }
+          >
             <InfoList
-              columns={3}
+              columns={2}
               items={[
-                {
-                  label: "Name",
-                  value: `${technician.users.firstName} ${technician.users.lastName}`,
-                },
+                { label: "Name", value: technicianName },
                 { label: "Email", value: technician.users.email },
                 { label: "Phone", value: technician.phone },
                 { label: "Account id", value: technician.users.id },

@@ -27,6 +27,10 @@ export interface IProfileUser {
 
 export type TUserStatus = "ACTIVE" | "BANNED";
 
+// The account tabs. "all" is not a backend status — it drops the status filter
+// and sends `includeDeleted`, which is the only way removed rows come back.
+export type TAccountStatus = TUserStatus | "all";
+
 export const TECHNICIAN_APPROVAL_STATUS = {
   PENDING: "PENDING",
   APPROVED: "APPROVED",
@@ -50,7 +54,7 @@ export type TPaymentStatus = "PENDING" | "SUCCESS" | "FAILED" | "REFUNDED";
 export type TReviewStatus = "PENDING" | "PUBLISHED" | "HIDDEN" | "REJECTED";
 
 // Soft-delete aware row filter the backend shares between Category and Service.
-export type TRecordStatus = "active" | "inactive" | "deleted" | "all";
+export type TRecordStatus = "active" | "paused" | "deleted" | "all";
 
 export interface IStatData {
   id: string;

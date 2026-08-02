@@ -3,6 +3,7 @@ import type { TReviewStatus } from "@/src/types/types";
 interface IReviewParty {
   id: string;
   name: string;
+  avatar: string | null;
 }
 
 interface IReviewedService {
@@ -33,11 +34,12 @@ export interface IAdminReviewRow extends Omit<
   customer: IReviewParty & { email: string };
 }
 
-// GET /technician/reviews — PUBLISHED only, so no status rides along.
+// GET /technician/reviews — PUBLISHED only, so no status rides along. This one
+// is served by the public mapper, which splits the comment into paragraphs.
 export interface ITechnicianReviewRow {
   id: string;
   rating: number;
-  comment: string | null;
+  comment: string[];
   createdAt: string;
   customer: IReviewParty;
   service: IReviewedService;

@@ -22,3 +22,8 @@ export const getAdminCategories = (query: ICategoryListQuery) =>
   clientFetch<IAdminCategoryRow[]>(
     `${apiEndpoints.dashboard.admin.categories.list}${buildQuery(query)}`,
   );
+
+export const getAdminCategoryDetails = (id: string) =>
+  clientFetch<IAdminCategoryRow>(
+    apiEndpoints.dashboard.admin.categories.details(id),
+  );

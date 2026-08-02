@@ -3,6 +3,7 @@
 import { useCallback } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { DEFAULT_PAGE_SIZE } from "@/src/lib/constant/constant";
+import { ALL_OPTION_VALUE } from "@/src/lib/options/filter.options";
 
 export interface IServerPagination {
   page: number;
@@ -45,7 +46,11 @@ export const useServerPagination = (
         params.set("page", "1");
       }),
 
-    getFilter: (key) => searchParams.get(key) ?? undefined,
+    // "ALL" is the UI's word for no filter — a bookmarked one must not reach the API.
+    getFilter: (key) => {
+      const value = searchParams.get(key);
+      return value && value !== ALL_OPTION_VALUE ? value : undefined;
+    },
 
     setFilter: (key, value) =>
       push((params) => {

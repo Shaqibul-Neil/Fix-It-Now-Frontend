@@ -26,6 +26,11 @@ export { default as SummaryRow } from "./common/cards/SummaryRow";
 export { default as DetailsHeader } from "./common/details/DetailsHeader";
 export { default as DetailsSection } from "./common/details/DetailsSection";
 export { default as InfoList } from "./common/details/InfoList";
+export { default as ProfileHero } from "./common/details/ProfileHero";
+export { default as ReviewList } from "./common/details/ReviewList";
+export type { IReviewEntry } from "./common/details/ReviewList";
+export { default as ScheduleBoard } from "./common/details/ScheduleBoard";
+export type { IScheduleDay } from "./common/details/ScheduleBoard";
 export { default as StatusTimeline } from "./common/details/StatusTimeline";
 
 // Inputs
@@ -60,6 +65,7 @@ export { default as ResultState } from "./common/states/ResultState";
 
 // Table
 export { default as ActionColumn } from "./common/table/ActionColumn";
+export type { TTableAction } from "./common/table/ActionColumn";
 export { buildColumn } from "./common/table/ColumnBuilder";
 export { default as ContactColumn } from "./common/table/ContactColumn";
 export { default as DataTable } from "./common/table/DataTable";

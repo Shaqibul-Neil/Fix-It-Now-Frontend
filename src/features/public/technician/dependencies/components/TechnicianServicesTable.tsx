@@ -3,25 +3,29 @@
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { buildColumn, DataTable } from "@/src/components";
 import { formatMoney } from "@/src/lib/utils/format.utils";
-import type { IServiceRow } from "@/src/features/dashboard/service/dependencies/types/service.types";
+import type { IPublicServiceRow } from "@/src/features/public/service/dependencies/types/service.types";
 
-const columns = buildColumn<IServiceRow>([
+const columns = buildColumn<IPublicServiceRow>([
   { key: "title", label: "Service" },
   { key: "category", label: "Category" },
   {
     id: "price",
     label: "Price",
-    render: (row: IServiceRow) => formatMoney(row.price),
+    render: (row: IPublicServiceRow) => formatMoney(row.price),
   },
   {
     id: "duration",
     label: "Duration",
-    render: (row: IServiceRow) =>
+    render: (row: IPublicServiceRow) =>
       row.estimatedDuration ? `${row.estimatedDuration} min` : "—",
   },
 ]);
 
-const TechnicianServicesTable = ({ services }: { services: IServiceRow[] }) => {
+const TechnicianServicesTable = ({
+  services,
+}: {
+  services: IPublicServiceRow[];
+}) => {
   const table = useReactTable({
     data: services,
     columns,

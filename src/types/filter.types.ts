@@ -25,6 +25,12 @@ export interface IFilterConfig {
   recordStatus: {
     options: TSelectOption[];
   };
+  accountStatus: {
+    options: TSelectOption[];
+  };
+  role: {
+    options: TSelectOption[];
+  };
   rating: {
     options: TSelectOption[];
   };

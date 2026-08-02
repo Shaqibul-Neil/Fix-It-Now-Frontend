@@ -7,7 +7,13 @@ import type {
   ITechnicianDetails,
 } from "../types/technician.types";
 
-const buildQuery = ({ search, city, minRating, page, limit }: IPublicTechnicianQuery) => {
+const buildQuery = ({
+  search,
+  city,
+  minRating,
+  page,
+  limit,
+}: IPublicTechnicianQuery) => {
   const params = new URLSearchParams({
     page: String(page),
     limit: String(limit),

@@ -2,8 +2,8 @@ import type { ReactNode } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { StatusPill, Text, buildColumn } from "@/src/components";
 import {
+  formatClock,
   formatDate,
-  formatDateTime,
   formatMoney,
 } from "@/src/lib/utils/format.utils";
 import type { IBookingRowBase } from "../types/booking.types";
@@ -49,11 +49,21 @@ export const bookingBaseColumns = <TRow extends IBookingRowBase>() =>
     {
       id: "scheduledAt",
       label: "Scheduled",
-      size: 170,
+      size: 150,
       render: (row: IBookingRowBase) => (
-        <span className="whitespace-nowrap">
-          {formatDateTime(row.scheduledAt)}
-        </span>
+        <div className="min-w-0 leading-tight">
+          <span className="block whitespace-nowrap">
+            {formatDate(row.scheduledAt)}
+          </span>
+
+          <Text
+            variant="normal-xs"
+            as="span"
+            className="block whitespace-nowrap text-project-muted-foreground"
+          >
+            {formatClock(row.scheduledAt)}
+          </Text>
+        </div>
       ),
     },
     {
@@ -63,21 +73,25 @@ export const bookingBaseColumns = <TRow extends IBookingRowBase>() =>
       render: (row: IBookingRowBase) => <StatusPill status={row.status} />,
     },
     {
-      id: "createdAt",
-      label: "Placed",
-      size: 130,
+      id: "timeline",
+      label: "Timeline",
+      size: 160,
       render: (row: IBookingRowBase) => (
-        <span className="whitespace-nowrap">{formatDate(row.createdAt)}</span>
-      ),
-    },
-    {
-      id: "completedAt",
-      label: "Completed",
-      size: 130,
-      render: (row: IBookingRowBase) => (
-        <span className="whitespace-nowrap">
-          {row.completedAt ? formatDate(row.completedAt) : "—"}
-        </span>
+        <div className="min-w-0 leading-tight">
+          <span className="block whitespace-nowrap">
+            {formatDate(row.createdAt)}
+          </span>
+
+          <Text
+            variant="normal-xs"
+            as="span"
+            className="block whitespace-nowrap text-project-muted-foreground"
+          >
+            {row.completedAt
+              ? `Completed ${formatDate(row.completedAt)}`
+              : "Not completed"}
+          </Text>
+        </div>
       ),
     },
   ]) as ColumnDef<TRow>[];

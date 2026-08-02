@@ -39,29 +39,51 @@ const AppRating = ({
 
   if (readOnly) {
     const isInverted = tone === "inverted";
+    // 4.5 is four stars and a half, not four — scores land on the nearest half
+    // so a sliver of a star always reads as a deliberate half.
+    const score = Math.round(value * 2) / 2;
 
     return (
       <span
         className={cn("inline-flex items-center gap-1", className)}
         aria-label={`${value} out of ${max}`}
       >
-        {stars.map((star) => (
-          <Star
-            key={star}
-            size={size}
-            aria-hidden
-            className={cn(
-              "shrink-0",
-              star <= value
-                ? isInverted
-                  ? "fill-white text-white"
-                  : "fill-project-primary text-project-primary"
-                : isInverted
-                  ? "text-white/35"
-                  : "text-project-border",
-            )}
-          />
-        ))}
+        {stars.map((star) => {
+          const fill = Math.min(1, Math.max(0, score - (star - 1)));
+
+          return (
+            <span key={star} className="relative inline-flex shrink-0">
+              <Star
+                size={size}
+                aria-hidden
+                className={cn(
+                  "shrink-0",
+                  isInverted ? "text-white/35" : "text-project-border",
+                )}
+              />
+
+              {fill > 0 && (
+                // Clipping the filled copy is what makes a half a half — one
+                // star drawn over another, cut to the score.
+                <span
+                  aria-hidden
+                  className="absolute inset-y-0 left-0 overflow-hidden"
+                  style={{ width: `${fill * 100}%` }}
+                >
+                  <Star
+                    size={size}
+                    className={cn(
+                      "shrink-0",
+                      isInverted
+                        ? "fill-white text-white"
+                        : "fill-project-primary text-project-primary",
+                    )}
+                  />
+                </span>
+              )}
+            </span>
+          );
+        })}
 
         {caption && (
           <Text

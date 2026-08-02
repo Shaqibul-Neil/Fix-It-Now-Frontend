@@ -3,14 +3,21 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { AppRating, Text, buildColumn } from "@/src/components";
 import { formatDate } from "@/src/lib/utils/format.utils";
 
-// The shape every review table shares, whichever audience it serves.
+// The shape every review table shares, whichever audience it serves. The
+// technician's list comes off the public mapper, so its comment is already
+// split into paragraphs — the cell reads both shapes.
 interface IReviewRowBase {
   id: string;
   rating: number;
-  comment: string | null;
+  comment: string | string[] | null;
   createdAt: string;
   service: { id: string; title: string };
 }
+
+// One string out of either shape, with the paragraph breaks kept so the details
+// modal can render them.
+export const toCommentText = (comment: string | string[] | null) =>
+  (Array.isArray(comment) ? comment.join("\n\n") : (comment ?? "")).trim();
 
 // A role's columns hook returns its row actions' modals alongside the columns,
 // so the page renders {modals} next to the table.
@@ -43,9 +50,9 @@ export const reviewBaseColumns = <TRow extends IReviewRowBase>() =>
       label: "Review",
       size: 200,
       render: (row: IReviewRowBase) =>
-        row.comment?.trim() ? (
+        toCommentText(row.comment) ? (
           <span className="text-project-muted-foreground line-clamp-1 truncate">
-            {row.comment}
+            {toCommentText(row.comment)}
           </span>
         ) : (
           <Text

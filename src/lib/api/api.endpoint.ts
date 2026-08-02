@@ -28,6 +28,7 @@ export const apiEndpoints = {
       },
       categories: {
         list: "/admin/categories",
+        details: (id: string) => `/admin/categories/${id}`,
         create: "/admin/categories",
         update: (id: string) => `/admin/categories/${id}`,
         restore: (id: string) => `/admin/categories/${id}/restore`,
@@ -37,6 +38,14 @@ export const apiEndpoints = {
         list: "/technicians/admin/list",
         details: (id: string) => `/technicians/admin/${id}`,
         approval: (id: string) => `/technicians/admin/${id}/approval`,
+      },
+      // Ban, remove and restore act on the account, not on any one profile —
+      // technician rows carry `userId` for exactly this.
+      users: {
+        list: "/admin/users",
+        status: (id: string) => `/admin/users/${id}`,
+        restore: (id: string) => `/admin/users/${id}/restore`,
+        remove: (id: string) => `/admin/users/${id}`,
       },
     },
 
@@ -58,6 +67,7 @@ export const apiEndpoints = {
         myServices: "/technician/services/my-services",
         create: "/services",
         update: (id: string) => `/services/${id}`,
+        restore: (id: string) => `/services/${id}/restore`,
         remove: (id: string) => `/services/${id}`,
       },
       reviews: {
@@ -91,6 +101,14 @@ export const apiEndpoints = {
         list: "/services",
       },
     },
+  },
+
+  // Role-agnostic: every signed-in user reads their own notifications.
+  notifications: {
+    list: "/notifications",
+    unreadCount: "/notifications/unread-count",
+    readAll: "/notifications/read-all",
+    read: (id: string) => `/notifications/${id}/read`,
   },
 
   public: {

@@ -2,7 +2,11 @@
 
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useServerPagination } from "@/src/hooks/useServerPagination";
-import type { TTechnicianApprovalStatus } from "@/src/types/types";
+import { DEFAULT_ACCOUNT_STATUS } from "@/src/lib/options/filter.options";
+import type {
+  TAccountStatus,
+  TTechnicianApprovalStatus,
+} from "@/src/types/types";
 import { technicianKeys } from "../api/technician.key";
 import {
   getAdminTechnicianDetails,
@@ -19,8 +23,9 @@ const useTechnicianFilter = (): ITechnicianListQuery => {
     city: getFilter("city"),
     minRating: getFilter("minRating"),
     approvalStatus: getFilter("approvalStatus") as
-      | TTechnicianApprovalStatus
-      | undefined,
+      TTechnicianApprovalStatus | undefined,
+    accountStatus:
+      (getFilter("accountStatus") as TAccountStatus) ?? DEFAULT_ACCOUNT_STATUS,
     page,
     limit: pageSize,
   };

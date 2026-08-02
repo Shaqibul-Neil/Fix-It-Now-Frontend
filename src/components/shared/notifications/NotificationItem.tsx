@@ -1,7 +1,7 @@
 import { formatDistanceToNow } from "date-fns";
 import { cn } from "@/src/lib/utils/cn";
 import { Text } from "@/src/components";
-import type { INotification } from "./notification.placeholder";
+import type { INotification } from "@/src/features/dashboard/notification/dependencies/types/notification.types";
 import NotificationTypeIcon from "./NotificationTypeIcon";
 
 interface INotificationItemProps {
@@ -16,7 +16,7 @@ const toRelativeTime = (iso: string) => {
 };
 
 const NotificationItem = ({ notification, onRead }: INotificationItemProps) => {
-  const { id, type, title, body, isRead, createdAt } = notification;
+  const { id, type, title, message, isRead, createdAt } = notification;
 
   return (
     <button
@@ -55,7 +55,7 @@ const NotificationItem = ({ notification, onRead }: INotificationItemProps) => {
           as="span"
           className="text-project-muted-foreground"
         >
-          {body}
+          {message}
         </Text>
       </span>
     </button>

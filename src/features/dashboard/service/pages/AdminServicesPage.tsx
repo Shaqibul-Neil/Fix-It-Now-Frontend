@@ -1,4 +1,5 @@
 "use client";
+
 import {
   AppError,
   PageHeader,
@@ -16,32 +17,33 @@ const AdminServicesPage = () => {
   const { columns, modals } = useAdminServicesColumns();
 
   return (
-    <section>
-      <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-        <PageHeader
-          title="Services"
-          description="Every service listed across technicians on the platform."
-        />
+    <section className="flex flex-col gap-6">
+      <PageHeader
+        title="Services"
+        description="Every service listed across technicians on the platform."
+        divClassName="mb-0"
+      />
 
-        <ServiceFilter />
+      <div className="flex flex-col gap-4">
+        <ServiceFilter showRecordStatus showTechnicianScope />
+
+        {isFetching && <TableSkeleton />}
+
+        {isError && !isFetching && <AppError message={error?.message} />}
+
+        {data && !isError && !isFetching && (
+          <PaginatedTable
+            data={data.items}
+            columns={columns}
+            total={data.total}
+            page={page}
+            pageSize={pageSize}
+            onPageChange={setPage}
+            onPageSizeChange={setPageSize}
+            emptyMessage="No services match this filter."
+          />
+        )}
       </div>
-
-      {isFetching && <TableSkeleton />}
-
-      {isError && !isFetching && <AppError message={error?.message} />}
-
-      {data && !isError && !isFetching && (
-        <PaginatedTable
-          data={data.items}
-          columns={columns}
-          total={data.total}
-          page={page}
-          pageSize={pageSize}
-          onPageChange={setPage}
-          onPageSizeChange={setPageSize}
-          emptyMessage="No services match this filter."
-        />
-      )}
 
       {modals}
     </section>

@@ -21,18 +21,19 @@ const ServicesPage = async ({
   city,
   minRating,
 }: IServicesPageProps) => {
-  const [categories, { items: services, total }, currentUser] = await Promise.all([
-    getCategories(),
-    getServices({
-      page,
-      limit: DEFAULT_PAGE_SIZE,
-      search,
-      category,
-      city,
-      minRating,
-    }),
-    getMeRequest(),
-  ]);
+  const [categories, { items: services, total }, currentUser] =
+    await Promise.all([
+      getCategories(),
+      getServices({
+        page,
+        limit: DEFAULT_PAGE_SIZE,
+        search,
+        category,
+        city,
+        minRating,
+      }),
+      getMeRequest(),
+    ]);
 
   const totalPages = Math.max(1, Math.ceil(total / DEFAULT_PAGE_SIZE));
   const categoryOptions = categories.map((item) => ({

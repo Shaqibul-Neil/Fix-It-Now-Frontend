@@ -21,9 +21,11 @@ const useInvalidateCategory = () => {
 
   return () =>
     Promise.all(
-      [categoryKeys.admin.lists, categoryKeys.options].map((queryKey) =>
-        queryClient.invalidateQueries({ queryKey }),
-      ),
+      [
+        categoryKeys.admin.lists,
+        categoryKeys.admin.details,
+        categoryKeys.options,
+      ].map((queryKey) => queryClient.invalidateQueries({ queryKey })),
     );
 };
 

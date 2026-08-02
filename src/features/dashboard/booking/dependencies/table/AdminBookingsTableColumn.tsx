@@ -10,24 +10,24 @@ export const useAdminBookingsColumns =
   (): IBookingColumns<TAdminBookingRow> => {
     const router = useRouter();
 
-    // Service leads, then both parties, then the rest of the shared columns.
+    // Both parties lead, then the service they met over, then the shared rest.
     const [service, ...rest] = bookingBaseColumns<TAdminBookingRow>();
 
     return {
       columns: [
-        service,
-
         ContactColumn<TAdminBookingRow>("customer", "Customer", (row) => ({
           name: row.customerName,
           email: row.customerEmail,
-          phone: row.customerPhone,
+          avatar: row.customerAvatar,
         })),
 
         ContactColumn<TAdminBookingRow>("technician", "Technician", (row) => ({
           name: row.technicianName,
           email: row.technicianEmail,
-          phone: row.technicianPhone,
+          avatar: row.technicianAvatar,
         })),
+
+        service,
 
         ...rest,
 

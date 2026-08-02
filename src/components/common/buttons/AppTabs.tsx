@@ -46,8 +46,11 @@ const AppTabs = ({ options, value, onChange, className }: IAppTabsProps) => {
             type="button"
             onClick={() => onChange(option.value)}
             className={cn(
-              "relative z-10 flex h-7 cursor-pointer items-center justify-center gap-2 rounded-md px-3",
-              "text-xs font-bold uppercase tracking-[0.12em] whitespace-nowrap transition-colors duration-500",
+              "relative z-10 flex h-7 min-w-0 cursor-pointer items-center justify-center rounded-md",
+              // Below `sm` the tracking and side padding go first — pure width, no meaning.
+              "gap-1 px-1.5 text-[10px] tracking-normal",
+              "sm:gap-2 sm:px-3 sm:text-xs sm:tracking-[0.12em]",
+              "font-bold uppercase whitespace-nowrap transition-colors duration-500",
               isActive
                 ? "text-project-primary-foreground"
                 : "text-project-muted-foreground hover:text-project-accent",
@@ -57,14 +60,15 @@ const AppTabs = ({ options, value, onChange, className }: IAppTabsProps) => {
               <span
                 aria-hidden
                 className={cn(
-                  "size-1.5 shrink-0 rounded-full",
+                  "size-1 shrink-0 rounded-full sm:size-1.5",
                   isActive
                     ? "bg-project-primary-foreground"
                     : option.dotClassName,
                 )}
               />
             )}
-            {option.label}
+
+            <span className="truncate">{option.label}</span>
           </button>
         );
       })}

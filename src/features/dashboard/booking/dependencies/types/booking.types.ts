@@ -17,6 +17,7 @@ export interface ICustomerBookingRow extends IBookingRowBase {
   technicianName: string;
   technicianEmail: string;
   technicianPhone: string;
+  technicianAvatar: string | null;
   // null until the customer reviews this booking. Only the customer's row
   // carries it — nobody else can write the review.
   reviewId: string | null;
@@ -27,6 +28,7 @@ export interface ITechnicianBookingRow extends IBookingRowBase {
   customerName: string;
   customerEmail: string;
   customerPhone: string | null;
+  customerAvatar: string | null;
 }
 
 // Both parties, but no review marker — the admin list mapper does not send one.
@@ -89,6 +91,7 @@ export interface ICustomerBookingDetails extends IBookingDetailsBase {
   technician: {
     id: string;
     averageRating: string;
+    avatar: string | null;
     users: Pick<IPartyUser, "firstName" | "lastName">;
   };
   // Nested here, flattened on the list row — the details endpoint returns the
@@ -101,6 +104,7 @@ export interface ITechnicianBookingDetails extends IBookingDetailsBase {
   customer: {
     id: string;
     phone: string | null;
+    avatar: string | null;
     users: IPartyUser;
   };
 }
@@ -111,6 +115,7 @@ export interface ITechnicianBookingDetails extends IBookingDetailsBase {
 interface IAdminBookingParty {
   id: string;
   phone: string | null;
+  avatar: string | null;
   users: IPartyUser & { id: string };
 }
 
@@ -123,6 +128,8 @@ export interface IAdminBookingDetails extends Omit<
     title: string;
     price: string;
     isActive: boolean;
+    // Set once the listing is soft-deleted — the booking itself stays open.
+    deletedAt: string | null;
     category: { id: string; name: string };
   };
   customer: IAdminBookingParty;

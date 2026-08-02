@@ -28,24 +28,25 @@ export const useAdminReviewsColumns = (): IReviewColumns<IAdminReviewRow> => {
   const moderateReview = useModerateReviewMutation(() => setModerating(null));
   const deleteReview = useDeleteReviewMutation(() => setDeleting(null));
 
-  // Service leads, then both parties, then the rest of the shared columns.
+  // Who wrote it, who it is about, then what it is about — the order an admin
+  // reads a moderation queue in.
   const [service, ...rest] = reviewBaseColumns<IAdminReviewRow>();
 
   return {
     columns: [
-      service,
-
       ContactColumn<IAdminReviewRow>("customer", "Reviewer", (row) => ({
         name: row.customer.name,
         email: row.customer.email,
-        phone: null,
+        avatar: row.customer.avatar,
       })),
 
       ContactColumn<IAdminReviewRow>("technician", "Technician", (row) => ({
         name: row.technician.name,
         email: row.technician.email,
-        phone: null,
+        avatar: row.technician.avatar,
       })),
+
+      service,
 
       ...rest,
 

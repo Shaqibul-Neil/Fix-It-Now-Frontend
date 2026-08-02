@@ -2,45 +2,71 @@
 
 import { useState, type ReactNode } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
-import { Pencil, Trash } from "lucide-react";
+import { Pencil, RotateCcw, Trash } from "lucide-react";
 import { ActionColumn, ConfirmModal } from "@/src/components";
 import ServiceFormPanel from "../components/ServiceFormPanel";
-import { useDeleteServiceMutation } from "../hooks/useServiceMutation";
-import type { IBaseServiceRow, IServiceFormTarget } from "../types/service.types";
-import { serviceBaseColumns } from "./ServiceColumns";
+import {
+  useDeleteServiceMutation,
+  useRestoreServiceMutation,
+} from "../hooks/useServiceMutation";
+import type {
+  IManagedServiceRow,
+  IServiceFormTarget,
+} from "../types/service.types";
+import {
+  serviceAboutColumn,
+  serviceBaseColumns,
+  serviceStatusColumn,
+} from "./ServiceColumns";
 
 export const useTechnicianServicesColumns = (): {
-  columns: ColumnDef<IBaseServiceRow>[];
+  columns: ColumnDef<IManagedServiceRow>[];
   modals: ReactNode;
   openCreate: () => void;
 } => {
-  const [formTarget, setFormTarget] = useState<IServiceFormTarget | null>(
+  const [formTarget, setFormTarget] = useState<IServiceFormTarget | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<IManagedServiceRow | null>(
     null,
   );
-  const [deleteTarget, setDeleteTarget] = useState<IBaseServiceRow | null>(
+  const [restoreTarget, setRestoreTarget] = useState<IManagedServiceRow | null>(
     null,
   );
 
   const deleteService = useDeleteServiceMutation(() => setDeleteTarget(null));
-
-  const columns = serviceBaseColumns<IBaseServiceRow>();
+  const restoreService = useRestoreServiceMutation(() =>
+    setRestoreTarget(null),
+  );
 
   return {
     columns: [
-      ...columns,
+      ...serviceBaseColumns<IManagedServiceRow>(),
 
-      ActionColumn<IBaseServiceRow>(
+      serviceAboutColumn<IManagedServiceRow>(),
+
+      serviceStatusColumn<IManagedServiceRow>(),
+
+      ActionColumn<IManagedServiceRow>(
         [
           {
             icon: Pencil,
-            label: "Update Service",
+            label: "Update service",
             variant: "noOutline",
+            hidden: (row) => row.isDeleted,
             onClick: (row) => setFormTarget(row),
           },
           {
+            // An admin takedown answers 403 here, so the owner is not offered it.
+            icon: RotateCcw,
+            label: "Restore service",
+            variant: "primary",
+            hidden: (row) => !row.isDeleted || row.removedBy?.role === "ADMIN",
+            onClick: (row) => setRestoreTarget(row),
+          },
+          {
             icon: Trash,
-            label: "Delete Service",
+            label: "Remove service",
             variant: "destructive",
+            hidden: (row) => row.isDeleted,
             onClick: (row) => setDeleteTarget(row),
           },
         ],
@@ -55,19 +81,36 @@ export const useTechnicianServicesColumns = (): {
 
     modals: (
       <>
-        <ServiceFormPanel target={formTarget} onClose={() => setFormTarget(null)} />
+        <ServiceFormPanel
+          target={formTarget}
+          onClose={() => setFormTarget(null)}
+        />
 
         <ConfirmModal
           isOpen={Boolean(deleteTarget)}
           onClose={() => setDeleteTarget(null)}
           mode="cancel"
-          title="Delete this service?"
-          description="This cannot be undone. Services with existing bookings cannot be deleted."
+          title="Remove this service?"
+          description="Customers stop seeing it right away. Bookings already placed stay open, and you can restore the listing later."
           entityName={deleteTarget?.title}
-          confirmText="Yes, delete it"
+          confirmText="Yes, remove it"
           isPending={deleteService.isPending}
           onConfirm={() =>
             deleteTarget && deleteService.mutate(deleteTarget.id)
+          }
+        />
+
+        <ConfirmModal
+          isOpen={Boolean(restoreTarget)}
+          onClose={() => setRestoreTarget(null)}
+          mode="approve"
+          title="Restore this service?"
+          description="It goes back on your list and customers can book it again."
+          entityName={restoreTarget?.title}
+          confirmText="Yes, restore it"
+          isPending={restoreService.isPending}
+          onConfirm={() =>
+            restoreTarget && restoreService.mutate(restoreTarget.id)
           }
         />
       </>

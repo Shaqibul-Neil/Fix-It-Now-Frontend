@@ -61,7 +61,7 @@ const ActionColumn = <T,>(
 
               <PopoverContent
                 align="end"
-                className="flex w-48 flex-col gap-1 border-project-border p-1.5"
+                className="flex w-48 flex-col gap-2 border-project-border p-2"
               >
                 {visibleActions.map(({ icon: Icon, ...action }, index) => (
                   // Radix leaves the menu open on a child click, which would

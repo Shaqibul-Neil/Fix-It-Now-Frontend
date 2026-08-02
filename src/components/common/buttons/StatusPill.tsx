@@ -49,9 +49,9 @@ export type TStatus =
   // User account
   | "ACTIVE"
   | "BANNED"
-  | "INACTIVE"
   // Soft-deleted row
-  | "DELETED";
+  | "DELETED"
+  | "PAUSED";
 
 const STATUS_META: Record<TStatus, { label: string; tone: TTone }> = {
   // Booking
@@ -69,8 +69,10 @@ const STATUS_META: Record<TStatus, { label: string; tone: TTone }> = {
   FAILED: { label: "Failed", tone: "danger" },
   REFUNDED: { label: "Refunded", tone: "info" },
 
-  // Technician approval — REJECTED is shared with review moderation.
-  APPROVED: { label: "Approved", tone: "success" },
+  // Technician approval — brass, not green, so an approved application never
+  // reads as the account status sitting beside it. REJECTED is shared with
+  // review moderation.
+  APPROVED: { label: "Approved", tone: "brass" },
   REJECTED: { label: "Rejected", tone: "danger" },
 
   // Review moderation — PENDING is shared, same meaning.
@@ -80,10 +82,10 @@ const STATUS_META: Record<TStatus, { label: string; tone: TTone }> = {
   // User account
   ACTIVE: { label: "Active", tone: "success" },
   BANNED: { label: "Banned", tone: "danger" },
-  INACTIVE: { label: "Inactive", tone: "warning" },
 
-  // Soft-deleted row
+  // Soft-deleted row — a listing that is off is paused, the backend's own word.
   DELETED: { label: "Deleted", tone: "danger" },
+  PAUSED: { label: "Paused", tone: "warning" },
 };
 
 interface IStatusPillProps {

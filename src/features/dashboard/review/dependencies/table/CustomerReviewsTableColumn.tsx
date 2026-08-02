@@ -5,6 +5,7 @@ import { Eye, SquarePen, Trash2 } from "lucide-react";
 import {
   ActionColumn,
   ConfirmModal,
+  ContactColumn,
   StatusPill,
   buildColumn,
 } from "@/src/components";
@@ -22,25 +23,21 @@ export const useCustomerReviewsColumns =
 
     const deleteReview = useDeleteReviewMutation(() => setDeleting(null));
 
-    // Service leads, then who it was for, then the rest of the shared columns.
+    // Who it was for leads, then the job it was about, then the rest.
     const [service, ...rest] = reviewBaseColumns<ICustomerReviewRow>();
 
     return {
       columns: [
-        service,
+        ContactColumn<ICustomerReviewRow>(
+          "technician",
+          "Technician",
+          (row) => ({
+            name: row.technician.name,
+            avatar: row.technician.avatar,
+          }),
+        ),
 
-        ...buildColumn<ICustomerReviewRow>([
-          {
-            id: "technician",
-            label: "Technician",
-            size: 180,
-            render: (row: ICustomerReviewRow) => (
-              <span className="block truncate font-medium">
-                {row.technician.name}
-              </span>
-            ),
-          },
-        ]),
+        service,
 
         ...rest,
 

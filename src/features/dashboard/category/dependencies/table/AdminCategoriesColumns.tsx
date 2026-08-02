@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
+import { useRouter } from "next/navigation";
 import type { ColumnDef } from "@tanstack/react-table";
-import { Pencil, RotateCcw, Trash } from "lucide-react";
+import { Eye, Pencil, RotateCcw, Trash } from "lucide-react";
 import {
   ActionColumn,
   AppAvatar,
@@ -36,6 +37,7 @@ export const useAdminCategoriesColumns = (): {
   const [restoreTarget, setRestoreTarget] = useState<IAdminCategoryRow | null>(
     null,
   );
+  const router = useRouter();
 
   const deleteCategory = useDeleteCategoryMutation(() => setDeleteTarget(null));
   const restoreCategory = useRestoreCategoryMutation(() =>
@@ -101,7 +103,7 @@ export const useAdminCategoriesColumns = (): {
           render: (row: IAdminCategoryRow) => (
             <StatusPill
               status={
-                row.isDeleted ? "DELETED" : row.isActive ? "ACTIVE" : "INACTIVE"
+                row.isDeleted ? "DELETED" : row.isActive ? "ACTIVE" : "PAUSED"
               }
             />
           ),
@@ -131,6 +133,12 @@ export const useAdminCategoriesColumns = (): {
 
       ActionColumn<IAdminCategoryRow>(
         [
+          {
+            icon: Eye,
+            label: "View details",
+            variant: "noOutline",
+            onClick: (row) => router.push(`/dashboard/admin/categories/${row.id}`),
+          },
           {
             icon: Pencil,
             label: "Edit category",

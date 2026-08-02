@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { RefreshCw } from "lucide-react";
 import {
+  AppAvatar,
   AppButton,
   AppError,
   DetailsHeader,
@@ -31,6 +32,7 @@ const TechnicianBookingDetailsPage = ({ id }: { id: string }) => {
   if (isError || !data) return <AppError message={error?.message} />;
 
   const { customer, service } = data;
+  const customerName = `${customer.users.firstName} ${customer.users.lastName}`;
   const nextOptions = NEXT_STATUS[data.status] ?? [];
 
   return (
@@ -57,13 +59,21 @@ const TechnicianBookingDetailsPage = ({ id }: { id: string }) => {
 
       <div className="grid gap-4 lg:grid-cols-3">
         <div className="space-y-4 lg:col-span-2">
-          <DetailsSection title="Customer">
+          <DetailsSection
+            title="Customer information"
+            action={
+              // Negative margin keeps the header the same height it was before
+              // an avatar sat in it.
+              <AppAvatar
+                src={customer.avatar}
+                name={customerName}
+                className="size-10 lg:-my-2"
+              />
+            }
+          >
             <InfoList
               items={[
-                {
-                  label: "Name",
-                  value: `${customer.users.firstName} ${customer.users.lastName}`,
-                },
+                { label: "Name", value: customerName },
                 { label: "Email", value: customer.users.email },
                 { label: "Phone", value: customer.phone },
               ]}

@@ -1,6 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import { AppButton, ScrollReveal, Text } from "@/src/components";
-import type { IServiceRow } from "@/src/features/dashboard/service/dependencies/types/service.types";
+import type { IPublicServiceRow } from "@/src/features/public/service/dependencies/types/service.types";
 import type { TUserRole } from "@/src/lib/auth/auth.roles";
 import ServiceMasonry from "./ServiceMasonry";
 
@@ -8,7 +8,7 @@ const ServiceSection = ({
   services,
   userRole,
 }: {
-  services: IServiceRow[];
+  services: IPublicServiceRow[];
   userRole?: TUserRole;
 }) => {
   if (!services.length) return null;

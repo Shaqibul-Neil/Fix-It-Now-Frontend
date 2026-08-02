@@ -2,64 +2,53 @@
 
 import { useState, type ReactNode } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
-import { Eye, Trash } from "lucide-react";
-import { ActionColumn, ConfirmModal, StatusPill, Text } from "@/src/components";
-import { useDeleteServiceMutation } from "../hooks/useServiceMutation";
-import type { IAdminService } from "../types/service.types";
-import { serviceBaseColumns } from "./ServiceColumns";
+import { RotateCcw, Trash } from "lucide-react";
+import { ActionColumn, ConfirmModal, ContactColumn } from "@/src/components";
+import {
+  useDeleteServiceMutation,
+  useRestoreServiceMutation,
+} from "../hooks/useServiceMutation";
+import type { IAdminServiceRow } from "../types/service.types";
+import {
+  serviceBaseColumns,
+  serviceStatusColumn,
+  technicianRatingColumn,
+} from "./ServiceColumns";
 
 export const useAdminServicesColumns = (): {
-  columns: ColumnDef<IAdminService>[];
+  columns: ColumnDef<IAdminServiceRow>[];
   modals: ReactNode;
 } => {
-  const [deleteTarget, setDeleteTarget] = useState<IAdminService | null>(
+  const [deleteTarget, setDeleteTarget] = useState<IAdminServiceRow | null>(
     null,
   );
-  const deleteService = useDeleteServiceMutation(() => setDeleteTarget(null));
+  const [restoreTarget, setRestoreTarget] = useState<IAdminServiceRow | null>(
+    null,
+  );
 
-  const [service, ...rest] = serviceBaseColumns<IAdminService>();
+  const deleteService = useDeleteServiceMutation(() => setDeleteTarget(null));
+  const restoreService = useRestoreServiceMutation(() =>
+    setRestoreTarget(null),
+  );
+
+  const [service, ...rest] = serviceBaseColumns<IAdminServiceRow>();
 
   return {
     columns: [
       service,
 
-      {
-        id: "technician",
-        header: "Technician",
-        size: 230,
-        cell: ({ row }) => {
-          const data = row.original;
-          return (
-            <div className="min-w-0 leading-tight">
-              <span className="block truncate font-medium">
-                {data.technicianName}
-              </span>
+      ContactColumn<IAdminServiceRow>("technician", "Technician", (row) => ({
+        name: row.technicianName,
+        email: row.technicianEmail,
+        avatar: row.technicianAvatar,
+      })),
 
-              <Text
-                variant="normal-xs"
-                as="span"
-                className="block truncate text-project-muted-foreground"
-              >
-                {data.technicianEmail}
-              </Text>
-
-              <Text
-                variant="normal-xs"
-                as="span"
-                className="block truncate text-project-muted-foreground"
-              >
-                ★ {data.technicianRating}
-              </Text>
-            </div>
-          );
-        },
-      },
+      technicianRatingColumn<IAdminServiceRow>(),
 
       {
         id: "totalBookings",
         header: "Bookings",
         size: 120,
-
         cell: ({ row }) => (
           <span className="font-semibold tabular-nums">
             {row.original.totalBookings}
@@ -68,30 +57,23 @@ export const useAdminServicesColumns = (): {
       },
 
       ...rest,
-      {
-        id: "status",
-        header: "Status",
-        size: 150,
-        cell: ({ row }) => (
-          <StatusPill status={row.original.isActive ? "ACTIVE" : "INACTIVE"} />
-        ),
-      },
 
-      ActionColumn<IAdminService>(
+      serviceStatusColumn<IAdminServiceRow>(),
+
+      ActionColumn<IAdminServiceRow>(
         [
           {
-            icon: Eye,
-            label: "View details",
-            variant: "noOutline",
-
-            onClick: (row) => {
-              console.log(row.id);
-            },
+            icon: RotateCcw,
+            label: "Restore service",
+            variant: "primary",
+            hidden: (row) => !row.isDeleted,
+            onClick: (row) => setRestoreTarget(row),
           },
           {
             icon: Trash,
-            label: "Delete Service",
+            label: "Remove service",
             variant: "destructive",
+            hidden: (row) => row.isDeleted,
             onClick: (row) => setDeleteTarget(row),
           },
         ],
@@ -103,17 +85,35 @@ export const useAdminServicesColumns = (): {
     ],
 
     modals: (
-      <ConfirmModal
-        isOpen={Boolean(deleteTarget)}
-        onClose={() => setDeleteTarget(null)}
-        mode="cancel"
-        title="Delete this service?"
-        description="This cannot be undone. Services with existing bookings cannot be deleted."
-        entityName={deleteTarget?.title}
-        confirmText="Yes, delete it"
-        isPending={deleteService.isPending}
-        onConfirm={() => deleteTarget && deleteService.mutate(deleteTarget.id)}
-      />
+      <>
+        <ConfirmModal
+          isOpen={Boolean(deleteTarget)}
+          onClose={() => setDeleteTarget(null)}
+          mode="cancel"
+          title="Remove this service?"
+          description="It disappears from every customer list. The technician cannot restore an admin takedown themselves."
+          entityName={deleteTarget?.title}
+          confirmText="Yes, remove it"
+          isPending={deleteService.isPending}
+          onConfirm={() =>
+            deleteTarget && deleteService.mutate(deleteTarget.id)
+          }
+        />
+
+        <ConfirmModal
+          isOpen={Boolean(restoreTarget)}
+          onClose={() => setRestoreTarget(null)}
+          mode="approve"
+          title="Restore this service?"
+          description="It goes back on the technician's list and customers can book it again."
+          entityName={restoreTarget?.title}
+          confirmText="Yes, restore it"
+          isPending={restoreService.isPending}
+          onConfirm={() =>
+            restoreTarget && restoreService.mutate(restoreTarget.id)
+          }
+        />
+      </>
     ),
   };
 };

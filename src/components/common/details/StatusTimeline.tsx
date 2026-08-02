@@ -23,7 +23,11 @@ const StatusTimeline = ({
 }: IStatusTimelineProps) => {
   if (entries.length === 0) {
     return (
-      <Text variant="normal-sm" as="p" className="text-project-muted-foreground">
+      <Text
+        variant="normal-sm"
+        as="p"
+        className="text-project-muted-foreground"
+      >
         {emptyMessage}
       </Text>
     );

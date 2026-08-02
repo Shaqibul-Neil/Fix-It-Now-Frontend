@@ -15,7 +15,8 @@ export interface ITechnician {
 // GET /technicians/:id — same row plus the profile fields only a single-item
 // read carries.
 export interface ITechnicianDetails extends ITechnician {
-  bio: string | null;
+  // One paragraph per entry — the API splits the stored bio on its blank lines.
+  bio: string[];
   address: string;
   serviceRadius: number | null;
 }

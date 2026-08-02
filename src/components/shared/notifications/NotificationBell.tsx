@@ -9,44 +9,40 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
+import {
+  useMarkAllNotificationsReadMutation,
+  useMarkNotificationReadMutation,
+} from "@/src/features/dashboard/notification/dependencies/hooks/useNotificationMutation";
+import { useNotificationsQuery } from "@/src/features/dashboard/notification/dependencies/hooks/useNotificationQuery";
 import NotificationEmpty from "./NotificationEmpty";
 import NotificationItem from "./NotificationItem";
-import {
-  PLACEHOLDER_NOTIFICATIONS,
-  type INotification,
-} from "./notification.placeholder";
 
 type TTab = "all" | "unread";
 
-interface INotificationBellProps {
-  notifications?: INotification[];
-  isLoading?: boolean;
-}
-
-const NotificationBell = ({
-  notifications = PLACEHOLDER_NOTIFICATIONS,
-  isLoading = false,
-}: INotificationBellProps) => {
+const NotificationBell = () => {
   const [tab, setTab] = useState<TTab>("all");
 
-  const unreadCount = notifications.filter((item) => !item.isRead).length;
-  const visible =
-    tab === "unread"
-      ? notifications.filter((item) => !item.isRead)
-      : notifications;
+  // The unread tab is a server filter, not a slice of the page already loaded —
+  // otherwise it would only ever show the unread rows inside the last fifteen.
+  const { data, isPending } = useNotificationsQuery(
+    tab === "unread" ? false : undefined,
+  );
 
-  const handleRead = (id: string) => console.log("mark as read", id);
-  const handleReadAll = () => console.log("mark all as read");
+  const markRead = useMarkNotificationReadMutation();
+  const markAllRead = useMarkAllNotificationsReadMutation();
+
+  const notifications = data?.items ?? [];
+  const unreadCount = data?.unreadCount ?? 0;
 
   const renderBody = () => {
-    if (isLoading) return <NotificationSkeleton />;
-    if (!visible.length) return <NotificationEmpty />;
+    if (isPending) return <NotificationSkeleton />;
+    if (!notifications.length) return <NotificationEmpty />;
 
-    return visible.map((notification) => (
+    return notifications.map((notification) => (
       <NotificationItem
         key={notification.id}
         notification={notification}
-        onRead={handleRead}
+        onRead={(id) => !notification.isRead && markRead.mutate(id)}
       />
     ));
   };
@@ -86,8 +82,9 @@ const NotificationBell = ({
           {unreadCount > 0 && (
             <button
               type="button"
-              onClick={handleReadAll}
-              className="inline-flex items-center gap-1.5 text-xs font-medium text-project-muted-foreground transition-colors duration-300 hover:text-project-primary cursor-pointer"
+              onClick={() => markAllRead.mutate()}
+              disabled={markAllRead.isPending}
+              className="inline-flex items-center gap-1.5 text-xs font-medium text-project-muted-foreground transition-colors duration-300 hover:text-project-primary cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
             >
               <CheckCheck className="size-3.5" />
               Mark all read

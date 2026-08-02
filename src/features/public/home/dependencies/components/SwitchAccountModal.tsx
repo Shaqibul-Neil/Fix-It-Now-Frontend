@@ -30,7 +30,11 @@ const SwitchAccountModal = ({ isOpen, onClose }: ISwitchAccountModalProps) => {
         </>
       }
     >
-      <Text variant="normal-sm" as="p" className="text-project-muted-foreground">
+      <Text
+        variant="normal-sm"
+        as="p"
+        className="text-project-muted-foreground"
+      >
         Log out and create (or sign in to) a customer account to book this
         service.
       </Text>

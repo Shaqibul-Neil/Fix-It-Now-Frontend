@@ -1,16 +1,28 @@
 import type { IPublicAvailabilitySlot } from "@/src/features/dashboard/availability/dependencies/types/availability.types";
 import type {
+  TAccountStatus,
   TBookingStatus,
   TTechnicianApprovalStatus,
+  TUserStatus,
 } from "@/src/types/types";
 
+// The account state behind a profile. Approval is the application decision;
+// this is whether the account itself may sign in — the two move apart, and the
+// row actions read both.
+interface ITechnicianAccount {
+  userId: string;
+  accountStatus: TUserStatus;
+  isDeleted: boolean;
+}
+
 // GET /technicians/admin/list — matches backend's technicianAdminListMapper.
-export interface IAdminTechnicianRow {
+export interface IAdminTechnicianRow extends ITechnicianAccount {
   id: string;
   firstName: string;
   lastName: string;
   email: string;
   phone: string;
+  avatar: string | null;
   experienceYears: number;
   hourlyRate: string;
   city: string;
@@ -24,14 +36,39 @@ export interface IAdminTechnicianRow {
   completedJobs: number;
 }
 
-// GET /technicians/admin/:id — technicianDetailsMapper plus the booking counts
-// only the admin read carries. No email or phone: the details select does not
-// pull them, the list row does.
-export interface IAdminTechnicianDetails {
+// Mirrors the backend's publicReviewMapper — the comment arrives already split
+// into paragraphs, and the reviewer carries their avatar.
+export interface ITechnicianReview {
+  id: string;
+  rating: number;
+  comment: string[];
+  createdAt: string;
+  customer: { id: string; name: string; avatar: string | null };
+  service: { id: string; title: string };
+}
+
+// A service on the admin read, removed listings included.
+export interface ITechnicianService {
+  id: string;
+  title: string;
+  price: string;
+  category: string;
+  isActive: boolean;
+  isDeleted: boolean;
+}
+
+// GET /technicians/admin/:id — the public profile plus moderation state, the
+// account, and the booking counts only the admin read carries.
+export interface IAdminTechnicianDetails extends ITechnicianAccount {
   id: string;
   firstName: string;
   lastName: string;
-  bio: string | null;
+  email: string;
+  phone: string;
+  avatar: string | null;
+  // Stored as one Text column, split on its blank lines by the API — one
+  // paragraph per entry, empty when nothing was written.
+  bio: string[];
   experienceYears: number;
   hourlyRate: string;
   serviceRadius: number | null;
@@ -41,20 +78,10 @@ export interface IAdminTechnicianDetails {
   totalReviews: number;
   approvalStatus: TTechnicianApprovalStatus;
   rejectionReason: string | null;
-  services: {
-    id: string;
-    title: string;
-    price: string;
-    category: string;
-  }[];
-  reviews: {
-    id: string;
-    rating: number;
-    comment: string | null;
-    createdAt: string;
-    customer: { id: string; name: string };
-    service: { id: string; title: string };
-  }[];
+  reviewedAt: string | null;
+  appliedAt: string;
+  services: ITechnicianService[];
+  reviews: ITechnicianReview[];
   availability: IPublicAvailabilitySlot[];
   bookingsByStatus: { status: TBookingStatus; count: number }[];
 }
@@ -64,6 +91,8 @@ export interface ITechnicianListQuery {
   city?: string;
   minRating?: string;
   approvalStatus?: TTechnicianApprovalStatus;
+  // "all" is the tab, not a param — it widens the list to removed accounts.
+  accountStatus?: TAccountStatus;
   page: number;
   limit: number;
 }
