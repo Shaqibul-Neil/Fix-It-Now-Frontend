@@ -43,9 +43,16 @@ const BasicInfoStep = () => {
         placeholder="https://example.com/your-photo.jpg"
         leftElement={<Link2 size={16} />}
         error={errors.basicInfo?.avatar?.message}
-        {...register("basicInfo.avatar", {
-          setValueAs: (value) => value || undefined,
-        })}
+        {...register("basicInfo.avatar")}
+      />
+
+      <AppInput
+        label="Cover photo URL (optional)"
+        type="url"
+        placeholder="https://example.com/your-workshop.jpg"
+        leftElement={<Link2 size={16} />}
+        error={errors.basicInfo?.coverImage?.message}
+        {...register("basicInfo.coverImage")}
       />
 
       <AppTextArea

@@ -1,11 +1,12 @@
 "use client";
 
-import { useFormContext } from "react-hook-form";
-import { AppInput, Text } from "@/src/components";
+import { Controller, useFormContext } from "react-hook-form";
+import { AppCheckbox, AppInput, Text } from "@/src/components";
 import { TTechnicianProfileInput } from "../schema/onboarding.schema";
 
 const PricingStep = () => {
   const {
+    control,
     register,
     formState: { errors },
   } = useFormContext<TTechnicianProfileInput>();
@@ -36,6 +37,19 @@ const PricingStep = () => {
           })}
         />
       </div>
+
+      <Controller
+        control={control}
+        name="pricing.offersEmergencyService"
+        render={({ field }) => (
+          <AppCheckbox
+            id="offersEmergencyService"
+            label="I take emergency callouts outside normal hours"
+            checked={Boolean(field.value)}
+            onCheckedChange={(checked) => field.onChange(checked === true)}
+          />
+        )}
+      />
 
       <div className="border border-project-border bg-project-muted-primary/60 p-4">
         <Text variant="normal-sm" as="p" className="text-project-accent">

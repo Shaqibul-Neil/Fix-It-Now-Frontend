@@ -150,6 +150,14 @@ export const FILTER_OPTIONS: IFilterConfig = {
     ],
   },
 
+  featured: {
+    options: [
+      { label: "All technicians", value: ALL_OPTION_VALUE },
+      { label: "Featured only", value: "true" },
+      { label: "Not featured", value: "false" },
+    ],
+  },
+
   minRating: {
     options: [
       { label: "Any rating", value: ALL_OPTION_VALUE },
@@ -161,8 +169,6 @@ export const FILTER_OPTIONS: IFilterConfig = {
     ],
   },
 
-  // Major Bangladeshi cities — technicians register with a free-text city,
-  // this is just the filter's shortlist, not an exhaustive list.
   city: {
     options: [
       { label: "All cities", value: ALL_OPTION_VALUE },

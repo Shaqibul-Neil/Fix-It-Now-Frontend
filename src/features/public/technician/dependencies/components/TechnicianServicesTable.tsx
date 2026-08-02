@@ -1,30 +1,73 @@
 "use client";
 
+import Image from "next/image";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { buildColumn, DataTable } from "@/src/components";
+import { buildColumn, DataTable, Text } from "@/src/components";
 import { formatMoney } from "@/src/lib/utils/format.utils";
-import type { IPublicServiceRow } from "@/src/features/public/service/dependencies/types/service.types";
+import type { ITechnicianService } from "../types/technician.types";
 
-const columns = buildColumn<IPublicServiceRow>([
-  { key: "title", label: "Service" },
-  { key: "category", label: "Category" },
+const columns = buildColumn<ITechnicianService>([
   {
-    id: "price",
-    label: "Price",
-    render: (row: IPublicServiceRow) => formatMoney(row.price),
+    id: "service",
+    label: "Service",
+    size: 320,
+    render: (row: ITechnicianService) => (
+      <div className="flex min-w-0 items-center gap-3">
+        <span className="relative size-11 shrink-0 overflow-hidden border border-project-border bg-project-muted">
+          {row.categoryImage && (
+            <Image
+              src={row.categoryImage}
+              alt=""
+              fill
+              unoptimized
+              sizes="44px"
+              className="object-cover"
+            />
+          )}
+        </span>
+
+        <div className="min-w-0 leading-tight">
+          <span className="block truncate font-medium">{row.title}</span>
+
+          <Text
+            variant="normal-xs"
+            as="span"
+            className="block truncate text-project-muted-foreground"
+          >
+            {row.category}
+          </Text>
+        </div>
+      </div>
+    ),
   },
+
   {
-    id: "duration",
+    key: "estimatedDuration",
     label: "Duration",
-    render: (row: IPublicServiceRow) =>
-      row.estimatedDuration ? `${row.estimatedDuration} min` : "—",
+    size: 130,
+    render: (value: number | null) => (
+      <span className="whitespace-nowrap tabular-nums">
+        {value ? `${value} min` : "—"}
+      </span>
+    ),
+  },
+
+  {
+    key: "price",
+    label: "Price",
+    size: 130,
+    render: (value: string) => (
+      <span className="font-semibold tabular-nums text-project-accent">
+        {formatMoney(value)}
+      </span>
+    ),
   },
 ]);
 
 const TechnicianServicesTable = ({
   services,
 }: {
-  services: IPublicServiceRow[];
+  services: ITechnicianService[];
 }) => {
   const table = useReactTable({
     data: services,
@@ -32,7 +75,7 @@ const TechnicianServicesTable = ({
     getCoreRowModel: getCoreRowModel(),
   });
 
-  return <DataTable table={table} emptyMessage="No active services yet." />;
+  return <DataTable table={table} emptyMessage="No active service yet." />;
 };
 
 export default TechnicianServicesTable;

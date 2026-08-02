@@ -1,21 +1,21 @@
 import type { IPublicAvailabilitySlot } from "@/src/features/dashboard/availability/dependencies/types/availability.types";
 import type {
+  IPublicReview,
+  ITechnicianService,
+} from "@/src/features/public/technician/dependencies/types/technician.types";
+import type {
   TAccountStatus,
   TBookingStatus,
   TTechnicianApprovalStatus,
   TUserStatus,
 } from "@/src/types/types";
 
-// The account state behind a profile. Approval is the application decision;
-// this is whether the account itself may sign in — the two move apart, and the
-// row actions read both.
 interface ITechnicianAccount {
   userId: string;
   accountStatus: TUserStatus;
   isDeleted: boolean;
 }
 
-// GET /technicians/admin/list — matches backend's technicianAdminListMapper.
 export interface IAdminTechnicianRow extends ITechnicianAccount {
   id: string;
   firstName: string;
@@ -29,6 +29,7 @@ export interface IAdminTechnicianRow extends ITechnicianAccount {
   area: string;
   averageRating: string;
   totalReviews: number;
+  isFeatured: boolean;
   approvalStatus: TTechnicianApprovalStatus;
   rejectionReason: string | null;
   reviewedAt: string | null;
@@ -36,39 +37,34 @@ export interface IAdminTechnicianRow extends ITechnicianAccount {
   completedJobs: number;
 }
 
-// Mirrors the backend's publicReviewMapper — the comment arrives already split
-// into paragraphs, and the reviewer carries their avatar.
-export interface ITechnicianReview {
-  id: string;
-  rating: number;
-  comment: string[];
-  createdAt: string;
-  customer: { id: string; name: string; avatar: string | null };
-  service: { id: string; title: string };
+export interface ITechnicianIdentity {
+  nationalId: string;
+  nidDocument: string | null;
+  passportNumber: string | null;
+  dateOfBirth: string | null;
+  emergencyContactName: string | null;
+  emergencyContactPhone: string | null;
 }
 
-// A service on the admin read, removed listings included.
-export interface ITechnicianService {
-  id: string;
-  title: string;
-  price: string;
-  category: string;
+export interface IAdminTechnicianService extends ITechnicianService {
   isActive: boolean;
   isDeleted: boolean;
 }
 
-// GET /technicians/admin/:id — the public profile plus moderation state, the
-// account, and the booking counts only the admin read carries.
 export interface IAdminTechnicianDetails extends ITechnicianAccount {
   id: string;
   firstName: string;
   lastName: string;
   email: string;
   phone: string;
+  address: string;
   avatar: string | null;
-  // Stored as one Text column, split on its blank lines by the API — one
-  // paragraph per entry, empty when nothing was written.
+  coverImage: string | null;
+  professionalTitle: string | null;
+  tagline: string | null;
   bio: string[];
+  skills: string[];
+  workHighlights: string[];
   experienceYears: number;
   hourlyRate: string;
   serviceRadius: number | null;
@@ -76,12 +72,19 @@ export interface IAdminTechnicianDetails extends ITechnicianAccount {
   area: string;
   averageRating: string;
   totalReviews: number;
+  isAvailable: boolean;
+  isFeatured: boolean;
+  isProfileComplete: boolean;
+  offersEmergencyService: boolean;
+  identity: ITechnicianIdentity;
   approvalStatus: TTechnicianApprovalStatus;
   rejectionReason: string | null;
   reviewedAt: string | null;
+  reviewedBy: string | null;
   appliedAt: string;
-  services: ITechnicianService[];
-  reviews: ITechnicianReview[];
+  updatedAt: string;
+  services: IAdminTechnicianService[];
+  reviews: IPublicReview[];
   availability: IPublicAvailabilitySlot[];
   bookingsByStatus: { status: TBookingStatus; count: number }[];
 }
@@ -91,13 +94,12 @@ export interface ITechnicianListQuery {
   city?: string;
   minRating?: string;
   approvalStatus?: TTechnicianApprovalStatus;
-  // "all" is the tab, not a param — it widens the list to removed accounts.
   accountStatus?: TAccountStatus;
+  featured?: boolean;
   page: number;
   limit: number;
 }
 
-// PENDING is where an application starts, not something an admin can send back.
 export type TApprovalDecision = Extract<
   TTechnicianApprovalStatus,
   "APPROVED" | "REJECTED"
@@ -108,7 +110,10 @@ export interface IReviewTechnicianPayload {
   rejectionReason?: string;
 }
 
-// What the approval modal needs from whichever row opened it.
+export interface IUpdateFeaturedPayload {
+  isFeatured: boolean;
+}
+
 export interface ITechnicianApprovalTarget {
   id: string;
   name: string;

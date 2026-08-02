@@ -1,28 +1,25 @@
 "use client";
 
 import type { ReactNode } from "react";
-import type { TParallaxDirection } from "@/src/lib/animation/parallax.direction";
 import { useBannerTimeline } from "../animation/useBannerTimeline";
 
 interface IBannerMotionProps {
-  slideCount: number;
-  direction?: TParallaxDirection;
+  sceneCount: number;
   className?: string;
   children: ReactNode;
 }
 
 const BannerMotion = ({
-  slideCount,
-  direction,
+  sceneCount,
   className,
   children,
 }: IBannerMotionProps) => {
-  const sectionRef = useBannerTimeline({ slideCount, direction });
+  const sectionRef = useBannerTimeline(sceneCount);
 
   return (
     <section
       ref={sectionRef}
-      aria-label="Featured services"
+      aria-label="Book a verified technician"
       data-navbar-overlay
       className={className}
     >

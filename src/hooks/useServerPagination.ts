@@ -12,6 +12,9 @@ export interface IServerPagination {
   setPageSize: (pageSize: number) => void;
   getFilter: (key: string) => string | undefined;
   setFilter: (key: string, value?: string) => void;
+  getFilterList: (key: string) => string[];
+  toggleFilterValue: (key: string, value: string) => void;
+  clearFilters: () => void;
 }
 
 // The URL is the table state, so a filter change also resets the page.
@@ -58,5 +61,22 @@ export const useServerPagination = (
         else params.delete(key);
         params.set("page", "1");
       }),
+
+    // Checkbox groups live in the URL as repeated keys.
+    getFilterList: (key) => searchParams.getAll(key),
+
+    toggleFilterValue: (key, value) =>
+      push((params) => {
+        const current = params.getAll(key);
+        const next = current.includes(value)
+          ? current.filter((entry) => entry !== value)
+          : [...current, value];
+
+        params.delete(key);
+        next.forEach((entry) => params.append(key, entry));
+        params.set("page", "1");
+      }),
+
+    clearFilters: () => router.push(pathname, { scroll: false }),
   };
 };

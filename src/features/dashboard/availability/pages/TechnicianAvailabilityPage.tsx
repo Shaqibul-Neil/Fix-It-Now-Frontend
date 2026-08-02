@@ -37,7 +37,9 @@ import type {
 
 const TechnicianAvailabilityPage = () => {
   const { data, isPending, isError, error } = useMyAvailabilityQuery();
-  const [week, setWeek] = useState<TWeekSchedule | null>(null);
+  const [week, setWeek] = useState<TWeekSchedule>(() =>
+    toWeekSchedule(data ?? []),
+  );
   const [isConfirming, setIsConfirming] = useState(false);
 
   const saveAvailability = useSetAvailabilityMutation(() =>
@@ -52,14 +54,12 @@ const TechnicianAvailabilityPage = () => {
 
   if (isPending) return <DetailsSkeleton sectionCount={1} />;
   if (isError) return <AppError message={error?.message} />;
-  // `week` syncs from `data` a render behind on the very first paint —
-  // that is not an error, just not ready yet.
-  if (!week) return <DetailsSkeleton sectionCount={1} />;
+  // // `week` syncs from `data` a render behind on the very first paint —
+  // // that is not an error, just not ready yet.
+  // if (!week) return <DetailsSkeleton sectionCount={1} />;
 
   const editDay = (day: TDayOfWeek, next: Partial<TWeekSchedule[TDayOfWeek]>) =>
-    setWeek((current) =>
-      current ? { ...current, [day]: { ...current[day], ...next } } : current,
-    );
+    setWeek((current) => ({ ...current, [day]: { ...current[day], ...next } }));
 
   const editRange = (day: TDayOfWeek, index: number, range: ITimeRange) =>
     editDay(day, {
@@ -83,7 +83,6 @@ const TechnicianAvailabilityPage = () => {
 
   const copyToAll = (day: TDayOfWeek) =>
     setWeek((current) => {
-      if (!current) return current;
       const source = current[day];
 
       return DAY_ORDER.reduce(

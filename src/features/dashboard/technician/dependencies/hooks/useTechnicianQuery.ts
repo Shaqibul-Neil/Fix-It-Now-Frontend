@@ -17,6 +17,7 @@ import type { ITechnicianListQuery } from "../types/technician.types";
 // The URL is the filter, so the hooks read it themselves.
 const useTechnicianFilter = (): ITechnicianListQuery => {
   const { page, pageSize, getFilter } = useServerPagination();
+  const featured = getFilter("featured");
 
   return {
     search: getFilter("search"),
@@ -26,6 +27,7 @@ const useTechnicianFilter = (): ITechnicianListQuery => {
       TTechnicianApprovalStatus | undefined,
     accountStatus:
       (getFilter("accountStatus") as TAccountStatus) ?? DEFAULT_ACCOUNT_STATUS,
+    featured: featured ? featured === "true" : undefined,
     page,
     limit: pageSize,
   };

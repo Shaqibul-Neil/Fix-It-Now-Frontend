@@ -38,6 +38,7 @@ export const apiEndpoints = {
         list: "/technicians/admin/list",
         details: (id: string) => `/technicians/admin/${id}`,
         approval: (id: string) => `/technicians/admin/${id}/approval`,
+        featured: (id: string) => `/technicians/admin/${id}/featured`,
       },
       // Ban, remove and restore act on the account, not on any one profile —
       // technician rows carry `userId` for exactly this.
@@ -117,6 +118,8 @@ export const apiEndpoints = {
     },
     technician: {
       list: "/technicians",
+      // Category, skill and price facets with their technician counts.
+      filters: "/technicians/filters",
       details: (id: string) => `/technicians/${id}`,
       availability: (id: string) => `/technicians/${id}/availability`,
     },

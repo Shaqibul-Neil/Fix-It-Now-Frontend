@@ -37,6 +37,9 @@ export interface IFilterConfig {
   minRating: {
     options: TSelectOption[];
   };
+  featured: {
+    options: TSelectOption[];
+  };
   city: {
     options: TSelectOption[];
   };

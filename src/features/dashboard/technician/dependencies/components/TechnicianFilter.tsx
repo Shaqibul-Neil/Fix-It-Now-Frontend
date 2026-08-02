@@ -62,6 +62,16 @@ const TechnicianFilter = () => {
           containerClassName={SELECT_WIDTH}
         />
 
+        <AppSelect
+          placeholder="Spotlight"
+          options={FILTER_OPTIONS.featured.options}
+          value={getFilter("featured") ?? ALL_OPTION_VALUE}
+          onChange={(value) =>
+            setFilter("featured", value === ALL_OPTION_VALUE ? undefined : value)
+          }
+          containerClassName={SELECT_WIDTH}
+        />
+
         {/* "all" is a real value here — it is what pulls removed accounts back. */}
         <AppSelect
           placeholder="Account status"

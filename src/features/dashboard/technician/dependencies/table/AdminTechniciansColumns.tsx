@@ -3,7 +3,7 @@
 import { useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import type { ColumnDef } from "@tanstack/react-table";
-import { Eye, ShieldCheck } from "lucide-react";
+import { Eye, ShieldCheck, Star, StarOff } from "lucide-react";
 import {
   ActionColumn,
   AppRating,
@@ -13,8 +13,9 @@ import {
   buildColumn,
 } from "@/src/components";
 import { useAccountActions } from "@/src/features/dashboard/user/dependencies/table/useAccountActions";
-import { formatMoney } from "@/src/lib/utils/format.utils";
+import { formatDate, formatMoney } from "@/src/lib/utils/format.utils";
 import TechnicianApprovalModal from "../components/TechnicianApprovalModal";
+import { useUpdateFeaturedMutation } from "../hooks/useTechnicianMutation";
 import type {
   IAdminTechnicianRow,
   ITechnicianApprovalTarget,
@@ -27,6 +28,8 @@ export const useAdminTechniciansColumns = (): {
   const router = useRouter();
   const [reviewTarget, setReviewTarget] =
     useState<ITechnicianApprovalTarget | null>(null);
+  const { mutate: updateFeatured, isPending: isFeaturing } =
+    useUpdateFeaturedMutation();
 
   const account = useAccountActions<IAdminTechnicianRow>(
     (row) => ({
@@ -44,18 +47,15 @@ export const useAdminTechniciansColumns = (): {
         name: `${row.firstName} ${row.lastName}`,
         email: row.email,
         avatar: row.avatar,
+        badge: row.isFeatured ? (
+          <Star
+            aria-label="Featured"
+            className="size-3.5 shrink-0 fill-project-primary text-project-primary"
+          />
+        ) : null,
       })),
 
       ...buildColumn<IAdminTechnicianRow>([
-        {
-          key: "phone",
-          label: "Phone",
-          size: 140,
-          render: (value) => (
-            <span className="whitespace-nowrap">{String(value)}</span>
-          ),
-        },
-
         {
           id: "location",
           label: "Location",
@@ -129,8 +129,6 @@ export const useAdminTechniciansColumns = (): {
         },
 
         {
-          // Applied and reviewed dates live on the details page — the list only
-          // answers where the application stands.
           id: "approvalStatus",
           label: "Application",
           size: 140,
@@ -161,8 +159,26 @@ export const useAdminTechniciansColumns = (): {
               router.push(`/dashboard/admin/technicians/${row.id}`),
           },
           {
-            // An approved application is closed — from there the account is
-            // banned, not re-decided, and the backend answers 409 either way.
+            // Only an approved technician may lead the public list.
+            icon: Star,
+            label: "Feature on home",
+            variant: "primary",
+            disabled: isFeaturing,
+            hidden: (row) =>
+              row.isDeleted ||
+              row.isFeatured ||
+              row.approvalStatus !== "APPROVED",
+            onClick: (row) => updateFeatured({ id: row.id, isFeatured: true }),
+          },
+          {
+            icon: StarOff,
+            label: "Remove from home",
+            disabled: isFeaturing,
+            hidden: (row) => row.isDeleted || !row.isFeatured,
+            onClick: (row) => updateFeatured({ id: row.id, isFeatured: false }),
+          },
+          {
+            // An approved application is closed — the account is banned instead.
             icon: ShieldCheck,
             label: "Review application",
             variant: "primary",

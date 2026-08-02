@@ -12,6 +12,7 @@ const buildQuery = ({
   minRating,
   approvalStatus,
   accountStatus,
+  featured,
   page,
   limit,
 }: ITechnicianListQuery) => {
@@ -24,6 +25,7 @@ const buildQuery = ({
   if (city) params.set("city", city);
   if (minRating) params.set("minRating", minRating);
   if (approvalStatus) params.set("approvalStatus", approvalStatus);
+  if (featured !== undefined) params.set("featured", String(featured));
   // Removed profiles have no account status of their own — they arrive only
   // when the list is widened, which is what the "all" tab asks for.
   if (accountStatus === "all") params.set("includeDeleted", "true");

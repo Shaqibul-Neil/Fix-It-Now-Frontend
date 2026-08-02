@@ -1,4 +1,5 @@
 // Animation
+export { default as CountUp } from "./common/animation/CountUp";
 export { default as PageTransition } from "./common/animation/PageTransition";
 export { default as Reveal } from "./common/animation/Reveal";
 export { default as ScrollReveal } from "./common/animation/ScrollReveal";
@@ -20,15 +21,22 @@ export { default as GenericPieChart } from "./common/charts/GenericPieChart";
 // Cards
 export { default as AppAvatar } from "./common/cards/AppAvatar";
 export { default as StatCard } from "./common/cards/StatCard";
+export { default as TechnicianCard } from "./common/cards/TechnicianCard";
 export { default as SummaryRow } from "./common/cards/SummaryRow";
 
 // Details
 export { default as DetailsHeader } from "./common/details/DetailsHeader";
 export { default as DetailsSection } from "./common/details/DetailsSection";
 export { default as InfoList } from "./common/details/InfoList";
-export { default as ProfileHero } from "./common/details/ProfileHero";
+export { default as ProfileBanner } from "./common/details/ProfileBanner";
+export type {
+  IProfileMetaItem,
+  IProfileStatItem,
+} from "./common/details/ProfileBanner";
+export { default as ProfileChips } from "./common/details/ProfileChips";
+export { default as ReviewCard } from "./common/details/ReviewCard";
+export type { IReviewEntry } from "./common/details/ReviewCard";
 export { default as ReviewList } from "./common/details/ReviewList";
-export type { IReviewEntry } from "./common/details/ReviewList";
 export { default as ScheduleBoard } from "./common/details/ScheduleBoard";
 export type { IScheduleDay } from "./common/details/ScheduleBoard";
 export { default as StatusTimeline } from "./common/details/StatusTimeline";
@@ -37,7 +45,6 @@ export { default as StatusTimeline } from "./common/details/StatusTimeline";
 export { default as AppCheckbox } from "./common/inputs/AppCheckbox";
 export { default as AppDatePicker } from "./common/inputs/AppDatePicker";
 export { default as AppInput } from "./common/inputs/AppInput";
-export { default as AppMultipleSelect } from "./common/inputs/AppMultipleSelect";
 export { default as AppPasswordInput } from "./common/inputs/AppPasswordInput";
 export { default as AppRating } from "./common/inputs/AppRating";
 export { default as AppSearch } from "./common/inputs/AppSearch";
@@ -60,6 +67,10 @@ export { default as TableSkeleton } from "./common/skeleton/TableSkeleton";
 export { default as NotificationSkeleton } from "./common/skeleton/NotificationSkeleton";
 export { default as OverviewSkeleton } from "./common/skeleton/OverviewSkeleton";
 
+// Slider
+export { default as AppSlider } from "./common/slider/AppSlider";
+export { default as SliderNav } from "./common/slider/SliderNav";
+
 // States
 export { default as ResultState } from "./common/states/ResultState";
 
@@ -71,7 +82,6 @@ export { default as ContactColumn } from "./common/table/ContactColumn";
 export { default as DataTable } from "./common/table/DataTable";
 export { default as DataTablePagination } from "./common/table/DataTablePagination";
 export { default as PaginatedTable } from "./common/table/PaginatedTable";
-export { default as TableViewSwitcher } from "./common/table/TableViewSwitcher";
 
 // Text
 export { default as PageHeader } from "./common/texts/PageHeader";

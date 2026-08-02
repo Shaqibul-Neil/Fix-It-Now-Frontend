@@ -17,8 +17,10 @@ import {
   SidebarTrigger,
 } from "@/src/components/ui/sidebar";
 import BasicInfoStep from "../dependencies/components/BasicInfoStep";
+import IdentityStep from "../dependencies/components/IdentityStep";
 import LocationStep from "../dependencies/components/LocationStep";
 import PricingStep from "../dependencies/components/PricingStep";
+import ProfileDetailsStep from "../dependencies/components/ProfileDetailsStep";
 import ReviewStep from "../dependencies/components/ReviewStep";
 import {
   ONBOARDING_LAST_STEP,
@@ -72,8 +74,12 @@ const OnboardingPage = ({
       case 1:
         return <BasicInfoStep />;
       case 2:
-        return <PricingStep />;
+        return <IdentityStep />;
       case 3:
+        return <ProfileDetailsStep />;
+      case 4:
+        return <PricingStep />;
+      case 5:
         return <LocationStep />;
       default:
         return <ReviewStep onEdit={goToStep} />;

@@ -15,8 +15,10 @@ import { AppToast } from "@/src/lib/utils/toast.utils";
 // Each step controls only its own part of the form.
 const FIELDS_BY_STEP: Record<number, Path<TTechnicianProfileInput>[]> = {
   1: ["basicInfo"],
-  2: ["pricing"],
-  3: ["location"],
+  2: ["identity"],
+  3: ["profileDetails"],
+  4: ["pricing"],
+  5: ["location"],
 };
 
 // Restore unfinished onboarding data from browser storage.

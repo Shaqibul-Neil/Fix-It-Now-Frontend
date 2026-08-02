@@ -1,21 +1,31 @@
 "use client";
 
 import { useState } from "react";
-import { ShieldCheck } from "lucide-react";
+import {
+  Briefcase,
+  Mail,
+  MapPin,
+  Phone,
+  ShieldCheck,
+  Star,
+  StarOff,
+} from "lucide-react";
 import {
   AppButton,
   AppError,
-  AppRating,
+  AppSlider,
   ChartLegend,
   DetailsSection,
   DetailsSkeleton,
   GenericPieChart,
   InfoList,
   PaginatedTable,
-  ProfileHero,
-  ReviewList,
+  ProfileBanner,
+  ProfileChips,
+  ReviewCard,
   ScheduleBoard,
   StatusPill,
+  Text,
 } from "@/src/components";
 import {
   DAY_LABEL,
@@ -27,6 +37,7 @@ import { useAccountActions } from "@/src/features/dashboard/user/dependencies/ta
 import { CHART_COLORS } from "@/src/lib/options/color.options";
 import { formatDate, formatMoney } from "@/src/lib/utils/format.utils";
 import TechnicianApprovalModal from "../dependencies/components/TechnicianApprovalModal";
+import { useUpdateFeaturedMutation } from "../dependencies/hooks/useTechnicianMutation";
 import { useAdminTechnicianDetailsQuery } from "../dependencies/hooks/useTechnicianQuery";
 import { technicianServiceColumns } from "../dependencies/table/TechnicianServiceColumns";
 import type {
@@ -36,17 +47,14 @@ import type {
 
 const SERVICES_PAGE_SIZE = 5;
 
-const SUBTITLE_LABEL =
-  "mr-2 text-[11px] uppercase tracking-[0.14em] text-project-primary";
-
 const AdminTechnicianDetailsPage = ({ id }: { id: string }) => {
-  const { data, isPending, isError, error } =
-    useAdminTechnicianDetailsQuery(id);
+  const { data, isPending, isError, error } = useAdminTechnicianDetailsQuery(id);
   const [reviewTarget, setReviewTarget] =
     useState<ITechnicianApprovalTarget | null>(null);
+  const { mutate: updateFeatured, isPending: isFeaturing } =
+    useUpdateFeaturedMutation();
 
-  // The embedded service list arrives whole, so this table pages over it here
-  // rather than asking the server for a slice it does not serve.
+  // The embedded service list arrives whole, so this table pages over it here.
   const [servicePage, setServicePage] = useState(1);
   const [servicePageSize, setServicePageSize] = useState(SERVICES_PAGE_SIZE);
 
@@ -71,7 +79,6 @@ const AdminTechnicianDetailsPage = ({ id }: { id: string }) => {
   );
 
   const serviceStart = (servicePage - 1) * servicePageSize;
-
   const isAwaitingDecision =
     data.approvalStatus === "PENDING" && !data.isDeleted;
 
@@ -91,64 +98,75 @@ const AdminTechnicianDetailsPage = ({ id }: { id: string }) => {
 
   return (
     <section className="flex flex-col gap-4">
-      <ProfileHero
+      <ProfileBanner
         eyebrow="Technician"
         name={fullName}
+        title={data.professionalTitle}
         avatar={data.avatar}
-        subtitle={
-          // Three unlabelled strings in a row read as one sentence — each value
-          // says which field it is.
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-            <AppRating
-              value={Number(data.averageRating)}
-              readOnly
-              size={14}
-              caption={`${data.averageRating} (${data.totalReviews} reviews)`}
-            />
-
-            <span className="min-w-0">
-              <span className={SUBTITLE_LABEL}>Location</span>
-              {`${data.area}, ${data.city}`}
-            </span>
-
-            <span className="min-w-0">
-              <span className={SUBTITLE_LABEL}>Email</span>
-              {data.email}
-            </span>
-
-            <span className="min-w-0">
-              <span className={SUBTITLE_LABEL}>Phone</span>
-              {data.phone}
-            </span>
-          </div>
-        }
+        coverImage={data.coverImage}
         badges={
           <>
             <StatusPill status={data.approvalStatus} />
             <StatusPill
               status={data.isDeleted ? "DELETED" : data.accountStatus}
             />
+            {data.isFeatured && <StatusPill status="FEATURED" />}
           </>
         }
+        metaItems={[
+          {
+            icon: Star,
+            label: "Rating",
+            value: `${data.averageRating} (${data.totalReviews} reviews)`,
+          },
+          {
+            icon: Briefcase,
+            label: "Experience",
+            value: `${data.experienceYears} years experience`,
+          },
+          {
+            icon: MapPin,
+            label: "Location",
+            value: `${data.area}, ${data.city}`,
+          },
+          { icon: Mail, label: "Email", value: data.email },
+          { icon: Phone, label: "Phone", value: data.phone },
+        ]}
         stats={[
-          { label: "Experience", value: `${data.experienceYears} yrs` },
           { label: "Hourly rate", value: `${formatMoney(data.hourlyRate)}/hr` },
           { label: "Services", value: data.services.length },
           { label: "Bookings", value: totalBookings },
+          {
+            label: "Accepting work",
+            value: data.isAvailable ? "Yes" : "Paused",
+          },
         ]}
         actions={
-          // A pending application is the only decision on the table — banning
-          // or removing an account nobody has ruled on yet is the wrong move,
-          // so those come back once it is approved or rejected.
+          // A pending application is the only decision on the table.
           isAwaitingDecision ? (
             reviewButton
           ) : (
             <>
-              {/* An approved application is closed — from there the account is
-                  banned, not re-decided. */}
               {!data.isDeleted &&
                 data.approvalStatus === "REJECTED" &&
                 reviewButton}
+
+              {!data.isDeleted && data.approvalStatus === "APPROVED" && (
+                <AppButton
+                  text={
+                    data.isFeatured ? "Remove from home" : "Feature on home"
+                  }
+                  rightIcon={data.isFeatured ? StarOff : Star}
+                  variant={data.isFeatured ? "outline" : "noOutline"}
+                  disabled={isFeaturing}
+                  onClick={() =>
+                    updateFeatured({
+                      id: data.id,
+                      isFeatured: !data.isFeatured,
+                    })
+                  }
+                />
+              )}
 
               {account.actions
                 .filter((action) => !action.hidden?.(data))
@@ -170,37 +188,80 @@ const AdminTechnicianDetailsPage = ({ id }: { id: string }) => {
         }
       />
 
-      <div className="grid gap-4 lg:grid-cols-3">
-        <div className="flex flex-col gap-4 lg:col-span-2">
-          <DetailsSection title="Profile">
+      <div className="grid min-w-0 gap-4 lg:grid-cols-3">
+        <div className="flex min-w-0 flex-col gap-4 lg:col-span-2">
+          <DetailsSection title="Background">
+            {data.tagline && (
+              <blockquote className="mb-5 border-l-2 border-project-primary bg-project-muted/40 px-5 py-4">
+                <Text
+                  variant="normal-base"
+                  as="p"
+                  className="italic text-project-muted-foreground"
+                >
+                  “{data.tagline}”
+                </Text>
+              </blockquote>
+            )}
+
+            {data.bio.length === 0 ? (
+              <Text
+                variant="normal-sm"
+                as="p"
+                className="text-project-muted-foreground"
+              >
+                No bio written yet.
+              </Text>
+            ) : (
+              <div className="space-y-4">
+                {data.bio.map((paragraph) => (
+                  <Text
+                    key={paragraph}
+                    variant="normal-sm"
+                    as="p"
+                    className="leading-relaxed text-project-foreground"
+                  >
+                    {paragraph}
+                  </Text>
+                ))}
+              </div>
+            )}
+          </DetailsSection>
+
+          <DetailsSection
+            title="Identity"
+            description="Vetting details, admin only."
+          >
             <InfoList
               columns={3}
               items={[
+                { label: "National ID", value: data.identity.nationalId },
                 {
-                  label: "Bio",
-                  // Paragraphs from the API — the blank line between them is
-                  // what makes it read as a write-up and not one long line.
-                  value: data.bio.join("\n\n"),
-                  className: "sm:col-span-2 lg:col-span-3 whitespace-pre-line",
+                  label: "Date of birth",
+                  value: data.identity.dateOfBirth
+                    ? formatDate(data.identity.dateOfBirth)
+                    : null,
                 },
-                { label: "Phone", value: data.phone },
-                { label: "Email", value: data.email },
+                { label: "Passport", value: data.identity.passportNumber },
                 {
-                  label: "Service radius",
-                  value: data.serviceRadius ? `${data.serviceRadius} km` : null,
+                  label: "Emergency contact",
+                  value: data.identity.emergencyContactName,
                 },
-                { label: "City", value: data.city },
-                { label: "Area", value: data.area },
-                { label: "Applied", value: formatDate(data.appliedAt) },
                 {
-                  label: "Reviewed",
-                  value: data.reviewedAt ? formatDate(data.reviewedAt) : null,
+                  label: "Emergency phone",
+                  value: data.identity.emergencyContactPhone,
                 },
-                { label: "Account id", value: data.userId },
                 {
-                  label: "Rejection reason",
-                  value: data.rejectionReason,
-                  className: "sm:col-span-2 lg:col-span-3",
+                  label: "NID document",
+                  value: data.identity.nidDocument ? (
+                    <a
+                      href={data.identity.nidDocument}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-project-primary hover:underline"
+                    >
+                      Open document
+                    </a>
+                  ) : null,
                 },
               ]}
             />
@@ -239,18 +300,40 @@ const AdminTechnicianDetailsPage = ({ id }: { id: string }) => {
               />
             }
           >
-            <ReviewList
-              entries={data.reviews.map((review) => ({
-                id: review.id,
-                rating: review.rating,
-                comment: review.comment.join("\n\n"),
-                createdAt: review.createdAt,
-                author: review.customer.name,
-                authorAvatar: review.customer.avatar,
-                subject: review.service.title,
-              }))}
-              emptyMessage="No published review yet."
-            />
+            {data.reviews.length === 0 ? (
+              <Text
+                variant="normal-sm"
+                as="p"
+                className="text-project-muted-foreground"
+              >
+                No published review yet.
+              </Text>
+            ) : (
+              <AppSlider
+                label={`Reviews for ${fullName}`}
+                bullets={false}
+                controlsLabel="Latest reviews"
+                controlsAlign="between"
+                spaceBetween={16}
+                breakpoints={{ 768: { slidesPerView: 2 } }}
+                controlsClassName="mt-6"
+              >
+                {data.reviews.map((review) => (
+                  <ReviewCard
+                    key={review.id}
+                    entry={{
+                      id: review.id,
+                      rating: review.rating,
+                      comment: review.comment.join("\n\n"),
+                      createdAt: review.createdAt,
+                      author: review.customer.name,
+                      authorAvatar: review.customer.avatar,
+                      subject: review.service.title,
+                    }}
+                  />
+                ))}
+              </AppSlider>
+            )}
           </DetailsSection>
         </div>
 
@@ -277,23 +360,63 @@ const AdminTechnicianDetailsPage = ({ id }: { id: string }) => {
             />
           </DetailsSection>
 
-          <DetailsSection
-            title="Availability"
-            description="The week a customer sees when booking this technician."
-            className="h-fit"
-          >
-            <ScheduleBoard
-              days={DAY_ORDER.map((day) => ({
-                id: day,
-                label: DAY_LABEL[day],
-                ranges: week[day].isActive
-                  ? week[day].ranges.map(formatRange)
-                  : [],
-              }))}
+          <DetailsSection title="Application" className="h-fit">
+            <InfoList
+              columns={1}
+              items={[
+                { label: "Address", value: data.address },
+                {
+                  label: "Service radius",
+                  value: data.serviceRadius ? `${data.serviceRadius} km` : null,
+                },
+                {
+                  label: "Emergency jobs",
+                  value: data.offersEmergencyService ? "Accepted" : "No",
+                },
+                { label: "Applied", value: formatDate(data.appliedAt) },
+                {
+                  label: "Reviewed",
+                  value: data.reviewedAt ? formatDate(data.reviewedAt) : null,
+                },
+                { label: "Account id", value: data.userId },
+                { label: "Rejection reason", value: data.rejectionReason },
+              ]}
+            />
+          </DetailsSection>
+
+          <DetailsSection title="Specialties" className="h-fit">
+            <ProfileChips
+              items={data.skills}
+              emptyMessage="No skill listed yet."
+            />
+          </DetailsSection>
+
+          <DetailsSection title="How they work" className="h-fit">
+            <ProfileChips
+              items={data.workHighlights}
+              variant="check"
+              emptyMessage="No highlight listed yet."
+              className="sm:grid-cols-1"
             />
           </DetailsSection>
         </div>
       </div>
+
+      <DetailsSection
+        title="Availability"
+        description="The week a customer sees when booking this technician."
+      >
+        <ScheduleBoard
+          days={DAY_ORDER.map((day) => ({
+            id: day,
+            label: DAY_LABEL[day],
+            ranges: week[day].isActive
+              ? week[day].ranges.map(formatRange)
+              : [],
+          }))}
+          className="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-7"
+        />
+      </DetailsSection>
 
       <TechnicianApprovalModal
         target={reviewTarget}

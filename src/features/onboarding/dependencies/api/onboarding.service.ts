@@ -22,13 +22,30 @@ export const getOnboardingRequest = async (): Promise<
   return {
     basicInfo: {
       phone: profile.phone,
-      avatar: profile.avatar ?? undefined,
+      avatar: profile.avatar ?? "",
+      coverImage: profile.coverImage ?? "",
       bio: profile.bio,
       experienceYears: profile.experienceYears,
+    },
+    identity: {
+      nationalId: profile.nationalId,
+      nidDocument: profile.nidDocument ?? "",
+      passportNumber: profile.passportNumber ?? "",
+      // The input is a date field, so only the calendar part is kept.
+      dateOfBirth: profile.dateOfBirth?.slice(0, 10) ?? "",
+      emergencyContactName: profile.emergencyContactName ?? "",
+      emergencyContactPhone: profile.emergencyContactPhone ?? "",
+    },
+    profileDetails: {
+      professionalTitle: profile.professionalTitle ?? "",
+      tagline: profile.tagline ?? "",
+      skills: profile.skills ?? [],
+      workHighlights: profile.workHighlights ?? [],
     },
     pricing: {
       hourlyRate: Number(profile.hourlyRate),
       serviceRadius: profile.serviceRadius ?? undefined,
+      offersEmergencyService: profile.offersEmergencyService,
     },
     location: {
       address: profile.address,

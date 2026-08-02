@@ -6,7 +6,7 @@ import { AppButton, SummaryRow, Text } from "@/src/components";
 import type { TTechnicianProfileInput } from "../schema/onboarding.schema";
 
 const ReviewStep = ({ onEdit }: { onEdit: (step: number) => void }) => {
-  const { basicInfo, pricing, location } =
+  const { basicInfo, identity, profileDetails, pricing, location } =
     useFormContext<TTechnicianProfileInput>().getValues();
 
   const sections = [
@@ -17,11 +17,37 @@ const ReviewStep = ({ onEdit }: { onEdit: (step: number) => void }) => {
         { label: "Phone", value: basicInfo.phone },
         { label: "Years of experience", value: basicInfo.experienceYears },
         { label: "Profile photo", value: basicInfo.avatar },
+        { label: "Cover photo", value: basicInfo.coverImage },
         { label: "Bio", value: basicInfo.bio },
       ],
     },
     {
       step: 2,
+      title: "Identity",
+      rows: [
+        { label: "National ID", value: identity.nationalId },
+        { label: "Date of birth", value: identity.dateOfBirth },
+        { label: "NID document", value: identity.nidDocument },
+        { label: "Passport", value: identity.passportNumber },
+        { label: "Emergency contact", value: identity.emergencyContactName },
+        { label: "Emergency phone", value: identity.emergencyContactPhone },
+      ],
+    },
+    {
+      step: 3,
+      title: "Profile Details",
+      rows: [
+        { label: "Professional title", value: profileDetails.professionalTitle },
+        { label: "Tagline", value: profileDetails.tagline },
+        { label: "Skills", value: profileDetails.skills?.join(", ") },
+        {
+          label: "How you work",
+          value: profileDetails.workHighlights?.join(", "),
+        },
+      ],
+    },
+    {
+      step: 4,
       title: "Pricing",
       rows: [
         {
@@ -32,10 +58,14 @@ const ReviewStep = ({ onEdit }: { onEdit: (step: number) => void }) => {
           label: "Service radius",
           value: pricing.serviceRadius && `${pricing.serviceRadius} km`,
         },
+        {
+          label: "Emergency callouts",
+          value: pricing.offersEmergencyService ? "Yes" : "No",
+        },
       ],
     },
     {
-      step: 3,
+      step: 5,
       title: "Service Area",
       rows: [
         { label: "City", value: location.city },

@@ -1,49 +1,84 @@
 import { ArrowRight } from "lucide-react";
-import { AppButton, ScrollReveal, Text } from "@/src/components";
+import {
+  AppButton,
+  AppSlider,
+  ScrollReveal,
+  TechnicianCard,
+  Text,
+} from "@/src/components";
 import type { ITechnician } from "@/src/features/public/technician/dependencies/types/technician.types";
-import TechnicianCard from "./TechnicianCard";
+import type { TUserRole } from "@/src/lib/auth/auth.roles";
+import BookNowButton from "./BookNowButton";
 
-const TechnicianSection = ({ technicians }: { technicians: ITechnician[] }) => {
+interface ITechnicianSectionProps {
+  technicians: ITechnician[];
+  userRole?: TUserRole;
+}
+
+const TechnicianSection = ({
+  technicians,
+  userRole,
+}: ITechnicianSectionProps) => {
   if (!technicians.length) return null;
 
   return (
     <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 xl:px-8">
-      <ScrollReveal className="mb-10 flex flex-col gap-4 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
-        <div className="max-w-xl space-y-3">
-          <Text
-            variant="medium-xs"
-            as="span"
-            className="uppercase tracking-[0.28em] text-project-primary"
-          >
-            Verified & rated
-          </Text>
-          <Text
-            variant="semibold-2xl"
-            as="h2"
-            className="tracking-tight text-project-accent"
-          >
-            Our top technicians
-          </Text>
-        </div>
+      <ScrollReveal className="mx-auto mb-10 max-w-2xl space-y-3 text-center sm:mb-14">
+        <Text
+          variant="medium-xs"
+          as="span"
+          className="block uppercase tracking-[0.28em] text-project-primary"
+        >
+          Verified & rated
+        </Text>
 
+        <Text
+          variant="semibold-3xl"
+          as="h2"
+          className="tracking-tight text-project-accent"
+        >
+          Trusted technicians, ready to work
+        </Text>
+
+        <Text
+          variant="normal-base"
+          as="p"
+          className="text-project-muted-foreground"
+        >
+          Browse our hand-picked featured technicians — each one ID-checked,
+          admin-approved and rated by the customers they worked for.
+        </Text>
+      </ScrollReveal>
+
+      <AppSlider
+        label="Featured technicians"
+        controlsAlign="center"
+        autoplayDelay={7000}
+      >
+        {technicians.map((technician) => (
+          <TechnicianCard
+            key={technician.id}
+            technician={technician}
+            tone="panel"
+            className="sm:grid-cols-[1.35fr_0.65fr] sm:items-stretch sm:gap-8"
+            bookAction={
+              <BookNowButton
+                userRole={userRole}
+                className="border-project-panel-primary bg-project-panel-primary text-project-card hover:bg-transparent hover:text-project-panel-primary"
+              />
+            }
+          />
+        ))}
+      </AppSlider>
+
+      <div className="mt-10 flex justify-center">
         <AppButton
           text="View all technicians"
           href="/technicians"
           rightIcon={ArrowRight}
           variant="outline"
-          className="w-fit"
         />
-      </ScrollReveal>
-
-      <ScrollReveal className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
-        {technicians.map((technician, index) => (
-          <TechnicianCard
-            key={technician.id}
-            technician={technician}
-            photoIndex={index}
-          />
-        ))}
-      </ScrollReveal>
+      </div>
     </section>
   );
 };

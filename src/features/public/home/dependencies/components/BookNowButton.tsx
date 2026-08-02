@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ComponentProps } from "react";
 import { useRouter } from "next/navigation";
 import { AppButton } from "@/src/components";
 import { ROLE_LANDING_PAGE, type TUserRole } from "@/src/lib/auth/auth.roles";
@@ -10,6 +10,7 @@ import SwitchAccountModal from "./SwitchAccountModal";
 interface IBookNowButtonProps {
   userRole?: TUserRole;
   text?: string;
+  variant?: ComponentProps<typeof AppButton>["variant"];
   className?: string;
 }
 
@@ -19,6 +20,7 @@ interface IBookNowButtonProps {
 const BookNowButton = ({
   userRole,
   text = "Book now",
+  variant,
   className,
 }: IBookNowButtonProps) => {
   const router = useRouter();
@@ -36,6 +38,7 @@ const BookNowButton = ({
       <AppButton
         text={text}
         type="button"
+        variant={variant}
         onClick={handleClick}
         className={className}
       />

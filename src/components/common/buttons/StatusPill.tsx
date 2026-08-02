@@ -51,7 +51,9 @@ export type TStatus =
   | "BANNED"
   // Soft-deleted row
   | "DELETED"
-  | "PAUSED";
+  | "PAUSED"
+  // Spotlight flag
+  | "FEATURED";
 
 const STATUS_META: Record<TStatus, { label: string; tone: TTone }> = {
   // Booking
@@ -86,6 +88,9 @@ const STATUS_META: Record<TStatus, { label: string; tone: TTone }> = {
   // Soft-deleted row — a listing that is off is paused, the backend's own word.
   DELETED: { label: "Deleted", tone: "danger" },
   PAUSED: { label: "Paused", tone: "warning" },
+
+  // Spotlight flag — brass, the same accent the public badge uses.
+  FEATURED: { label: "Featured", tone: "brass" },
 };
 
 interface IStatusPillProps {

@@ -1,18 +1,15 @@
 import { getMeRequest } from "@/src/features/auth/dependencies/api/auth.service";
 import {
   getHomeCategories,
-  getHomeServices,
   getHomeTechnicians,
 } from "../dependencies/api/home.api";
 import Banner from "../dependencies/components/Banner";
-import CategorySection from "../dependencies/components/CategorySection";
+import CounterSection from "../dependencies/components/CounterSection";
 import HomeJsonLd from "../dependencies/components/HomeJsonLd";
-import ServiceSection from "../dependencies/components/ServiceSection";
 import TechnicianSection from "../dependencies/components/TechnicianSection";
 
 const HomePage = async () => {
-  const [services, categories, technicians, currentUser] = await Promise.all([
-    getHomeServices(),
+  const [categories, technicians, currentUser] = await Promise.all([
     getHomeCategories(),
     getHomeTechnicians(),
     getMeRequest(),
@@ -20,11 +17,13 @@ const HomePage = async () => {
 
   return (
     <>
-      <HomeJsonLd />
+      <HomeJsonLd categories={categories} />
       <Banner />
-      <ServiceSection services={services} userRole={currentUser?.role} />
-      <CategorySection categories={categories} />
-      <TechnicianSection technicians={technicians} />
+      <CounterSection />
+      <TechnicianSection
+        technicians={technicians}
+        userRole={currentUser?.role}
+      />
     </>
   );
 };

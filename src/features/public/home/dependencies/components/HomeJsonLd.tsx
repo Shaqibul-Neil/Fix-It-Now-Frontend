@@ -1,7 +1,8 @@
+import type { ICategory } from "@/src/features/public/category/dependencies/types/category.types";
 import { config } from "@/src/lib/config/config";
-import { BANNER_INTRO, BANNER_SLIDES } from "../constants/home.content";
+import { BANNER_SCENES } from "../constants/home.content";
 
-const HomeJsonLd = () => {
+const HomeJsonLd = ({ categories }: { categories: ICategory[] }) => {
   const siteUrl = config.app_url ?? "http://localhost:3000";
 
   const graph = {
@@ -12,7 +13,7 @@ const HomeJsonLd = () => {
         "@id": `${siteUrl}/#organization`,
         name: "FixItNow",
         url: siteUrl,
-        description: BANNER_INTRO.description,
+        description: BANNER_SCENES[0].description,
       },
       {
         "@type": "WebSite",
@@ -24,16 +25,17 @@ const HomeJsonLd = () => {
       },
       {
         "@type": "ItemList",
-        "@id": `${siteUrl}/#featured-services`,
-        name: "Featured services",
-        itemListElement: BANNER_SLIDES.map((slide, index) => ({
+        "@id": `${siteUrl}/#service-categories`,
+        name: "Service categories",
+        itemListElement: categories.map((category, index) => ({
           "@type": "ListItem",
           position: index + 1,
           item: {
             "@type": "Service",
-            name: slide.category,
-            description: slide.description,
-            url: `${siteUrl}${slide.cta.href}`,
+            name: category.name,
+            description: category.description ?? undefined,
+            image: category.image ?? undefined,
+            url: `${siteUrl}/services?category=${category.slug}`,
             provider: { "@id": `${siteUrl}/#organization` },
           },
         })),

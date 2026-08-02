@@ -1,90 +1,118 @@
-import { AppButton, DetailsSection, PageHeader, Text } from "@/src/components";
+import {
+  AppButton,
+  ScrollReveal,
+  TechnicianCard,
+  Text,
+} from "@/src/components";
 import { getMeRequest } from "@/src/features/auth/dependencies/api/auth.service";
-import { getTechnicians } from "@/src/features/public/technician/dependencies/api/technician.api";
-import TechnicianListCard from "@/src/features/public/technician/dependencies/components/TechnicianListCard";
-import TechnicianListFilter from "@/src/features/public/technician/dependencies/components/TechnicianListFilter";
-import { DEFAULT_PAGE_SIZE } from "@/src/lib/constant/constant";
+import BookNowButton from "@/src/features/public/home/dependencies/components/BookNowButton";
+import {
+  getTechnicianFacets,
+  getTechnicians,
+} from "../dependencies/api/technician.api";
+import TechnicianListFilter from "../dependencies/components/TechnicianListFilter";
+import TechnicianListToolbar from "../dependencies/components/TechnicianListToolbar";
+import type { IPublicTechnicianQuery } from "../dependencies/types/technician.types";
 
 interface ITechniciansPageProps {
-  page: number;
-  search?: string;
-  city?: string;
-  minRating?: string;
+  query: IPublicTechnicianQuery;
+  searchParams: URLSearchParams;
 }
 
 const TechniciansPage = async ({
-  page,
-  search,
-  city,
-  minRating,
+  query,
+  searchParams,
 }: ITechniciansPageProps) => {
-  const [{ items: technicians, total }, currentUser] = await Promise.all([
-    getTechnicians({ page, limit: DEFAULT_PAGE_SIZE, search, city, minRating }),
-    getMeRequest(),
-  ]);
+  const [{ items: technicians, total }, facets, currentUser] =
+    await Promise.all([
+      getTechnicians(query),
+      getTechnicianFacets(),
+      getMeRequest(),
+    ]);
 
-  const totalPages = Math.max(1, Math.ceil(total / DEFAULT_PAGE_SIZE));
+  const totalPages = Math.max(1, Math.ceil(total / query.limit));
 
   const buildPageHref = (targetPage: number) => {
-    const next = new URLSearchParams();
-    if (search) next.set("search", search);
-    if (city) next.set("city", city);
-    if (minRating) next.set("minRating", minRating);
+    const next = new URLSearchParams(searchParams);
     next.set("page", String(targetPage));
     return `/technicians?${next.toString()}`;
   };
 
   return (
     <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 xl:px-8">
-      <PageHeader
-        title="Browse technicians"
-        description={`${total} technician${total === 1 ? "" : "s"} available`}
-        divClassName="mb-6"
-      />
+      <ScrollReveal className="mb-8 max-w-2xl space-y-3">
+        <Text
+          variant="semibold-3xl"
+          as="h1"
+          className="tracking-tight text-project-accent"
+        >
+          Find your technician.
+        </Text>
 
-      <div className="grid gap-6 lg:grid-cols-4">
-        <DetailsSection title="Filters" className="h-fit">
-          <TechnicianListFilter />
-        </DetailsSection>
+        <Text
+          variant="normal-base"
+          as="p"
+          className="text-project-muted-foreground"
+        >
+          Browse verified professionals near you and narrow the list down to the
+          exact trade, budget and working hours you need.
+        </Text>
+      </ScrollReveal>
 
-        <div className="space-y-6 lg:col-span-3">
+      <div className="grid min-w-0 gap-6 lg:grid-cols-[17rem_1fr] xl:grid-cols-[19rem_1fr]">
+        <aside className="hidden h-fit lg:sticky lg:top-24 lg:block">
+          <TechnicianListFilter facets={facets} />
+        </aside>
+
+        <div className="min-w-0 space-y-5">
+          <TechnicianListToolbar total={total} facets={facets} />
+
           {technicians.length === 0 ? (
-            <Text
-              variant="normal-sm"
-              as="p"
-              className="text-project-muted-foreground"
-            >
-              No technicians match this filter.
-            </Text>
+            <div className="border border-project-border bg-project-card px-6 py-16 text-center">
+              <Text
+                variant="semibold-base"
+                as="p"
+                className="text-project-accent"
+              >
+                No technician matches this filter
+              </Text>
+
+              <Text
+                variant="normal-sm"
+                as="p"
+                className="mt-2 text-project-muted-foreground"
+              >
+                Try clearing a checkbox or widening the hourly rate.
+              </Text>
+            </div>
           ) : (
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-              {technicians.map((technician, index) => (
-                <TechnicianListCard
+            <div className="space-y-4">
+              {technicians.map((technician) => (
+                <TechnicianCard
                   key={technician.id}
                   technician={technician}
-                  photoIndex={index}
-                  userRole={currentUser?.role}
+                  bookAction={<BookNowButton userRole={currentUser?.role} />}
                 />
               ))}
             </div>
           )}
 
           {totalPages > 1 && (
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between border border-project-border bg-project-card px-4 py-3">
               <Text
                 variant="normal-sm"
                 as="span"
                 className="text-project-muted-foreground"
               >
-                Page {page} of {totalPages}
+                Page {query.page} of {totalPages}
               </Text>
 
               <div className="flex gap-2">
-                {page > 1 ? (
+                {query.page > 1 ? (
                   <AppButton
                     text="Previous"
                     variant="outline"
-                    href={buildPageHref(page - 1)}
+                    href={buildPageHref(query.page - 1)}
                     className="h-9 px-3 text-xs"
                   />
                 ) : (
@@ -96,11 +124,11 @@ const TechniciansPage = async ({
                   />
                 )}
 
-                {page < totalPages ? (
+                {query.page < totalPages ? (
                   <AppButton
                     text="Next"
                     variant="outline"
-                    href={buildPageHref(page + 1)}
+                    href={buildPageHref(query.page + 1)}
                     className="h-9 px-3 text-xs"
                   />
                 ) : (
