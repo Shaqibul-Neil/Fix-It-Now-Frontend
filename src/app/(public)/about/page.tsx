@@ -1,7 +1,8 @@
-export default function AboutPage() {
-  return (
-    <section className="space-y-4">
-      <h1 className="text-2xl font-semibold tracking-tight">About</h1>
-    </section>
-  );
+import { ABOUT_METADATA } from "@/src/features/public/about/dependencies/constants/about.content";
+import AboutPage from "@/src/features/public/about/pages/AboutPage";
+
+export const metadata = ABOUT_METADATA;
+
+export default function AboutRoute() {
+  return <AboutPage />;
 }

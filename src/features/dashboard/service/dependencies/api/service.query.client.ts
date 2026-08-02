@@ -1,8 +1,8 @@
 import { clientFetch } from "@/src/lib/api/api.client";
 import { apiEndpoints } from "@/src/lib/api/api.endpoint";
-import type { IPublicServiceRow } from "@/src/features/public/service/dependencies/types/service.types";
 import type {
   IAdminServiceRow,
+  ICustomerServiceRow,
   IManagedServiceListQuery,
   IManagedServiceRow,
   IServiceListQuery,
@@ -47,6 +47,6 @@ export const getTechnicianOwnServices = (query: IManagedServiceListQuery) =>
 
 //-----------------Customer---------------
 export const getServices = (query: IServiceListQuery) =>
-  clientFetch<IPublicServiceRow[]>(
+  clientFetch<ICustomerServiceRow[]>(
     `${apiEndpoints.dashboard.customer.services.list}${buildQuery(query)}`,
   );

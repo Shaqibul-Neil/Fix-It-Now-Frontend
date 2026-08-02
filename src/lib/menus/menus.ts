@@ -37,7 +37,7 @@ export const isActiveMenuItem = (pathname: string, item: IMenuItem) =>
 export const PUBLIC_MENU: IMenuItem[] = [
   { label: "Home", href: "/", icon: Home, exact: true },
   { label: "About", href: "/about", icon: Info },
-  { label: "Services", href: "/services", icon: Wrench },
+  { label: "Categories", href: "/categories", icon: Folders },
   { label: "Technicians", href: "/technicians", icon: BadgeCheck },
   { label: "Contact", href: "/contact", icon: Mail },
 ];
@@ -125,13 +125,13 @@ export interface IFooterColumn {
 
 export const FOOTER_MENU: IFooterColumn[] = [
   {
-    title: "Services",
+    title: "Browse",
     links: [
-      { label: "Plumbing", href: "/services?category=plumbing" },
-      { label: "Electrical", href: "/services?category=electrical" },
-      { label: "AC & cooling", href: "/services?category=ac-cooling" },
-      { label: "Appliance repair", href: "/services?category=appliance" },
       { label: "All categories", href: "/categories" },
+      { label: "All technicians", href: "/technicians" },
+      { label: "Top rated", href: "/technicians?sort=top_rated" },
+      { label: "Emergency callouts", href: "/technicians?emergencyService=true" },
+      { label: "Featured", href: "/technicians?featured=true" },
     ],
   },
   {

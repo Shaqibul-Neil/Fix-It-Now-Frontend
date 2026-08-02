@@ -44,6 +44,11 @@ export interface IServiceRecordState {
 export interface IManagedServiceRow
   extends IBaseServiceRow, IServiceAbout, IServiceRecordState {}
 
+// What a customer browsing the catalogue sees — every live service with the
+// technician behind it. Removed and paused rows never reach this list.
+export interface ICustomerServiceRow
+  extends IBaseServiceRow, IServiceAbout, ITechnicianInfo {}
+
 // `description` is gone on purpose: the admin list mapper drops it, because at
 // up to 2000 characters it would ship a paragraph per row that nothing renders.
 export interface IAdminServiceRow

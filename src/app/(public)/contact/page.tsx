@@ -1,7 +1,8 @@
-export default function ContactPage() {
-  return (
-    <section className="space-y-4">
-      <h1 className="text-2xl font-semibold tracking-tight">Contact</h1>
-    </section>
-  );
+import { CONTACT_METADATA } from "@/src/features/public/contact/dependencies/constants/contact.content";
+import ContactPage from "@/src/features/public/contact/pages/ContactPage";
+
+export const metadata = CONTACT_METADATA;
+
+export default function ContactRoute() {
+  return <ContactPage />;
 }

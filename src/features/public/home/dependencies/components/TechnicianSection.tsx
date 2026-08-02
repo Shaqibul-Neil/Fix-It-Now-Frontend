@@ -2,9 +2,9 @@ import { ArrowRight } from "lucide-react";
 import {
   AppButton,
   AppSlider,
+  PageHeader,
   ScrollReveal,
   TechnicianCard,
-  Text,
 } from "@/src/components";
 import type { ITechnician } from "@/src/features/public/technician/dependencies/types/technician.types";
 import type { TUserRole } from "@/src/lib/auth/auth.roles";
@@ -22,32 +22,17 @@ const TechnicianSection = ({
   if (!technicians.length) return null;
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 xl:px-8">
-      <ScrollReveal className="mx-auto mb-10 max-w-2xl space-y-3 text-center sm:mb-14">
-        <Text
-          variant="medium-xs"
-          as="span"
-          className="block uppercase tracking-[0.28em] text-project-primary"
-        >
-          Verified & rated
-        </Text>
-
-        <Text
-          variant="semibold-3xl"
+    <section className="mx-auto max-w-7xl px-4 sm:px-6 xl:px-8">
+      <ScrollReveal>
+        <PageHeader
           as="h2"
-          className="tracking-tight text-project-accent"
-        >
-          Trusted technicians, ready to work
-        </Text>
-
-        <Text
-          variant="normal-base"
-          as="p"
-          className="text-project-muted-foreground"
-        >
-          Browse our hand-picked featured technicians — each one ID-checked,
-          admin-approved and rated by the customers they worked for.
-        </Text>
+          textVariant="display"
+          align="center"
+          eyebrow="Verified & rated"
+          title="Trusted technicians, ready to work"
+          description="Browse our hand-picked featured technicians — each one ID-checked, admin-approved and rated by the customers they worked for."
+          divClassName="mx-auto mb-10 max-w-2xl sm:mb-14"
+        />
       </ScrollReveal>
 
       <AppSlider

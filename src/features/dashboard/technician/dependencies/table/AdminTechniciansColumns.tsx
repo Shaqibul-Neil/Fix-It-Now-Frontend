@@ -13,7 +13,7 @@ import {
   buildColumn,
 } from "@/src/components";
 import { useAccountActions } from "@/src/features/dashboard/user/dependencies/table/useAccountActions";
-import { formatDate, formatMoney } from "@/src/lib/utils/format.utils";
+import { formatMoney } from "@/src/lib/utils/format.utils";
 import TechnicianApprovalModal from "../components/TechnicianApprovalModal";
 import { useUpdateFeaturedMutation } from "../hooks/useTechnicianMutation";
 import type {

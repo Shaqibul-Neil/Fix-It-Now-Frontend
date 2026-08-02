@@ -1,10 +1,10 @@
 import { clientFetch } from "@/src/lib/api/api.client";
-import { TTechnicianProfileInput } from "../schema/onboarding.schema";
+import { TTechnicianProfilePayload } from "../schema/onboarding.schema";
 import { apiEndpoints } from "@/src/lib/api/api.endpoint";
 import { ITechnicianProfile } from "../types/onboarding.types";
 
 //---------Create Profile---------
-export const createTechnicianProfile = (payload: TTechnicianProfileInput) =>
+export const createTechnicianProfile = (payload: TTechnicianProfilePayload) =>
   clientFetch<ITechnicianProfile>(
     apiEndpoints.dashboard.technician.profile.create,
     {
@@ -13,7 +13,7 @@ export const createTechnicianProfile = (payload: TTechnicianProfileInput) =>
     },
   );
 //-----------Rejected Technician reapply----
-export const updateTechnicianProfile = (payload: TTechnicianProfileInput) =>
+export const updateTechnicianProfile = (payload: TTechnicianProfilePayload) =>
   clientFetch<ITechnicianProfile>(
     apiEndpoints.dashboard.technician.profile.update,
     {

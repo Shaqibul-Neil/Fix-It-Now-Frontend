@@ -11,10 +11,16 @@ const isAdult = (value: string) => {
   return date <= cutoff;
 };
 
-// An untouched optional field submits as "", which is not a URL.
-const optionalUrl = z
-  .union([z.literal(""), z.url("Must be a valid URL")])
-  .optional();
+// An untouched optional field submits as "", and every optional rule on the
+// backend rejects an empty string — so a blank is dropped from the payload
+// rather than sent.
+const optional = <TSchema extends z.ZodType>(schema: TSchema) =>
+  z
+    .union([z.literal(""), schema])
+    .optional()
+    .transform((value) => value || undefined);
+
+const optionalUrl = optional(z.url("Must be a valid URL"));
 
 const basicInfoSchema = z.object({
   phone: z
@@ -45,48 +51,29 @@ const identitySchema = z.object({
       "National ID must be 10, 13 or 17 digits",
     ),
   nidDocument: optionalUrl,
-  passportNumber: z
-    .union([
-      z.literal(""),
-      z
-        .string()
-        .trim()
-        .min(6, "Passport number is too short")
-        .max(20, "Passport number is too long"),
-    ])
-    .optional(),
-  dateOfBirth: z
-    .union([
-      z
-        .string()
-        .refine(isAdult, `You must be at least ${MIN_AGE_YEARS} years old`),
-      z.literal(""),
-    ])
-    .optional(),
-  emergencyContactName: z
-    .union([
-      z.literal(""),
-      z.string().trim().min(2, "Contact name is too short").max(100),
-    ])
-    .optional(),
-  emergencyContactPhone: z
-    .union([
-      z.literal(""),
-      z.string().trim().min(6, "Contact phone is too short").max(20),
-    ])
-    .optional(),
+  passportNumber: optional(
+    z
+      .string()
+      .trim()
+      .min(6, "Passport number is too short")
+      .max(20, "Passport number is too long"),
+  ),
+  dateOfBirth: optional(
+    z.string().refine(isAdult, `You must be at least ${MIN_AGE_YEARS} years old`),
+  ),
+  emergencyContactName: optional(
+    z.string().trim().min(2, "Contact name is too short").max(100),
+  ),
+  emergencyContactPhone: optional(
+    z.string().trim().min(6, "Contact phone is too short").max(20),
+  ),
 });
 
 const profileDetailsSchema = z.object({
-  professionalTitle: z
-    .union([
-      z.literal(""),
-      z.string().trim().min(2, "Title is too short").max(120),
-    ])
-    .optional(),
-  tagline: z
-    .union([z.literal(""), z.string().trim().max(300, "Tagline is too long")])
-    .optional(),
+  professionalTitle: optional(
+    z.string().trim().min(2, "Title is too short").max(120),
+  ),
+  tagline: optional(z.string().trim().max(300, "Tagline is too long")),
   skills: z
     .array(z.string().trim().min(1).max(60))
     .max(20, "Twenty skills is the limit")
@@ -136,4 +123,8 @@ export const technicianProfileSchema = z.object({
   location: locationSchema,
 });
 
-export type TTechnicianProfileInput = z.infer<typeof technicianProfileSchema>;
+// What the form holds while it is being filled — blanks included.
+export type TTechnicianProfileInput = z.input<typeof technicianProfileSchema>;
+
+// What survives validation and goes to the API — blanks dropped.
+export type TTechnicianProfilePayload = z.output<typeof technicianProfileSchema>;

@@ -113,9 +113,6 @@ export const apiEndpoints = {
   },
 
   public: {
-    service: {
-      list: "/services",
-    },
     technician: {
       list: "/technicians",
       // Category, skill and price facets with their technician counts.

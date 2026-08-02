@@ -5,6 +5,7 @@ import { useState } from "react";
 import {
   technicianProfileSchema,
   TTechnicianProfileInput,
+  TTechnicianProfilePayload,
 } from "../schema/onboarding.schema";
 import {
   ONBOARDING_DRAFT_KEY,
@@ -48,7 +49,13 @@ export const useOnboardingForm = ({
   // Otherwise it is a new onboarding flow.
   const isEditing = Boolean(initialValues);
 
-  const methods = useForm<TTechnicianProfileInput>({
+  // The third generic is what handleSubmit hands over — the parsed payload,
+  // not the raw form values.
+  const methods = useForm<
+    TTechnicianProfileInput,
+    unknown,
+    TTechnicianProfilePayload
+  >({
     resolver: zodResolver(technicianProfileSchema),
     mode: "onChange",
     // Priority:

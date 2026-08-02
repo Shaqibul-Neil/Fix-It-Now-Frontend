@@ -4,8 +4,10 @@ import { CalendarPlus } from "lucide-react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ActionColumn, ContactColumn } from "@/src/components";
 import BookingFormPanel from "@/src/features/dashboard/booking/dependencies/components/BookingFormPanel";
-import type { IPublicServiceRow } from "@/src/features/public/service/dependencies/types/service.types";
-import type { IBookableService } from "../types/service.types";
+import type {
+  IBookableService,
+  ICustomerServiceRow,
+} from "../types/service.types";
 import {
   serviceAboutColumn,
   serviceBaseColumns,
@@ -13,30 +15,30 @@ import {
 } from "./ServiceColumns";
 
 export const useCustomerServicesColumns = (): {
-  columns: ColumnDef<IPublicServiceRow>[];
+  columns: ColumnDef<ICustomerServiceRow>[];
   modals: ReactNode;
 } => {
   const [selected, setSelected] = useState<IBookableService | null>(null);
 
-  const [service, ...rest] = serviceBaseColumns<IPublicServiceRow>();
+  const [service, ...rest] = serviceBaseColumns<ICustomerServiceRow>();
 
   return {
     columns: [
       service,
 
-      ContactColumn<IPublicServiceRow>("technician", "Technician", (row) => ({
+      ContactColumn<ICustomerServiceRow>("technician", "Technician", (row) => ({
         name: row.technicianName,
         email: row.technicianEmail,
         avatar: row.technicianAvatar,
       })),
 
-      technicianRatingColumn<IPublicServiceRow>(),
+      technicianRatingColumn<ICustomerServiceRow>(),
 
       ...rest,
 
-      serviceAboutColumn<IPublicServiceRow>(),
+      serviceAboutColumn<ICustomerServiceRow>(),
 
-      ActionColumn<IPublicServiceRow>(
+      ActionColumn<ICustomerServiceRow>(
         [
           {
             icon: CalendarPlus,

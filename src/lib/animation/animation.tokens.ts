@@ -2,6 +2,8 @@
 export const EASE = {
   out: "power3.out",
   inOut: "power2.inOut",
+  // Overshoots on the way in, for something that appears rather than moves.
+  pop: "back.out(1.6)",
   // Scroll-linked tweens must not ease — the scrollbar is the timeline.
   none: "none",
 } as const;

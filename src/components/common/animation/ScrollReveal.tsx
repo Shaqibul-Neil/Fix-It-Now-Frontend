@@ -8,6 +8,7 @@ interface IScrollRevealProps {
   className?: string;
   distance?: number;
   stagger?: number;
+  variant?: "fade" | "wipe";
 }
 
 const ScrollReveal = ({
@@ -15,10 +16,12 @@ const ScrollReveal = ({
   className,
   distance,
   stagger,
+  variant,
 }: IScrollRevealProps) => {
   const containerRef = useRevealOnScroll<HTMLDivElement>({
     distance,
     stagger,
+    variant,
   });
 
   return (

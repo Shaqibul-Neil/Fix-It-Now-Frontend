@@ -35,7 +35,7 @@ const HomeJsonLd = ({ categories }: { categories: ICategory[] }) => {
             name: category.name,
             description: category.description ?? undefined,
             image: category.image ?? undefined,
-            url: `${siteUrl}/services?category=${category.slug}`,
+            url: `${siteUrl}/technicians?categoryIds=${category.id}`,
             provider: { "@id": `${siteUrl}/#organization` },
           },
         })),
