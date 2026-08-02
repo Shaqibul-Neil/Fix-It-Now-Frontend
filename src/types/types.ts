@@ -49,6 +49,9 @@ export type TPaymentStatus = "PENDING" | "SUCCESS" | "FAILED" | "REFUNDED";
 
 export type TReviewStatus = "PENDING" | "PUBLISHED" | "HIDDEN" | "REJECTED";
 
+// Soft-delete aware row filter the backend shares between Category and Service.
+export type TRecordStatus = "active" | "inactive" | "deleted" | "all";
+
 export interface IStatData {
   id: string;
   label: string;

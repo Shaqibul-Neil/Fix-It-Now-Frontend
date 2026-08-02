@@ -2,6 +2,7 @@ import type { IFilterConfig, TPeriod } from "@/src/types/filter.types";
 import type {
   TBookingStatus,
   TPaymentStatus,
+  TRecordStatus,
   TReviewStatus,
   TTechnicianApprovalStatus,
 } from "@/src/types/types";
@@ -11,6 +12,11 @@ export const DEFAULT_PERIOD: TPeriod = "30";
 // Radix Select cannot hold an empty value, so "all" is a real option the
 // filter turns back into "no status param".
 export const ALL_OPTION_VALUE = "ALL";
+
+// The record status tabs send a real backend literal, so "all" is a value the
+// API understands and ALL_OPTION_VALUE does not apply. Matches the backend's
+// own default when the param is left out.
+export const DEFAULT_RECORD_STATUS: TRecordStatus = "active";
 
 export const FILTER_OPTIONS: IFilterConfig = {
   period: {
@@ -68,6 +74,31 @@ export const FILTER_OPTIONS: IFilterConfig = {
       {
         label: "Rejected",
         value: "REJECTED" satisfies TTechnicianApprovalStatus,
+      },
+    ],
+  },
+
+  recordStatus: {
+    options: [
+      {
+        label: "All",
+        value: "all" satisfies TRecordStatus,
+        dotClassName: "bg-project-muted-foreground",
+      },
+      {
+        label: "Active",
+        value: "active" satisfies TRecordStatus,
+        dotClassName: "bg-project-success",
+      },
+      {
+        label: "Inactive",
+        value: "inactive" satisfies TRecordStatus,
+        dotClassName: "bg-project-yellow",
+      },
+      {
+        label: "Deleted",
+        value: "deleted" satisfies TRecordStatus,
+        dotClassName: "bg-project-destructive",
       },
     ],
   },

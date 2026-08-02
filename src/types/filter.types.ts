@@ -2,6 +2,8 @@ export type TPeriod = "7" | "30" | "90";
 export type TSelectOption = {
   label: string;
   value: string;
+  // Tabs mark each status with a colored dot; selects ignore it.
+  dotClassName?: string;
 };
 
 export interface IFilterConfig {
@@ -18,6 +20,9 @@ export interface IFilterConfig {
     options: TSelectOption[];
   };
   approvalStatus: {
+    options: TSelectOption[];
+  };
+  recordStatus: {
     options: TSelectOption[];
   };
   rating: {

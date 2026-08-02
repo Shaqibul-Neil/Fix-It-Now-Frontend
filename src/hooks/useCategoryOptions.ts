@@ -3,13 +3,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { clientFetch } from "@/src/lib/api/api.client";
 import { apiEndpoints } from "@/src/lib/api/api.endpoint";
+import type { ICategory } from "@/src/features/public/category/dependencies/types/category.types";
 import type { TSelectOption } from "@/src/types/filter.types";
-
-interface ICategory {
-  id: string;
-  name: string;
-  slug: string;
-}
 
 // Filters key services by `slug`; forms that create/update a service need
 // the actual `id` to satisfy the backend's categoryId field.

@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { cn } from "@/src/lib/utils/cn";
 
-interface IProviderAvatarProps {
+interface IAppAvatarProps {
   src?: string | null;
   name: string;
   className?: string;
@@ -23,7 +23,7 @@ const getInitials = (name: string) => {
   return initials || "?";
 };
 
-const ProviderAvatar = ({ src, name, className }: IProviderAvatarProps) => {
+const AppAvatar = ({ src, name, className }: IAppAvatarProps) => {
   const [isBroken, setIsBroken] = useState(false);
   const showImage = Boolean(src) && !isBroken;
 
@@ -55,4 +55,4 @@ const ProviderAvatar = ({ src, name, className }: IProviderAvatarProps) => {
   );
 };
 
-export default ProviderAvatar;
+export default AppAvatar;

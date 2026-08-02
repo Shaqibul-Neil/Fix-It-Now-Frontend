@@ -27,9 +27,10 @@ export const apiEndpoints = {
         status: (id: string) => `/admin/reviews/${id}/status`,
       },
       categories: {
-        list: "/categories",
+        list: "/admin/categories",
         create: "/admin/categories",
         update: (id: string) => `/admin/categories/${id}`,
+        restore: (id: string) => `/admin/categories/${id}/restore`,
         remove: (id: string) => `/admin/categories/${id}`,
       },
       technicians: {

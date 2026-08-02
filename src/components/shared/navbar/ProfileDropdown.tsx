@@ -4,7 +4,7 @@ import { LogOut } from "lucide-react";
 import Link from "next/link";
 import { PROFILE_MENU } from "@/src/lib/menus/menus";
 import type { IProfileUser } from "@/src/types/types";
-import { ProviderAvatar, Text } from "@/src/components";
+import { AppAvatar, Text } from "@/src/components";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,13 +25,13 @@ const ProfileDropdown = ({ user }: { user: IProfileUser }) => {
           aria-label="Open profile menu"
           className="transition-opacity duration-300 hover:opacity-80 cursor-pointer"
         >
-          <ProviderAvatar src={avatarUrl} name={name} />
+          <AppAvatar src={avatarUrl} name={name} />
         </button>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end" sideOffset={10} className="w-64 p-0">
         <div className="flex items-center gap-3 border-b border-project-border p-4">
-          <ProviderAvatar src={avatarUrl} name={name} className="size-11" />
+          <AppAvatar src={avatarUrl} name={name} className="size-11" />
 
           <div className="flex min-w-0 flex-col gap-0.5">
             <Text

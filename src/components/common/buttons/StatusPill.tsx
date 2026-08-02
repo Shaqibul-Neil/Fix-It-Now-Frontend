@@ -49,7 +49,9 @@ export type TStatus =
   // User account
   | "ACTIVE"
   | "BANNED"
-  | "INACTIVE";
+  | "INACTIVE"
+  // Soft-deleted row
+  | "DELETED";
 
 const STATUS_META: Record<TStatus, { label: string; tone: TTone }> = {
   // Booking
@@ -78,7 +80,10 @@ const STATUS_META: Record<TStatus, { label: string; tone: TTone }> = {
   // User account
   ACTIVE: { label: "Active", tone: "success" },
   BANNED: { label: "Banned", tone: "danger" },
-  INACTIVE: { label: "Inactive", tone: "danger" },
+  INACTIVE: { label: "Inactive", tone: "warning" },
+
+  // Soft-deleted row
+  DELETED: { label: "Deleted", tone: "danger" },
 };
 
 interface IStatusPillProps {

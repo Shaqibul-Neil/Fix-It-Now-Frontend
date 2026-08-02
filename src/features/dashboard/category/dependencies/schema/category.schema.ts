@@ -13,6 +13,11 @@ export const categoryFormSchema = z.object({
     .max(2000, "Description cannot exceed 2000 characters")
     .optional(),
 
+  // Empty stays valid — it is how an admin clears the image on an update.
+  image: z
+    .union([z.url("Enter a valid image URL").max(2048), z.literal("")])
+    .optional(),
+
   isActive: z.boolean(),
 });
 

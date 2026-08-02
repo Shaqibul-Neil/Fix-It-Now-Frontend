@@ -1,6 +1,6 @@
 import { AppButton, DetailsSection, PageHeader, Text } from "@/src/components";
 import { getMeRequest } from "@/src/features/auth/dependencies/api/auth.service";
-import { getCategories } from "@/src/features/dashboard/category/dependencies/api/category.service";
+import { getCategories } from "@/src/features/public/category/dependencies/api/category.api";
 import { getServices } from "@/src/features/public/service/dependencies/api/service.api";
 import ServiceListCard from "@/src/features/public/service/dependencies/components/ServiceListCard";
 import ServiceListFilter from "@/src/features/public/service/dependencies/components/ServiceListFilter";

@@ -21,6 +21,14 @@ export const updateCategory = (id: string, payload: IUpdateCategoryPayload) =>
     },
   );
 
+export const restoreCategory = (id: string) =>
+  clientFetch<{ id: string }>(
+    apiEndpoints.dashboard.admin.categories.restore(id),
+    {
+      method: "PATCH",
+    },
+  );
+
 export const deleteCategory = (id: string) =>
   clientFetch<{ id: string }>(
     apiEndpoints.dashboard.admin.categories.remove(id),

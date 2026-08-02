@@ -1,8 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { AppButton, Text } from "@/src/components";
-import type { ICategory } from "@/src/features/dashboard/category/dependencies/types/category.types";
-import { getCategoryIcon } from "../constants/category.icons";
+import { AppAvatar, AppButton, Text } from "@/src/components";
+import type { ICategory } from "@/src/features/public/category/dependencies/types/category.types";
 
 const CategorySection = ({ categories }: { categories: ICategory[] }) => {
   if (!categories.length) return null;
@@ -38,28 +37,27 @@ const CategorySection = ({ categories }: { categories: ICategory[] }) => {
         </div>
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-          {categories.map((category) => {
-            const Icon = getCategoryIcon(category.slug);
-            return (
-              <Link
-                key={category.id}
-                href={`/services?category=${category.slug}`}
-                className="group flex flex-col items-center gap-4 border border-project-border bg-project-card px-4 py-8 text-center transition-all duration-300 hover:-translate-y-1 hover:border-project-primary hover:shadow-lg"
-              >
-                <span className="flex size-14 items-center justify-center rounded-full border border-project-border bg-project-muted-primary text-project-primary transition-colors duration-300 group-hover:bg-project-primary group-hover:text-project-primary-foreground">
-                  <Icon className="size-6" />
-                </span>
+          {categories.map((category) => (
+            <Link
+              key={category.id}
+              href={`/services?category=${category.slug}`}
+              className="group flex flex-col items-center gap-4 border border-project-border bg-project-card px-4 py-8 text-center transition-all duration-300 hover:-translate-y-1 hover:border-project-primary hover:shadow-lg"
+            >
+              <AppAvatar
+                src={category.image}
+                name={category.name}
+                className="size-16 rounded-full transition-transform duration-500 group-hover:scale-105"
+              />
 
-                <Text
-                  variant="semibold-sm-2"
-                  as="span"
-                  className="text-project-accent"
-                >
-                  {category.name}
-                </Text>
-              </Link>
-            );
-          })}
+              <Text
+                variant="semibold-sm-2"
+                as="span"
+                className="text-project-accent"
+              >
+                {category.name}
+              </Text>
+            </Link>
+          ))}
         </div>
       </div>
     </section>

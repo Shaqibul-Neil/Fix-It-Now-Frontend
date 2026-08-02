@@ -30,6 +30,7 @@ interface ICategoryFormPanelProps {
 const EMPTY_FORM: TCategoryForm = {
   name: "",
   description: "",
+  image: "",
   isActive: true,
 };
 
@@ -58,6 +59,7 @@ const CategoryFormPanel = ({ target, onClose }: ICategoryFormPanelProps) => {
       reset({
         name: target.name ?? "",
         description: target.description ?? "",
+        image: target.image ?? "",
         isActive: target.isActive ?? true,
       });
     }
@@ -68,15 +70,19 @@ const CategoryFormPanel = ({ target, onClose }: ICategoryFormPanelProps) => {
 
   const isPending = createCategory.isPending || updateCategory.isPending;
 
-  const submit = handleSubmit((values) => {
+  const submit = handleSubmit(({ image, ...values }) => {
     if (!target) return;
 
+    // An update sends null to clear the image; a create simply omits it.
     if (target.id) {
-      updateCategory.mutate({ id: target.id, payload: values });
+      updateCategory.mutate({
+        id: target.id,
+        payload: { ...values, image: image?.trim() || null },
+      });
       return;
     }
 
-    createCategory.mutate(values);
+    createCategory.mutate({ ...values, image: image?.trim() || undefined });
   });
 
   return (
@@ -133,6 +139,13 @@ const CategoryFormPanel = ({ target, onClose }: ICategoryFormPanelProps) => {
             placeholder="What kind of work belongs in this category"
             error={errors.description?.message}
             {...register("description")}
+          />
+
+          <AppInput
+            label="Image URL"
+            placeholder="https://images.unsplash.com/photo-..."
+            error={errors.image?.message}
+            {...register("image")}
           />
 
           <Controller

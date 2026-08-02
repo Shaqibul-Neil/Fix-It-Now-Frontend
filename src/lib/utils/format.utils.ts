@@ -4,11 +4,21 @@ import { format } from "date-fns";
 export const formatMoney = (amount: string | number) =>
   `৳${Number(amount).toLocaleString()}`;
 
-export const formatDate = (value: string) =>
-  format(new Date(value), "MMM d, yyyy");
+// date-fns throws on an Invalid Date, and not every endpoint sends every
+// timestamp — a missing one prints a dash instead of taking the page down.
+export const formatDate = (value?: string | null) => {
+  const date = value ? new Date(value) : null;
+  return date && !Number.isNaN(date.getTime())
+    ? format(date, "MMM d, yyyy")
+    : "—";
+};
 
-export const formatDateTime = (value: string) =>
-  format(new Date(value), "MMM d, yyyy • h:mm a");
+export const formatDateTime = (value?: string | null) => {
+  const date = value ? new Date(value) : null;
+  return date && !Number.isNaN(date.getTime())
+    ? format(date, "MMM d, yyyy • h:mm a")
+    : "—";
+};
 
 // "09:00" -> "9:00 AM". Availability slots are stored as a bare wall clock,
 // with no date attached to hand to date-fns.

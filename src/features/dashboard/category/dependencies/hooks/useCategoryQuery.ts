@@ -1,28 +1,36 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useServerPagination } from "@/src/hooks/useServerPagination";
+import { DEFAULT_RECORD_STATUS } from "@/src/lib/options/filter.options";
+import type { TRecordStatus } from "@/src/types/types";
 import { categoryKeys } from "../api/category.key";
-import { getCategories } from "../api/category.query.client";
+import { getAdminCategories } from "../api/category.query.client";
+import type { ICategoryListQuery } from "../types/category.types";
 
-// The categories endpoint returns the whole list with no meta, so the search
-// and the page are applied here instead of on the server.
-export const useAdminCategoriesQuery = () => {
+// The URL is the filter, so the hook reads it itself.
+const useCategoryFilter = (): ICategoryListQuery => {
   const { page, pageSize, getFilter } = useServerPagination();
-  const search = getFilter("search")?.trim().toLowerCase();
+
+  return {
+    search: getFilter("search"),
+    status: (getFilter("status") as TRecordStatus) ?? DEFAULT_RECORD_STATUS,
+    page,
+    limit: pageSize,
+  };
+};
+
+//-----------------Admin---------------
+export const useAdminCategoriesQuery = () => {
+  const filter = useCategoryFilter();
 
   return useQuery({
-    queryKey: categoryKeys.admin.lists,
-    queryFn: getCategories,
-    select: (response) => {
-      const rows = (response.data ?? []).filter((category) =>
-        search ? category.name.toLowerCase().includes(search) : true,
-      );
-
-      return {
-        items: rows.slice((page - 1) * pageSize, page * pageSize),
-        total: rows.length,
-      };
-    },
+    queryKey: categoryKeys.admin.list(filter),
+    queryFn: () => getAdminCategories(filter),
+    select: (response) => ({
+      items: response.data ?? [],
+      total: response.meta?.total ?? 0,
+    }),
+    placeholderData: keepPreviousData,
   });
 };

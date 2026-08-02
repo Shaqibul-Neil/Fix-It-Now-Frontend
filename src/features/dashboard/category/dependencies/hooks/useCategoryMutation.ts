@@ -6,6 +6,7 @@ import { categoryKeys } from "../api/category.key";
 import {
   createCategory,
   deleteCategory,
+  restoreCategory,
   updateCategory,
 } from "../api/category.mutation.client";
 import type {
@@ -72,6 +73,21 @@ export const useDeleteCategoryMutation = (onDone?: () => void) => {
     onSuccess: async ({ message }) => {
       await invalidateCategory();
       AppToast.success(message ?? "Category deleted");
+      onDone?.();
+    },
+    onError: AppToast.error,
+  });
+};
+
+export const useRestoreCategoryMutation = (onDone?: () => void) => {
+  const invalidateCategory = useInvalidateCategory();
+
+  return useMutation({
+    mutationFn: restoreCategory,
+
+    onSuccess: async ({ message }) => {
+      await invalidateCategory();
+      AppToast.success(message ?? "Category restored");
       onDone?.();
     },
     onError: AppToast.error,

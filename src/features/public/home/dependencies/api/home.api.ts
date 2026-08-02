@@ -1,7 +1,8 @@
 import { serverFetch } from "@/src/lib/api/api.server";
 import { apiEndpoints } from "@/src/lib/api/api.endpoint";
+import { getCategories } from "@/src/features/public/category/dependencies/api/category.api";
 import type { IServiceRow } from "@/src/features/dashboard/service/dependencies/types/service.types";
-import type { ICategory } from "@/src/features/dashboard/category/dependencies/types/category.types";
+import type { ICategory } from "@/src/features/public/category/dependencies/types/category.types";
 import type { ITechnician } from "@/src/features/public/technician/dependencies/types/technician.types";
 
 const HOME_SERVICE_COUNT = 5;
@@ -19,13 +20,10 @@ export const getHomeServices = async (): Promise<IServiceRow[]> => {
   return response.data ?? [];
 };
 
-export const getHomeCategories = async (): Promise<ICategory[]> => {
-  const { response } = await serverFetch<ICategory[]>(
-    apiEndpoints.public.category.list,
-    { next: { revalidate: 3600 } },
-  );
-  return (response.data ?? []).slice(0, HOME_CATEGORY_COUNT);
-};
+// The category list is small and already cached, so the homepage previews it
+// instead of asking the API for its own trimmed copy.
+export const getHomeCategories = async (): Promise<ICategory[]> =>
+  (await getCategories()).slice(0, HOME_CATEGORY_COUNT);
 
 export const getHomeTechnicians = async (): Promise<ITechnician[]> => {
   const { response } = await serverFetch<ITechnician[]>(

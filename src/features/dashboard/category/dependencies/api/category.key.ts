@@ -1,8 +1,11 @@
-// The admin list reads the same unpaginated public endpoint the select
-// dropdowns do, so a write has to drop both caches.
+import type { ICategoryListQuery } from "../types/category.types";
+
+// `lists` is the prefix a mutation invalidates, `list` is the exact query.
+// `options` is the public list every category dropdown reads.
 export const categoryKeys = {
   options: ["categories"] as const,
   admin: {
     lists: ["admin-categories"] as const,
+    list: (query: ICategoryListQuery) => ["admin-categories", query] as const,
   },
 };

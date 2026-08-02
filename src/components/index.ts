@@ -7,6 +7,7 @@ export { default as ScrollReveal } from "./common/animation/ScrollReveal";
 export { default as AppButton } from "./common/buttons/AppButton";
 export { default as IconButton } from "./common/buttons/IconButton";
 export { default as StatusPill } from "./common/buttons/StatusPill";
+export { default as AppTabs } from "./common/buttons/AppTabs";
 export { default as FormNavigation } from "./common/buttons/FormNavigation";
 
 // Charts
@@ -17,7 +18,7 @@ export { default as GenericAreaChart } from "./common/charts/GenericAreaChart";
 export { default as GenericPieChart } from "./common/charts/GenericPieChart";
 
 // Cards
-export { default as ProviderAvatar } from "./common/cards/ProviderAvatar";
+export { default as AppAvatar } from "./common/cards/AppAvatar";
 export { default as StatCard } from "./common/cards/StatCard";
 export { default as SummaryRow } from "./common/cards/SummaryRow";
 
