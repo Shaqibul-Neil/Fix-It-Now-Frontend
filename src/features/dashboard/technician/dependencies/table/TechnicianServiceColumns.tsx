@@ -43,7 +43,7 @@ export const technicianServiceColumns = buildColumn<IAdminTechnicianService>([
     key: "price",
     label: "Price",
     size: 130,
-    render: (value: string) => (
+    render: (value: IAdminTechnicianService["price"]) => (
       <span className="font-semibold tabular-nums">{formatMoney(value)}</span>
     ),
   },
@@ -52,7 +52,7 @@ export const technicianServiceColumns = buildColumn<IAdminTechnicianService>([
     key: "estimatedDuration",
     label: "Duration",
     size: 120,
-    render: (value: number | null) => (
+    render: (value: IAdminTechnicianService["estimatedDuration"]) => (
       <span className="whitespace-nowrap tabular-nums">
         {value ? `${value} min` : "—"}
       </span>

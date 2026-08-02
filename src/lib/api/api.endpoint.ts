@@ -122,6 +122,7 @@ export const apiEndpoints = {
     },
     category: {
       list: "/categories",
+      details: (slug: string) => `/categories/${slug}`,
     },
   },
 };

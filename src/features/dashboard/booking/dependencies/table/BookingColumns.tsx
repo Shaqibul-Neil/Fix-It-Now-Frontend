@@ -37,40 +37,38 @@ export const bookingBaseColumns = <TRow extends IBookingRowBase>() =>
       ),
     },
     {
-      id: "amount",
+      key: "amount",
       label: "Amount",
       size: 110,
-      render: (row: IBookingRowBase) => (
-        <span className="font-semibold tabular-nums">
-          {formatMoney(row.amount)}
-        </span>
+      render: (value: IBookingRowBase["amount"]) => (
+        <span className="font-semibold tabular-nums">{formatMoney(value)}</span>
       ),
     },
     {
-      id: "scheduledAt",
+      key: "scheduledAt",
       label: "Scheduled",
       size: 150,
-      render: (row: IBookingRowBase) => (
+      render: (value: IBookingRowBase["scheduledAt"]) => (
         <div className="min-w-0 leading-tight">
-          <span className="block whitespace-nowrap">
-            {formatDate(row.scheduledAt)}
-          </span>
+          <span className="block whitespace-nowrap">{formatDate(value)}</span>
 
           <Text
             variant="normal-xs"
             as="span"
             className="block whitespace-nowrap text-project-muted-foreground"
           >
-            {formatClock(row.scheduledAt)}
+            {formatClock(value)}
           </Text>
         </div>
       ),
     },
     {
-      id: "status",
+      key: "status",
       label: "Status",
       size: 150,
-      render: (row: IBookingRowBase) => <StatusPill status={row.status} />,
+      render: (value: IBookingRowBase["status"]) => (
+        <StatusPill status={value} />
+      ),
     },
     {
       id: "timeline",

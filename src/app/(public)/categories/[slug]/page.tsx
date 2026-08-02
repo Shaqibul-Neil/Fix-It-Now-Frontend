@@ -1,23 +1,28 @@
 import type { Metadata } from "next";
-import { CATEGORY_DETAILS } from "@/src/features/public/category/dependencies/constants/category.dummy";
+import {
+  getCategories,
+  getCategoryBySlug,
+} from "@/src/features/public/category/dependencies/api/category.api";
 import CategoryDetailsPage from "@/src/features/public/category/pages/CategoryDetailsPage";
 
 type TRouteProps = { params: Promise<{ slug: string }> };
 
-export function generateStaticParams() {
-  return Object.keys(CATEGORY_DETAILS).map((slug) => ({ slug }));
+export async function generateStaticParams() {
+  const categories = await getCategories();
+
+  return categories.map((category) => ({ slug: category.slug }));
 }
 
 export async function generateMetadata({
   params,
 }: TRouteProps): Promise<Metadata> {
   const { slug } = await params;
-  const category = CATEGORY_DETAILS[slug];
+  const category = await getCategoryBySlug(slug);
 
   if (!category) return { title: "Category not found" };
 
   const title = `${category.name} services — ${category.technicianCount} verified technicians`;
-  const description = category.description ?? category.tagline;
+  const description = category.description ?? category.tagline ?? undefined;
 
   return {
     title: { absolute: title },
@@ -28,7 +33,7 @@ export async function generateMetadata({
       url: `/categories/${category.slug}`,
       title,
       description,
-      images: [{ url: category.coverImage }],
+      images: category.coverImage ? [{ url: category.coverImage }] : undefined,
     },
   };
 }

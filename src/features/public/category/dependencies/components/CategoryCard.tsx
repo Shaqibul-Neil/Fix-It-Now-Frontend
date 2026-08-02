@@ -108,7 +108,9 @@ const CategoryCard = ({ category, ratio = "wide" }: ICategoryCardProps) => (
         </Text>
 
         <Text variant="semibold-sm-2" as="span" className="text-project-accent">
-          {`from ${formatMoney(category.startingPrice)}`}
+          {category.startingPrice
+            ? `from ${formatMoney(category.startingPrice)}`
+            : "No live pricing"}
         </Text>
       </div>
     </div>

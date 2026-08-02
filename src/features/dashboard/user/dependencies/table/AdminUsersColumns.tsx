@@ -48,7 +48,7 @@ export const useAdminUsersColumns = (): {
           key: "totalBookings",
           label: "Bookings",
           size: 110,
-          render: (value: number) => (
+          render: (value: IAdminUserRow["totalBookings"]) => (
             <span className="font-semibold tabular-nums">{value}</span>
           ),
         },

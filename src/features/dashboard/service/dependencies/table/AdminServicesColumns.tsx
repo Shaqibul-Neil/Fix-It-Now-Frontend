@@ -3,7 +3,12 @@
 import { useState, type ReactNode } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { RotateCcw, Trash } from "lucide-react";
-import { ActionColumn, ConfirmModal, ContactColumn } from "@/src/components";
+import {
+  ActionColumn,
+  ConfirmModal,
+  ContactColumn,
+  buildColumn,
+} from "@/src/components";
 import {
   useDeleteServiceMutation,
   useRestoreServiceMutation,
@@ -45,16 +50,16 @@ export const useAdminServicesColumns = (): {
 
       technicianRatingColumn<IAdminServiceRow>(),
 
-      {
-        id: "totalBookings",
-        header: "Bookings",
-        size: 120,
-        cell: ({ row }) => (
-          <span className="font-semibold tabular-nums">
-            {row.original.totalBookings}
-          </span>
-        ),
-      },
+      ...buildColumn<IAdminServiceRow>([
+        {
+          key: "totalBookings",
+          label: "Bookings",
+          size: 120,
+          render: (value: IAdminServiceRow["totalBookings"]) => (
+            <span className="font-semibold tabular-nums">{value}</span>
+          ),
+        },
+      ]),
 
       ...rest,
 

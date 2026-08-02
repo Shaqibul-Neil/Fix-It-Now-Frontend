@@ -79,7 +79,7 @@ export const useAdminTechniciansColumns = (): {
           key: "experienceYears",
           label: "Experience",
           size: 120,
-          render: (value) => (
+          render: (value: IAdminTechnicianRow["experienceYears"]) => (
             <span className="whitespace-nowrap font-medium">{`${value} yrs`}</span>
           ),
         },
@@ -88,9 +88,9 @@ export const useAdminTechniciansColumns = (): {
           key: "hourlyRate",
           label: "Rate",
           size: 120,
-          render: (value) => (
+          render: (value: IAdminTechnicianRow["hourlyRate"]) => (
             <span className="whitespace-nowrap font-semibold tabular-nums">
-              {`${formatMoney(value as string)}/hr`}
+              {`${formatMoney(value)}/hr`}
             </span>
           ),
         },
@@ -123,17 +123,17 @@ export const useAdminTechniciansColumns = (): {
           key: "completedJobs",
           label: "Jobs",
           size: 90,
-          render: (value) => (
-            <span className="font-semibold tabular-nums">{String(value)}</span>
+          render: (value: IAdminTechnicianRow["completedJobs"]) => (
+            <span className="font-semibold tabular-nums">{value}</span>
           ),
         },
 
         {
-          id: "approvalStatus",
+          key: "approvalStatus",
           label: "Application",
           size: 140,
-          render: (row: IAdminTechnicianRow) => (
-            <StatusPill status={row.approvalStatus} />
+          render: (value: IAdminTechnicianRow["approvalStatus"]) => (
+            <StatusPill status={value} />
           ),
         },
 

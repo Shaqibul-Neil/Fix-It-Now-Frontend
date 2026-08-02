@@ -33,37 +33,37 @@ export const paymentBaseColumns = <TRow extends ICustomerPaymentRow>() =>
       ),
     },
     {
-      id: "amount",
+      key: "amount",
       label: "Amount",
       size: 120,
-      render: (row: ICustomerPaymentRow) => (
-        <span className="font-semibold tabular-nums">
-          {formatMoney(row.amount)}
-        </span>
+      render: (value: ICustomerPaymentRow["amount"]) => (
+        <span className="font-semibold tabular-nums">{formatMoney(value)}</span>
       ),
     },
     {
-      id: "status",
+      key: "status",
       label: "Status",
       size: 140,
-      render: (row: ICustomerPaymentRow) => <StatusPill status={row.status} />,
+      render: (value: ICustomerPaymentRow["status"]) => (
+        <StatusPill status={value} />
+      ),
     },
     {
-      id: "paidAt",
+      key: "paidAt",
       label: "Paid on",
       size: 130,
-      render: (row: ICustomerPaymentRow) => (
+      render: (value: ICustomerPaymentRow["paidAt"]) => (
         <span className="whitespace-nowrap">
-          {row.paidAt ? formatDate(row.paidAt) : "—"}
+          {value ? formatDate(value) : "—"}
         </span>
       ),
     },
     {
-      id: "createdAt",
+      key: "createdAt",
       label: "Started",
       size: 130,
-      render: (row: ICustomerPaymentRow) => (
-        <span className="whitespace-nowrap">{formatDate(row.createdAt)}</span>
+      render: (value: ICustomerPaymentRow["createdAt"]) => (
+        <span className="whitespace-nowrap">{formatDate(value)}</span>
       ),
     },
   ]) as ColumnDef<TRow>[];

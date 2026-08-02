@@ -30,29 +30,29 @@ export interface IReviewColumns<TRow> {
 export const reviewBaseColumns = <TRow extends IReviewRowBase>() =>
   buildColumn<IReviewRowBase>([
     {
-      id: "service",
+      key: "service",
       label: "Service",
       size: 220,
-      render: (row: IReviewRowBase) => (
-        <span className="block truncate font-medium">{row.service.title}</span>
+      render: (value: IReviewRowBase["service"]) => (
+        <span className="block truncate font-medium">{value.title}</span>
       ),
     },
     {
-      id: "rating",
+      key: "rating",
       label: "Rating",
       size: 140,
-      render: (row: IReviewRowBase) => (
-        <AppRating readOnly value={row.rating} size={14} />
+      render: (value: IReviewRowBase["rating"]) => (
+        <AppRating readOnly value={value} size={14} />
       ),
     },
     {
-      id: "comment",
+      key: "comment",
       label: "Review",
       size: 200,
-      render: (row: IReviewRowBase) =>
-        toCommentText(row.comment) ? (
+      render: (value: IReviewRowBase["comment"]) =>
+        toCommentText(value) ? (
           <span className="text-project-muted-foreground line-clamp-1 truncate">
-            {toCommentText(row.comment)}
+            {toCommentText(value)}
           </span>
         ) : (
           <Text
@@ -65,11 +65,11 @@ export const reviewBaseColumns = <TRow extends IReviewRowBase>() =>
         ),
     },
     {
-      id: "createdAt",
+      key: "createdAt",
       label: "Written",
       size: 130,
-      render: (row: IReviewRowBase) => (
-        <span className="whitespace-nowrap">{formatDate(row.createdAt)}</span>
+      render: (value: IReviewRowBase["createdAt"]) => (
+        <span className="whitespace-nowrap">{formatDate(value)}</span>
       ),
     },
   ]) as ColumnDef<TRow>[];

@@ -95,11 +95,7 @@ const TestimonialSection = () => {
 
               <span aria-hidden className="h-3 w-px bg-current/25" />
 
-              <Text
-                variant="normal-sm"
-                as="span"
-                className="text-current/60"
-              >
+              <Text variant="normal-sm" as="span" className="text-current/60">
                 {review.customerLocation}
               </Text>
 
@@ -216,11 +212,7 @@ const TestimonialSection = () => {
                   {entry.customerName}
                 </Text>
 
-                <Text
-                  variant="normal-xs"
-                  as="span"
-                  className="text-current/55"
-                >
+                <Text variant="normal-xs" as="span" className="text-current/55">
                   {entry.customerLocation}
                 </Text>
               </button>

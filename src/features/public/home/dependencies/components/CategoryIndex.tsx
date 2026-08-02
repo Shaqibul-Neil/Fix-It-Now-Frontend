@@ -8,11 +8,7 @@ import type { ICategoryListItem } from "@/src/features/public/category/dependenc
 import { formatMoney } from "@/src/lib/utils/format.utils";
 import { useCategoryIndex } from "../animation/useCategoryIndex";
 
-const CategoryIndex = ({
-  categories,
-}: {
-  categories: ICategoryListItem[];
-}) => {
+const CategoryIndex = ({ categories }: { categories: ICategoryListItem[] }) => {
   const rootRef = useCategoryIndex();
 
   return (
@@ -118,7 +114,7 @@ const CategoryIndex = ({
                       as="span"
                       className="uppercase tracking-[0.2em] text-project-primary"
                     >
-                      {`${category.technicianCount} technicians · from ${formatMoney(category.startingPrice)}`}
+                      {`${category.technicianCount} technicians${category.startingPrice ? ` · from ${formatMoney(category.startingPrice)}` : ""}`}
                     </Text>
                   </span>
                 </span>
@@ -137,7 +133,9 @@ const CategoryIndex = ({
                     as="span"
                     className="mt-1.5 block whitespace-nowrap tabular-nums text-project-accent transition-colors duration-300 group-hover/row:text-project-primary"
                   >
-                    {formatMoney(category.startingPrice)}
+                    {category.startingPrice
+                      ? formatMoney(category.startingPrice)
+                      : "—"}
                   </Text>
                 </span>
 

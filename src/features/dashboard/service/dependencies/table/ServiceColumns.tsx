@@ -44,23 +44,21 @@ export const serviceBaseColumns = <TRow extends IBaseServiceRow>() =>
     },
 
     {
-      id: "price",
+      key: "price",
       label: "Price",
       size: 110,
-      render: (row: IBaseServiceRow) => (
-        <span className="font-semibold tabular-nums">
-          {formatMoney(row.price)}
-        </span>
+      render: (value: IBaseServiceRow["price"]) => (
+        <span className="font-semibold tabular-nums">{formatMoney(value)}</span>
       ),
     },
 
     {
-      id: "estimatedDuration",
+      key: "estimatedDuration",
       label: "Duration",
       size: 110,
-      render: (row: IBaseServiceRow) => (
+      render: (value: IBaseServiceRow["estimatedDuration"]) => (
         <span className="whitespace-nowrap">
-          {row.estimatedDuration ? `${row.estimatedDuration} min` : "—"}
+          {value ? `${value} min` : "—"}
         </span>
       ),
     },
@@ -92,12 +90,12 @@ export const serviceBaseColumns = <TRow extends IBaseServiceRow>() =>
 export const serviceAboutColumn = <TRow extends IServiceAbout>() =>
   buildColumn<IServiceAbout>([
     {
-      id: "description",
+      key: "description",
       label: "About",
       size: 320,
-      render: (row: IServiceAbout) => (
+      render: (value: IServiceAbout["description"]) => (
         <span className="line-clamp-2 truncate text-project-muted-foreground">
-          {row.description ?? "—"}
+          {value ?? "—"}
         </span>
       ),
     },
@@ -106,15 +104,15 @@ export const serviceAboutColumn = <TRow extends IServiceAbout>() =>
 export const technicianRatingColumn = <TRow extends ITechnicianInfo>() =>
   buildColumn<ITechnicianInfo>([
     {
-      id: "technicianRating",
+      key: "technicianRating",
       label: "Rating",
       size: 140,
-      render: (row: ITechnicianInfo) => (
+      render: (value: ITechnicianInfo["technicianRating"]) => (
         <AppRating
-          value={Number(row.technicianRating)}
+          value={Number(value)}
           readOnly
           size={13}
-          caption={row.technicianRating}
+          caption={value}
         />
       ),
     },

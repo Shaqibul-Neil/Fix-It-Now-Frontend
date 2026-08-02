@@ -1,18 +1,22 @@
 import { ArrowRight } from "lucide-react";
 import { AppButton, PageHeader, ScrollReveal, Text } from "@/src/components";
-import { CATEGORY_LIST } from "../dependencies/constants/category.dummy";
+import { getCategories } from "../dependencies/api/category.api";
 import CategoryCard from "../dependencies/components/CategoryCard";
+import CategoryListToolbar from "../dependencies/components/CategoryListToolbar";
+import type { IPublicCategoryQuery } from "../dependencies/types/category.types";
 
 // Cycles so the masonry never lines two neighbouring tiles up at the same edge.
 const RATIOS = ["tall", "wide", "square", "wide", "square", "tall"] as const;
 
-const CategoriesPage = () => {
-  const technicians = CATEGORY_LIST.reduce(
+const CategoriesPage = async ({ query }: { query: IPublicCategoryQuery }) => {
+  const categories = await getCategories(query);
+
+  const technicians = categories.reduce(
     (sum, category) => sum + category.technicianCount,
     0,
   );
 
-  const services = CATEGORY_LIST.reduce(
+  const services = categories.reduce(
     (sum, category) => sum + category.serviceCount,
     0,
   );
@@ -37,7 +41,7 @@ const CategoriesPage = () => {
         >
           <dl className="grid grid-cols-3 border-t border-project-border pt-5">
             {[
-              { id: "categories", value: CATEGORY_LIST.length, label: "Trades" },
+              { id: "categories", value: categories.length, label: "Trades" },
               { id: "technicians", value: technicians, label: "Technicians" },
               { id: "services", value: services, label: "Services" },
             ].map((stat) => (
@@ -67,18 +71,38 @@ const CategoriesPage = () => {
         </PageHeader>
       </ScrollReveal>
 
-      <ScrollReveal
-        variant="wipe"
-        className="mt-10 gap-4 sm:columns-2 lg:columns-3 [&>a]:mb-4"
-      >
-        {CATEGORY_LIST.map((category, index) => (
-          <CategoryCard
-            key={category.id}
-            category={category}
-            ratio={RATIOS[index % RATIOS.length]}
-          />
-        ))}
-      </ScrollReveal>
+      <div className="mt-10">
+        <CategoryListToolbar total={categories.length} />
+      </div>
+
+      {categories.length === 0 ? (
+        <div className="mt-4 border border-project-border bg-project-card px-6 py-16 text-center">
+          <Text variant="semibold-base" as="p" className="text-project-accent">
+            No trade is live yet
+          </Text>
+
+          <Text
+            variant="normal-sm"
+            as="p"
+            className="mt-2 text-project-muted-foreground"
+          >
+            Categories appear here as soon as an admin publishes them.
+          </Text>
+        </div>
+      ) : (
+        <ScrollReveal
+          variant="wipe"
+          className="mt-4 gap-4 sm:columns-2 lg:columns-3 [&>a]:mb-4"
+        >
+          {categories.map((category, index) => (
+            <CategoryCard
+              key={category.id}
+              category={category}
+              ratio={RATIOS[index % RATIOS.length]}
+            />
+          ))}
+        </ScrollReveal>
+      )}
 
       <ScrollReveal className="mt-16 flex flex-col items-start justify-between gap-6 bg-project-aside p-8 text-project-aside-foreground sm:flex-row sm:items-center lg:p-10">
         <div className="max-w-lg space-y-2">

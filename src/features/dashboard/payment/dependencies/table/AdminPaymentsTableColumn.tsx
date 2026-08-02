@@ -43,24 +43,24 @@ export const useAdminPaymentsColumns = (): IPaymentColumns<IAdminPaymentRow> => 
 
       ...buildColumn<IAdminPaymentRow>([
         {
-          id: "booking",
+          key: "bookingStatus",
           label: "Booking",
           size: 150,
-          render: (row: IAdminPaymentRow) => (
-            <StatusPill status={row.bookingStatus} />
+          render: (value: IAdminPaymentRow["bookingStatus"]) => (
+            <StatusPill status={value} />
           ),
         },
         {
-          id: "transactionId",
+          key: "transactionId",
           label: "Reference",
           size: 200,
-          render: (row: IAdminPaymentRow) => (
+          render: (value: IAdminPaymentRow["transactionId"]) => (
             <Text
               variant="normal-xs"
               as="span"
               className="block truncate text-project-muted-foreground"
             >
-              {row.transactionId}
+              {value}
             </Text>
           ),
         },

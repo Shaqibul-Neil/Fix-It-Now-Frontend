@@ -45,7 +45,7 @@ const columns = buildColumn<ITechnicianService>([
     key: "estimatedDuration",
     label: "Duration",
     size: 130,
-    render: (value: number | null) => (
+    render: (value: ITechnicianService["estimatedDuration"]) => (
       <span className="whitespace-nowrap tabular-nums">
         {value ? `${value} min` : "—"}
       </span>
@@ -56,7 +56,7 @@ const columns = buildColumn<ITechnicianService>([
     key: "price",
     label: "Price",
     size: 130,
-    render: (value: string) => (
+    render: (value: ITechnicianService["price"]) => (
       <span className="font-semibold tabular-nums text-project-accent">
         {formatMoney(value)}
       </span>

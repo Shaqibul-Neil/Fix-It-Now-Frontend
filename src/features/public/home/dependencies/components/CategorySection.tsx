@@ -1,9 +1,13 @@
 import { ArrowRight } from "lucide-react";
 import { PageHeader, ScrollReveal } from "@/src/components";
-import { CATEGORY_LIST } from "@/src/features/public/category/dependencies/constants/category.dummy";
+import type { ICategoryListItem } from "@/src/features/public/category/dependencies/types/category.types";
 import CategoryIndex from "./CategoryIndex";
 
-const CategorySection = () => {
+const CategorySection = ({
+  categories,
+}: {
+  categories: ICategoryListItem[];
+}) => {
   return (
     <section className="mx-auto max-w-7xl px-4 sm:px-6 xl:px-8">
       <ScrollReveal>
@@ -12,7 +16,7 @@ const CategorySection = () => {
           textVariant="display"
           eyebrow="Browse by trade"
           title="Whatever broke, someone here fixes it"
-          description={`${CATEGORY_LIST.length} trades live right now. Point at one to see the work behind it.`}
+          description={`The ${categories.length} trades booked most this month. Point at one to see the work behind it.`}
           action={{
             text: "All categories",
             href: "/categories",
@@ -24,7 +28,7 @@ const CategorySection = () => {
         />
       </ScrollReveal>
 
-      <CategoryIndex categories={CATEGORY_LIST} />
+      <CategoryIndex categories={categories} />
     </section>
   );
 };

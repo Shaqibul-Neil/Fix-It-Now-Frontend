@@ -52,10 +52,12 @@ export const useAdminReviewsColumns = (): IReviewColumns<IAdminReviewRow> => {
 
       ...buildColumn<IAdminReviewRow>([
         {
-          id: "status",
+          key: "status",
           label: "Status",
           size: 150,
-          render: (row: IAdminReviewRow) => <StatusPill status={row.status} />,
+          render: (value: IAdminReviewRow["status"]) => (
+            <StatusPill status={value} />
+          ),
         },
       ]),
 

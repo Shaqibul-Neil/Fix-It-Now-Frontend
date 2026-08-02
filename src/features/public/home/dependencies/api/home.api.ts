@@ -1,14 +1,15 @@
 import { getCategories } from "@/src/features/public/category/dependencies/api/category.api";
 import { getTechnicians } from "@/src/features/public/technician/dependencies/api/technician.api";
-import type { ICategory } from "@/src/features/public/category/dependencies/types/category.types";
+import type { ICategoryListItem } from "@/src/features/public/category/dependencies/types/category.types";
 import type { ITechnician } from "@/src/features/public/technician/dependencies/types/technician.types";
 
 const HOME_TECHNICIAN_COUNT = 6;
 const HOME_CATEGORY_COUNT = 6;
 
-// Categories only feed the homepage structured data now.
-export const getHomeCategories = async (): Promise<ICategory[]> =>
-  (await getCategories()).slice(0, HOME_CATEGORY_COUNT);
+// The six trades with the most recent booking activity, for the index and the
+// structured data underneath it.
+export const getHomeCategories = async (): Promise<ICategoryListItem[]> =>
+  getCategories({ sort: "trending", limit: HOME_CATEGORY_COUNT });
 
 // Falls back to the best-rated technicians when nobody is featured yet.
 export const getHomeTechnicians = async (): Promise<ITechnician[]> => {

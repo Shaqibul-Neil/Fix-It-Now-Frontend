@@ -43,11 +43,11 @@ export const useCustomerReviewsColumns =
 
         ...buildColumn<ICustomerReviewRow>([
           {
-            id: "status",
+            key: "status",
             label: "Status",
             size: 150,
-            render: (row: ICustomerReviewRow) => (
-              <StatusPill status={row.status} />
+            render: (value: ICustomerReviewRow["status"]) => (
+              <StatusPill status={value} />
             ),
           },
         ]),

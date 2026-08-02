@@ -36,7 +36,7 @@ const HomePage = async () => {
       <div className={SECTION_RHYTHM}>
         <Banner />
         <CounterSection />
-        <CategorySection />
+        <CategorySection categories={categories} />
         <EmergencyBand />
         <HowItWorksSection />
         <TechnicianSection

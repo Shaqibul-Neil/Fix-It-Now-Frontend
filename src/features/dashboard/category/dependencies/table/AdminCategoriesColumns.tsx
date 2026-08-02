@@ -75,24 +75,22 @@ export const useAdminCategoriesColumns = (): {
         },
 
         {
-          id: "description",
+          key: "description",
           label: "About",
           size: 320,
-          render: (row: IAdminCategoryRow) => (
+          render: (value: IAdminCategoryRow["description"]) => (
             <span className="line-clamp-2 text-project-muted-foreground truncate">
-              {row.description ?? "—"}
+              {value ?? "—"}
             </span>
           ),
         },
 
         {
-          id: "totalServices",
+          key: "totalServices",
           label: "Services",
           size: 110,
-          render: (row: IAdminCategoryRow) => (
-            <span className="font-semibold tabular-nums">
-              {row.totalServices}
-            </span>
+          render: (value: IAdminCategoryRow["totalServices"]) => (
+            <span className="font-semibold tabular-nums">{value}</span>
           ),
         },
 

@@ -1,3 +1,12 @@
+export const CATEGORY_SORT = ["name", "popular", "trending"] as const;
+
+export type TCategorySort = (typeof CATEGORY_SORT)[number];
+
+export interface IPublicCategoryQuery {
+  sort?: TCategorySort;
+  limit?: number;
+}
+
 export interface ICategory {
   id: string;
   name: string;
@@ -9,7 +18,7 @@ export interface ICategory {
 export interface ICategoryListItem extends ICategory {
   technicianCount: number;
   serviceCount: number;
-  startingPrice: string;
+  startingPrice: string | null;
   averageRating: string;
   totalReviews: number;
   popularServices: string[];
@@ -20,7 +29,7 @@ export interface ICategoryTechnician {
   id: string;
   name: string;
   avatar: string | null;
-  professionalTitle: string;
+  professionalTitle: string | null;
   city: string;
   area: string;
   averageRating: string;
@@ -42,12 +51,12 @@ export interface ICategoryService {
 }
 
 export interface ICategoryDetails extends ICategoryListItem {
-  coverImage: string;
-  tagline: string;
+  coverImage: string | null;
+  tagline: string | null;
   overview: string[];
   completedJobs: number;
-  responseMinutes: number;
-  priceRange: { min: string; max: string };
+  responseMinutes: number | null;
+  priceRange: { min: string; max: string } | null;
   commonIssues: string[];
   topTechnicians: ICategoryTechnician[];
   topServices: ICategoryService[];
