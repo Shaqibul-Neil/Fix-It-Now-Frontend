@@ -75,7 +75,7 @@ export const FILTER_OPTIONS: IFilterConfig = {
       {
         label: "Approved",
         value: "APPROVED" satisfies TTechnicianApprovalStatus,
-        dotClassName: "bg-project-primary",
+        dotClassName: "bg-project-verified",
       },
       {
         label: "Rejected",

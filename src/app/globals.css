@@ -39,6 +39,7 @@
   --success: #5c7a55; /* sage */
   --warning: #c08a3e; /* ochre */
   --info: #5b7c8d; /* dusty teal */
+  --verified: #2f6b53; /* pine — a second green, cooler and deeper than sage */
 
   /* Lines and focus */
   --border: #e6d9cd;
@@ -100,6 +101,7 @@
   --success: #86a87a;
   --warning: #d9a45c;
   --info: #8fb3c4;
+  --verified: #5fa383;
 
   /* Lines and focus */
   --border: #3a2f28;
@@ -199,6 +201,7 @@
   --color-project-success: var(--success);
   --color-project-yellow: var(--warning);
   --color-project-blue: var(--info);
+  --color-project-verified: var(--verified);
 
   --color-project-aside: var(--aside);
   --color-project-aside-foreground: var(--aside-foreground);
@@ -209,6 +212,8 @@
   --color-project-panel-primary: var(--panel-primary);
 
   --animate-marquee: marquee 34s linear infinite;
+  --animate-shuttle: shuttle 1.5s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  --animate-tick: tick 1.5s ease-in-out infinite;
 }
 
 /* Two identical copies sit side by side, so -50% loops seamlessly. */
@@ -218,8 +223,31 @@
   }
 }
 
+/* A meter needle sweeping its track — the loader's only moving part. */
+@keyframes shuttle {
+  from {
+    transform: translateX(-120%);
+  }
+  to {
+    transform: translateX(520%);
+  }
+}
+
+/* Corner marks breathing, so a slow route still looks alive. */
+@keyframes tick {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .animate-marquee {
+  .animate-marquee,
+  .animate-shuttle,
+  .animate-tick {
     animation: none;
   }
 }

@@ -1,6 +1,13 @@
 import { cn } from "@/src/lib/utils/cn";
 
-type TTone = "neutral" | "info" | "brass" | "warning" | "success" | "danger";
+type TTone =
+  | "neutral"
+  | "info"
+  | "brass"
+  | "warning"
+  | "success"
+  | "pine"
+  | "danger";
 
 const TONE_STYLE: Record<TTone, string> = {
   neutral:
@@ -11,6 +18,7 @@ const TONE_STYLE: Record<TTone, string> = {
   warning: "border-project-yellow/35 bg-project-yellow/10 text-project-yellow",
   success:
     "border-project-success/30 bg-project-success/10 text-project-success",
+  pine: "border-project-verified/35 bg-project-verified/10 text-project-verified",
   danger:
     "border-project-destructive/30 bg-project-destructive/10 text-project-destructive",
 };
@@ -21,6 +29,7 @@ const DOT_STYLE: Record<TTone, string> = {
   brass: "bg-project-primary",
   warning: "bg-project-yellow",
   success: "bg-project-success",
+  pine: "bg-project-verified",
   danger: "bg-project-destructive",
 };
 
@@ -71,10 +80,10 @@ const STATUS_META: Record<TStatus, { label: string; tone: TTone }> = {
   FAILED: { label: "Failed", tone: "danger" },
   REFUNDED: { label: "Refunded", tone: "info" },
 
-  // Technician approval — brass, not green, so an approved application never
-  // reads as the account status sitting beside it. REJECTED is shared with
-  // review moderation.
-  APPROVED: { label: "Approved", tone: "brass" },
+  // Technician approval — pine, a second green, so an approved application
+  // still reads as a pass without matching the ACTIVE account pill beside it.
+  // REJECTED is shared with review moderation.
+  APPROVED: { label: "Approved", tone: "pine" },
   REJECTED: { label: "Rejected", tone: "danger" },
 
   // Review moderation — PENDING is shared, same meaning.
