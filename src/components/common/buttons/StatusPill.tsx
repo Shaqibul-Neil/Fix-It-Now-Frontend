@@ -66,8 +66,7 @@ export type TStatus =
   // Home maintenance
   | "DUE"
   | "DUE_SOON"
-  | "ON_TRACK"
-  | "NEVER_BOOKED";
+  | "ON_TRACK";
 
 const STATUS_META: Record<TStatus, { label: string; tone: TTone }> = {
   // Booking
@@ -106,12 +105,10 @@ const STATUS_META: Record<TStatus, { label: string; tone: TTone }> = {
   // Spotlight flag — brass, the same accent the public badge uses.
   FEATURED: { label: "Featured", tone: "brass" },
 
-  // Home maintenance — a service the customer has never booked is neutral,
-  // because nothing is wrong yet.
+  // Home maintenance
   DUE: { label: "Due", tone: "danger" },
   DUE_SOON: { label: "Due soon", tone: "warning" },
   ON_TRACK: { label: "On track", tone: "success" },
-  NEVER_BOOKED: { label: "Not booked", tone: "neutral" },
 };
 
 interface IStatusPillProps {

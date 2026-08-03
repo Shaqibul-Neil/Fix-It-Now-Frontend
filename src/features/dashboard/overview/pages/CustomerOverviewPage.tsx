@@ -6,6 +6,7 @@ import { useMemo } from "react";
 import { ArrowUpRight } from "lucide-react";
 import {
   AppAvatar,
+  AppButton,
   AppError,
   ChartCard,
   ChartLegend,
@@ -42,11 +43,12 @@ const BOOKING_STEPS = [
   { key: "COMPLETED", label: "Done" },
 ];
 
-const MAINTENANCE_PILL: Record<TMaintenanceStatus, TStatus> = {
+// "never" is not a state to report — it gets a button instead, so the row
+// offers the customer something to do rather than a label.
+const MAINTENANCE_PILL: Record<Exclude<TMaintenanceStatus, "never">, TStatus> = {
   due: "DUE",
   soon: "DUE_SOON",
   ok: "ON_TRACK",
-  never: "NEVER_BOOKED",
 };
 
 const CustomerOverviewPage = () => {
@@ -190,15 +192,25 @@ const CustomerOverviewPage = () => {
                           : "Never booked"}
                       </Text>
 
-                      <StatusPill
-                        status={MAINTENANCE_PILL[item.status]}
-                        label={
-                          item.status === "soon" && item.daysLeft
-                            ? `${item.daysLeft} days`
-                            : undefined
-                        }
-                        className="justify-self-end"
-                      />
+                      {item.status === "never" ? (
+                        <AppButton
+                          href={`/dashboard/customer/services?category=${item.slug}`}
+                          text="Try it"
+                          variant="noOutline"
+                          rightIcon={ArrowUpRight}
+                          className="h-7 justify-self-end px-3 text-xs"
+                        />
+                      ) : (
+                        <StatusPill
+                          status={MAINTENANCE_PILL[item.status]}
+                          label={
+                            item.status === "soon" && item.daysLeft
+                              ? `${item.daysLeft} days`
+                              : undefined
+                          }
+                          className="justify-self-end"
+                        />
+                      )}
                     </li>
                   ))}
                 </ul>
