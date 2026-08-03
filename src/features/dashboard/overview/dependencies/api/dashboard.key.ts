@@ -7,4 +7,7 @@ export const dashboardKeys = {
   technician: {
     stats: (filter: IStatsQuery) => ["technician-stats", filter] as const,
   },
+  customer: {
+    stats: () => ["customer-stats"] as const,
+  },
 };

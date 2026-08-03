@@ -3,7 +3,11 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import type { TPeriod } from "@/src/types/filter.types";
-import { getAdminStats, getTechnicianStats } from "../api/dashboard.client";
+import {
+  getAdminStats,
+  getCustomerStats,
+  getTechnicianStats,
+} from "../api/dashboard.client";
 import type { IStatsQuery } from "../types/dashboard.types";
 import { dashboardKeys } from "../api/dashboard.key";
 
@@ -42,3 +46,11 @@ export const useTechnicianStatsQuery = () => {
     placeholderData: keepPreviousData,
   });
 };
+
+//-----------------Customer Dashboard---------------
+export const useCustomerStatsQuery = () =>
+  useQuery({
+    queryKey: dashboardKeys.customer.stats(),
+    queryFn: getCustomerStats,
+    select: (response) => response.data,
+  });

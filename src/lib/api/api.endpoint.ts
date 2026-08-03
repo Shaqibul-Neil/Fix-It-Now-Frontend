@@ -81,6 +81,9 @@ export const apiEndpoints = {
     },
 
     customer: {
+      stats: {
+        dashboard: "/stats/customer/dashboard",
+      },
       bookings: {
         list: "/bookings",
         create: "/bookings",
@@ -115,7 +118,6 @@ export const apiEndpoints = {
   public: {
     technician: {
       list: "/technicians",
-      // Category, skill and price facets with their technician counts.
       filters: "/technicians/filters",
       details: (id: string) => `/technicians/${id}`,
       availability: (id: string) => `/technicians/${id}/availability`,

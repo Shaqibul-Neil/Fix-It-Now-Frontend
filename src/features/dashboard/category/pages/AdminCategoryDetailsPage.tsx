@@ -13,7 +13,7 @@ import {
   InfoList,
   StatusPill,
 } from "@/src/components";
-import { formatDateTime } from "@/src/lib/utils/format.utils";
+import { formatDateTime, formatMaintenance } from "@/src/lib/utils/format.utils";
 import CategoryFormPanel from "../dependencies/components/CategoryFormPanel";
 import {
   useDeleteCategoryMutation,
@@ -89,6 +89,21 @@ const AdminCategoryDetailsPage = ({ id }: { id: string }) => {
                 label: "Description",
                 value: data.description,
                 className: "sm:col-span-2",
+              },
+              {
+                label: "Maintenance",
+                value:
+                  formatMaintenance(
+                    data.maintenanceType,
+                    data.maintenanceIntervalDays,
+                  ) ?? "One-off — booked when something breaks.",
+                className: "sm:col-span-2",
+              },
+              {
+                label: "Interval",
+                value: data.maintenanceIntervalDays
+                  ? `${data.maintenanceIntervalDays} days`
+                  : null,
               },
               { label: "Image URL", value: data.image },
               { label: "Category id", value: data.id },

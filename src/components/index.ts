@@ -39,6 +39,8 @@ export type { IReviewEntry } from "./common/details/ReviewCard";
 export { default as ReviewList } from "./common/details/ReviewList";
 export { default as ScheduleBoard } from "./common/details/ScheduleBoard";
 export type { IScheduleDay } from "./common/details/ScheduleBoard";
+export { default as StatusStepper } from "./common/details/StatusStepper";
+export type { IStatusStep } from "./common/details/StatusStepper";
 export { default as StatusTimeline } from "./common/details/StatusTimeline";
 
 // Inputs

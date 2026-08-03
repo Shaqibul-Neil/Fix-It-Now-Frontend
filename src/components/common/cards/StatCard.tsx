@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
 import { Text } from "@/src/components";
 import type { IStatData } from "@/src/types/types";
@@ -5,6 +6,7 @@ import { cn } from "@/src/lib/utils/cn";
 
 interface IStatCardProps extends IStatData {
   trendLabel?: string;
+  linkText?: string;
   className?: string;
 }
 
@@ -16,7 +18,9 @@ const StatCard = ({
   value,
   changeValue,
   changePercentage,
+  href,
   trendLabel = "vs previous period",
+  linkText = "View all",
   className,
 }: IStatCardProps) => {
   const isRate = id.endsWith("_rate");
@@ -89,6 +93,19 @@ const StatCard = ({
         >
           {isFlat ? "No change" : trendLabel}
         </Text>
+      )}
+
+      {/* The stretched span makes the whole card the click target, so the row
+          reads as one control instead of a card with a small link in it. */}
+      {href && (
+        <Link
+          href={href}
+          className="mt-3 flex items-center gap-1 border-t border-project-border pt-2.5 text-[11px] font-medium text-project-muted-foreground transition-colors duration-300 group-hover:text-project-primary"
+        >
+          {linkText}
+          <ArrowUpRight className="size-3 shrink-0 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+          <span aria-hidden className="absolute inset-0" />
+        </Link>
       )}
     </div>
   );

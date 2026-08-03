@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Layers } from "lucide-react";
 import {
   AppButton,
   AppCheckbox,
   AppInput,
+  AppSelect,
   AppTextArea,
   ResultState,
   SidePanel,
@@ -27,11 +28,21 @@ interface ICategoryFormPanelProps {
   onClose: () => void;
 }
 
+// Written the way an admin thinks about the trade, not the way the column is
+// named — only the repeating one drives the customer's maintenance reminders.
+const MAINTENANCE_OPTIONS = [
+  { label: "One-off — booked when something breaks", value: "NONE" },
+  { label: "Now and then — no fixed schedule", value: "OCCASIONAL" },
+  { label: "Repeats — needs servicing on a cycle", value: "RECURRING" },
+];
+
 const EMPTY_FORM: TCategoryForm = {
   name: "",
   description: "",
   image: "",
   isActive: true,
+  maintenanceType: "NONE",
+  maintenanceIntervalDays: "",
 };
 
 const CategoryFormPanel = ({ target, onClose }: ICategoryFormPanelProps) => {
@@ -49,6 +60,9 @@ const CategoryFormPanel = ({ target, onClose }: ICategoryFormPanelProps) => {
     defaultValues: EMPTY_FORM,
   });
 
+  const isRecurring =
+    useWatch({ control, name: "maintenanceType" }) === "RECURRING";
+
   // Every control starts over for whichever row opened the panel. Closing is
   // skipped so the slide-out animation does not flash an empty form.
   const [lastTarget, setLastTarget] = useState(target);
@@ -61,6 +75,10 @@ const CategoryFormPanel = ({ target, onClose }: ICategoryFormPanelProps) => {
         description: target.description ?? "",
         image: target.image ?? "",
         isActive: target.isActive ?? true,
+        maintenanceType: target.maintenanceType ?? "NONE",
+        maintenanceIntervalDays: target.maintenanceIntervalDays
+          ? String(target.maintenanceIntervalDays)
+          : "",
       });
     }
   }
@@ -70,20 +88,37 @@ const CategoryFormPanel = ({ target, onClose }: ICategoryFormPanelProps) => {
 
   const isPending = createCategory.isPending || updateCategory.isPending;
 
-  const submit = handleSubmit(({ image, ...values }) => {
-    if (!target) return;
+  const submit = handleSubmit(
+    ({ image, maintenanceIntervalDays, ...values }) => {
+      if (!target) return;
 
-    // An update sends null to clear the image; a create simply omits it.
-    if (target.id) {
-      updateCategory.mutate({
-        id: target.id,
-        payload: { ...values, image: image?.trim() || null },
+      // Only a repeating category keeps its interval — switching away from
+      // RECURRING has to clear the number, or the old cycle stays behind it.
+      const interval =
+        values.maintenanceType === "RECURRING" && maintenanceIntervalDays
+          ? Number(maintenanceIntervalDays)
+          : undefined;
+
+      // An update sends null to clear the image; a create simply omits it.
+      if (target.id) {
+        updateCategory.mutate({
+          id: target.id,
+          payload: {
+            ...values,
+            image: image?.trim() || null,
+            maintenanceIntervalDays: interval ?? null,
+          },
+        });
+        return;
+      }
+
+      createCategory.mutate({
+        ...values,
+        image: image?.trim() || undefined,
+        maintenanceIntervalDays: interval,
       });
-      return;
-    }
-
-    createCategory.mutate({ ...values, image: image?.trim() || undefined });
-  });
+    },
+  );
 
   return (
     <SidePanel
@@ -147,6 +182,32 @@ const CategoryFormPanel = ({ target, onClose }: ICategoryFormPanelProps) => {
             error={errors.image?.message}
             {...register("image")}
           />
+
+          <Controller
+            control={control}
+            name="maintenanceType"
+            render={({ field }) => (
+              <AppSelect
+                label="How often does this work come round?"
+                options={MAINTENANCE_OPTIONS}
+                value={field.value}
+                onChange={field.onChange}
+                error={errors.maintenanceType?.message}
+              />
+            )}
+          />
+
+          {/* Only the repeating kind needs a number, and only that number puts
+              the category on a customer's maintenance list. */}
+          {isRecurring && (
+            <AppInput
+              label="Days between visits"
+              type="number"
+              placeholder="180"
+              error={errors.maintenanceIntervalDays?.message}
+              {...register("maintenanceIntervalDays")}
+            />
+          )}
 
           <Controller
             control={control}

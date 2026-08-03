@@ -26,6 +26,32 @@ export const formatClock = (value?: string | null) => {
   return date && !Number.isNaN(date.getTime()) ? format(date, "h:mm a") : "—";
 };
 
+// "180 days" means nothing to a customer standing in their kitchen, so the
+// interval becomes a cadence in words. NONE has nothing worth saying.
+export const formatMaintenance = (
+  type: "NONE" | "OCCASIONAL" | "RECURRING",
+  intervalDays?: number | null,
+) => {
+  if (type === "OCCASIONAL") {
+    return "Booked as and when — this one has no set schedule.";
+  }
+
+  if (type !== "RECURRING" || !intervalDays) return null;
+
+  const cadence =
+    intervalDays <= 45
+      ? "about once a month"
+      : intervalDays <= 100
+        ? "about every three months"
+        : intervalDays <= 200
+          ? "about twice a year"
+          : intervalDays <= 400
+            ? "about once a year"
+            : "every couple of years";
+
+  return `Routine upkeep — most homes book this ${cadence}.`;
+};
+
 // "09:00" -> "9:00 AM". Availability slots are stored as a bare wall clock,
 // with no date attached to hand to date-fns.
 export const formatTime = (value: string) => {

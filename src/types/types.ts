@@ -62,4 +62,5 @@ export interface IStatData {
   value: number;
   changeValue?: number;
   changePercentage?: number;
+  href?: string;
 }

@@ -1,5 +1,9 @@
 import type { TRecordStatus } from "@/src/types/types";
 
+export const MAINTENANCE_TYPES = ["NONE", "OCCASIONAL", "RECURRING"] as const;
+
+export type TMaintenanceType = (typeof MAINTENANCE_TYPES)[number];
+
 // Admin table row — the backend's ADMIN_CATEGORY_SELECT plus the two fields
 // its mapper derives.
 export interface IAdminCategoryRow {
@@ -8,6 +12,12 @@ export interface IAdminCategoryRow {
   slug: string;
   description: string | null;
   image: string | null;
+  coverImage: string | null;
+  tagline: string | null;
+  overview: string[];
+  commonIssues: string[];
+  maintenanceType: TMaintenanceType;
+  maintenanceIntervalDays: number | null;
   isActive: boolean;
   isDeleted: boolean;
   deletedAt: string | null;
@@ -28,13 +38,16 @@ export interface ICreateCategoryPayload {
   description?: string;
   image?: string;
   isActive: boolean;
+  maintenanceType: TMaintenanceType;
+  maintenanceIntervalDays?: number;
 }
 
-// Only an update can clear the image — a create has nothing to clear yet.
+// Only an update can clear a field — a create has nothing to clear yet.
 export type IUpdateCategoryPayload = Partial<
-  Omit<ICreateCategoryPayload, "image">
+  Omit<ICreateCategoryPayload, "image" | "maintenanceIntervalDays">
 > & {
   image?: string | null;
+  maintenanceIntervalDays?: number | null;
 };
 
 // What the category panel needs from whichever row opened it. `id` set means
@@ -45,4 +58,6 @@ export interface ICategoryFormTarget {
   description?: string | null;
   image?: string | null;
   isActive?: boolean;
+  maintenanceType?: TMaintenanceType;
+  maintenanceIntervalDays?: number | null;
 }

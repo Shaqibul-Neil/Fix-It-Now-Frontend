@@ -3,13 +3,18 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight, ArrowUpRight, MapPin, Star } from "lucide-react";
 import { AppAvatar, PageHeader, ScrollReveal, Text } from "@/src/components";
-import { formatMoney } from "@/src/lib/utils/format.utils";
+import { formatMaintenance, formatMoney } from "@/src/lib/utils/format.utils";
 import { getCategoryBySlug } from "../dependencies/api/category.api";
 
 const CategoryDetailsPage = async ({ slug }: { slug: string }) => {
   const category = await getCategoryBySlug(slug);
 
   if (!category) notFound();
+
+  const maintenanceNote = formatMaintenance(
+    category.maintenanceType,
+    category.maintenanceIntervalDays,
+  );
 
   const heroStats = [
     {
@@ -117,6 +122,18 @@ const CategoryDetailsPage = async ({ slug }: { slug: string }) => {
           />
 
           <div className="space-y-6">
+            {/* Says in words how often this trade comes round, so a customer
+                never has to read a schedule to work it out. */}
+            {maintenanceNote && (
+              <Text
+                variant="normal-sm"
+                as="p"
+                className="border-l-2 border-project-primary pl-4 text-project-muted-foreground"
+              >
+                {maintenanceNote}
+              </Text>
+            )}
+
             {category.overview.map((paragraph) => (
               <Text
                 key={paragraph}

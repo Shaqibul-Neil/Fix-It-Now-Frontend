@@ -58,6 +58,8 @@ export interface ICategoryDetails extends ICategoryListItem {
   responseMinutes: number | null;
   priceRange: { min: string; max: string } | null;
   commonIssues: string[];
+  maintenanceType: "NONE" | "OCCASIONAL" | "RECURRING";
+  maintenanceIntervalDays: number | null;
   topTechnicians: ICategoryTechnician[];
   topServices: ICategoryService[];
 }
